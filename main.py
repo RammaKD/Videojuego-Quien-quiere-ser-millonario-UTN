@@ -16,3 +16,5 @@ while seguir:
                 break
         case _:
             print("Error. Ingrese una opción del Menú.")
+
+

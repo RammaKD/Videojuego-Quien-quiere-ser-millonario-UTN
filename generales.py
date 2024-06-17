@@ -58,3 +58,47 @@ def comprobar_len_lista(lista: list) -> bool:
         lenght = True
     
     return lenght
+
+
+import csv
+import json
+
+def leer_preguntas_desde_csv(archivo_csv):
+    preguntas = []
+    with open(archivo_csv, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if len(row) == 5:
+                categoria = row[0].strip()
+                dificultad = row[1].strip()
+                pregunta = row[2].strip()
+                try:
+                    opciones = json.loads(row[3].strip())
+                except json.JSONDecodeError as e:
+                    print(f"Error de JSON en la fila: {row}")
+                    print(f"Mensaje: {e}")
+                    continue
+                respuesta_correcta = row[4].strip()
+                
+                preguntas.append({
+                    'categoria': categoria,
+                    'dificultad': dificultad,
+                    'pregunta': pregunta,
+                    'opciones': opciones,
+                    'respuesta_correcta': respuesta_correcta
+                })
+            else:
+                print(f"Error: Se encontró una fila con un número incorrecto de columnas: {row}")
+    return preguntas
+
+# Ejemplo de uso:
+archivo_csv = r'c:\Users\Juanma\Desktop\Proyecto_millonario\Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\preguntas.csv'
+lista_preguntas = leer_preguntas_desde_csv(archivo_csv)
+for pregunta in lista_preguntas:
+    print(f"Categoría: {pregunta['categoria']}")
+    print(f"Dificultad: {pregunta['dificultad']}")
+    print(f"Pregunta: {pregunta['pregunta']}")
+    print(f"Opciones: {pregunta['opciones']}")
+    print(f"Respuesta correcta: {pregunta['respuesta_correcta']}")
+    print("=" * 50)
+
