@@ -1,0 +1,6 @@
+{
+    "paths" : {
+        "path_preguntas" : "preguntas.csv",
+        "path_premios" : "premios.json"
+    }
+}
