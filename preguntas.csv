@@ -1,8 +1,17 @@
-id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta
-1,Historia,Muy fácil,¿En qué año llegó Cristóbal Colón a América?,1492-1776-1812-1914,0
-2,Historia,Muy fácil,¿En qué año llegó Messi a Europa?,2005-2006-2003-2004,3
-3,Historia,Muy fácil,¿Quién fue el primer presidente de los Estados Unidos?,George Washington-Thomas Jefferson-Abraham Lincoln-John Adams,0
-4,Historia,Fácil,¿Quién fue el primer presidente de los Estados Unidos?,George Washington-Thomas Jefferson-Abraham Lincoln-John Adams,0
-5,Historia,Medio,¿Qué famoso líder pacifista fue asesinado en 1968?,Martin Luther King Jr.-Mahatma Gandhi-Nelson Mandela-John F. Kennedy,0
-6,Historia,Dificil,¿En qué ciudad se celebraron los primeros Juegos Olímpicos modernos?,Atenas-Roma-París-Londres,0
-
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Historia,Muy fácil,¿Quién fue el primer presidente de los Estados Unidos?,George Washington-Thomas Jefferson-Abraham Lincoln-John Adams,0,Su nombre empieza con G
+2,Historia,Muy fácil,¿En qué año llegó Cristóbal Colón a América?,1492-1502-1512-1522,0,Es un año antes de 1493.
+3,Historia,Fácil,¿En qué año cayó el Muro de Berlín?,1987-1988-1989-1990,2,Es el año antes de 1990.
+4,Historia,Fácil,¿Quién fue el presidente de los Estados Unidos durante la Guerra Civil?,George Washington-Thomas Jefferson-Abraham Lincoln-Andrew Johnson,2,Es conocido por su sombrero de copa.
+5,Historia,Fácil,¿Qué país usó armas nucleares en la Segunda Guerra Mundial?,Rusia-Alemania-Japón-Estados Unidos,3,Ocurrió en 1945.
+6,Historia,Medio,¿Quién pintó la Mona Lisa?,Vincent van Gogh-Pablo Picasso-Leonardo da Vinci-Rembrandt,2,Es un renombrado artista del Renacimiento.
+7,Historia,Medio,¿Cuál fue la civilización antigua que construyó las pirámides en Egipto?,Romanos-Griegos-Egipcios-Aztecas,2,Construyeron pirámides como tumbas.
+8,Historia,Medio,¿Quién escribió 'La Odisea'?,Sófocles-Hesíodo-Homero-Eurípides,2,Es una épica griega.
+9,Historia,Medio,¿En qué año comenzó la Primera Guerra Mundial?,1912-1914-1916-1918,1,Ocurrió en la segunda década del siglo XX.
+10,Historia,Medio,¿Cuál era el nombre de la primera computadora electrónica programable?,ENIAC-UNIVAC-IBM-PC-Apple II,0,Su nombre comienza con E.
+11,Historia,Difícil,¿Quién fue el primer emperador de Roma?,Julio César-Augusto-Caligula-Nerón,1,Su nombre también era Octavio.
+12,Historia,Difícil,¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?,1774-1775-1776-1777,2,Ocurrió en el año de la revolución.
+13,Historia,Difícil,¿Quién fue el último faraón de Egipto?,Tutankamón-Ramsés II-Cleopatra-Akenatón,2,Era una reina famosa.
+14,Historia,Muy difícil,¿Cuál fue el primer país en adoptar el cristianismo como religión oficial?,Roma-Grecia-Armenia-Etiopía,2,Ocurrió en el siglo IV.
+15,Historia,Muy difícil,¿En qué año comenzó la Revolución Francesa?,1787-1788-1789-1790,2,Comenzó a fines del siglo XVIII.
+1,Geografía,Muy fácil,¿Cuál es el nombre del planeta donde vivimos?,Marte-Venus-Tierra-Júpiter,2,Es el tercer planeta desde el sol.
