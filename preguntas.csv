@@ -15,3 +15,196 @@ id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
 14,Historia,Muy difícil,¿Cuál fue el primer país en adoptar el cristianismo como religión oficial?,Roma-Grecia-Armenia-Etiopía,2,Ocurrió en el siglo IV.
 15,Historia,Muy difícil,¿En qué año comenzó la Revolución Francesa?,1787-1788-1789-1790,2,Comenzó a fines del siglo XVIII.
 1,Geografía,Muy fácil,¿Cuál es el nombre del planeta donde vivimos?,Marte-Venus-Tierra-Júpiter,2,Es el tercer planeta desde el sol.
+
+#####################################################################################################################
+
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Historia,Muy fácil,¿Quién fue el primer presidente de los Estados Unidos?,George Washington-Thomas Jefferson-Abraham Lincoln-John Adams,0,Su nombre empieza con G
+2,Historia,Muy fácil,¿En qué año llegó Cristóbal Colón a América?,1492-1502-1512-1522,0,Es un año antes de 1493.
+3,Historia,Muy fácil,¿Quién fue el líder del movimiento de independencia en la India?,Mahatma Gandhi-Nelson Mandela-Martin Luther King Jr.-Che Guevara,0,Su nombre empieza con M.
+4,Historia,Muy fácil,¿Quién fue conocido como el Rey Sol en Francia?,Luis XIV-Luis XV-Luis XVI-Luis XVII,0,Reinó por más de 70 años.
+5,Historia,Fácil,¿En qué año cayó el Muro de Berlín?,1987-1988-1989-1990,2,Es el año antes de 1990.
+6,Historia,Fácil,¿Quién fue el presidente de los Estados Unidos durante la Guerra Civil?,George Washington-Thomas Jefferson-Abraham Lincoln-Andrew Johnson,2,Es conocido por su sombrero de copa.
+7,Historia,Fácil,¿Qué país usó armas nucleares en la Segunda Guerra Mundial?,Rusia-Alemania-Japón-Estados Unidos,3,Ocurrió en 1945.
+8,Historia,Fácil,¿Quién fue el principal autor de la Declaración de Independencia de los Estados Unidos?,Benjamin Franklin-Thomas Jefferson-John Adams-Alexander Hamilton,1,Su nombre empieza con T.
+9,Historia,Fácil,¿Qué imperio construyó el Coliseo en Roma?,Imperio Griego-Imperio Egipcio-Imperio Romano-Imperio Persa,2,Es famoso por sus gladiadores.
+10,Historia,Fácil,¿Quién descubrió América?,Cristóbal Colón-Hernán Cortés-Francisco Pizarro-Américo Vespucio,0,Es conocido por su viaje en 1492.
+11,Historia,Medio,¿Quién pintó la Mona Lisa?,Vincent van Gogh-Pablo Picasso-Leonardo da Vinci-Rembrandt,2,Es un renombrado artista del Renacimiento.
+12,Historia,Medio,¿Cuál fue la civilización antigua que construyó las pirámides en Egipto?,Romanos-Griegos-Egipcios-Aztecas,2,Construyeron pirámides como tumbas.
+13,Historia,Medio,¿Quién escribió 'La Odisea'?,Sófocles-Hesíodo-Homero-Eurípides,2,Es una épica griega.
+14,Historia,Medio,¿En qué año comenzó la Primera Guerra Mundial?,1912-1914-1916-1918,1,Ocurrió en la segunda década del siglo XX.
+15,Historia,Medio,¿Cuál era el nombre de la primera computadora electrónica programable?,ENIAC-UNIVAC-IBM-PC-Apple II,0,Su nombre comienza con E.
+16,Historia,Medio,¿Qué evento inició la Gran Depresión en 1929?,La Primera Guerra Mundial-El Crash de la Bolsa de Valores-La Segunda Guerra Mundial-El New Deal,1,Ocurrió en Wall Street.
+17,Historia,Medio,¿Qué país fue liderado por Genghis Khan?,Rusia-Japón-China-Mongolia,3,Es conocido por su vasto imperio.
+18,Historia,Medio,¿Qué tratado puso fin a la Primera Guerra Mundial?,Tratado de Versalles-Tratado de París-Tratado de Utrecht-Tratado de Tordesillas,0,Se firmó en 1919.
+19,Historia,Medio,¿Qué civilización antigua desarrolló la escritura cuneiforme?,Egipcios-Fenicios-Sumerios-Babilonios,2,Su tierra era en Mesopotamia.
+20,Historia,Medio,¿En qué año se fundó Roma según la leyenda?,753 a.C.-500 a.C.-200 a.C.-1 d.C.,0,Es una fecha legendaria.
+21,Historia,Medio,¿Quién fue el primer ministro británico durante la mayor parte de la Segunda Guerra Mundial?,Neville Chamberlain-Winston Churchill-Clement Attlee-Harold Macmillan,1,Es conocido por sus discursos inspiradores.
+22,Historia,Difícil,¿Quién fue el primer emperador de Roma?,Julio César-Augusto-Caligula-Nerón,1,Su nombre también era Octavio.
+23,Historia,Difícil,¿En qué año se firmó la Declaración de Independencia de los Estados Unidos?,1774-1775-1776-1777,2,Ocurrió en el año de la revolución.
+24,Historia,Difícil,¿Quién fue el último faraón de Egipto?,Tutankamón-Ramsés II-Cleopatra-Akenatón,2,Era una reina famosa.
+25,Historia,Difícil,¿Quién fue el último zar de Rusia?,Alejandro III-Nicolás II-Pedro el Grande-Iván el Terrible,1,Su reinado terminó con la Revolución Rusa.
+26,Historia,Difícil,¿En qué año comenzó la Guerra de Vietnam?,1955-1960-1965-1970,2,Ocurrió en la década de los 60.
+27,Historia,Difícil,¿En qué año comenzó la Revolución Rusa?,1915-1916-1917-1918,2,Ocurrió durante la Primera Guerra Mundial.
+28,Historia,Muy difícil,¿Cuál fue el primer país en adoptar el cristianismo como religión oficial?,Roma-Grecia-Armenia-Etiopía,2,Ocurrió en el siglo IV.
+29,Historia,Muy difícil,¿En qué año comenzó la Revolución Francesa?,1787-1788-1789-1790,2,Comenzó a fines del siglo XVIII.
+30,Historia,Muy difícil,¿Quién fue el primer presidente de Sudáfrica elegido democráticamente tras el apartheid?,Nelson Mandela-Desmond Tutu-Thabo Mbeki-F.W. de Klerk,0,Fue liberado de prisión en 1990.
+31,Historia,Muy difícil,¿Qué tratado estableció las bases de la Sociedad de Naciones?,Tratado de París-Tratado de Utrecht-Tratado de Tordesillas-Tratado de Versalles,3,Se firmó al final de la Primera Guerra Mundial.
+
+
+#######################################################################################################################
+
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Geografía,Muy fácil,¿Cuál es el nombre del planeta donde vivimos?,Marte-Venus-Tierra-Júpiter,2,Es el tercer planeta desde el sol.
+2,Geografía,Muy fácil,¿Cuál es el océano más grande del mundo?,Atlántico-Índico-Pacífico-Ártico,2,Está entre América y Asia.
+3,Geografía,Muy fácil,¿En qué continente se encuentra Brasil?,Asia-Europa-África-América del Sur,3,Es conocido por el Amazonas.
+4,Geografía,Muy fácil,¿Cuál es el desierto más grande del mundo?,Sahara-Gobi-Atacama-Desierto de Arabia,0,Se encuentra en África.
+5,Geografía,Fácil,¿Cuál es la capital de Francia?,Madrid-Berlín-París-Roma,2,Es conocida como la Ciudad de la Luz.
+6,Geografía,Fácil,¿En qué país se encuentra la Torre de Pisa?,Francia-España-Italia-Grecia,2,Es famosa por estar inclinada.
+7,Geografía,Fácil,¿Cuál es el río más largo del mundo?,Amazonas-Nilo-Misisipi-Yangtze,1,Se encuentra en África.
+8,Geografía,Fácil,¿En qué continente está Egipto?,Europa-África-Asia-América del Norte,1,Es conocido por las pirámides.
+9,Geografía,Fácil,¿Qué país tiene la mayor población del mundo?,India-Estados Unidos-China-Rusia,2,Es conocido por su gran muralla.
+10,Geografía,Fácil,¿Cuál es la capital de Japón?,Beijing-Seúl-Tokio-Bangkok,2,Es una de las ciudades más pobladas del mundo.
+11,Geografía,Medio,¿Cuál es el lago más grande del mundo?,Lago Superior-Lago Victoria-Mar Caspio-Lago Baikal,2,Es llamado "mar" pero es un lago.
+12,Geografía,Medio,¿En qué país se encuentra el Monte Everest?,Nepal-India-China-Bután,0,Es la montaña más alta del mundo.
+13,Geografía,Medio,¿Cuál es el país más pequeño del mundo?,Liechtenstein-Mónaco-San Marino-Vaticano,3,Es el centro de la Iglesia Católica.
+14,Geografía,Medio,¿Cuál es el nombre del mar que separa Europa de África?,Mar Rojo-Mar del Norte-Mar de Arabia-Mar Mediterráneo,3,Es conocido por sus playas.
+15,Geografía,Medio,¿Qué país tiene más islas?,Indonesia-Noruega-Filipinas-Suecia,0,Está en el sudeste asiático.
+16,Geografía,Medio,¿Cuál es el segundo país más grande del mundo por área?,China-Estados Unidos-Canadá-Rusia,2,Está al norte de Estados Unidos.
+17,Geografía,Medio,¿En qué país se encuentra el río Yangtze?,India-China-Vietnam-Corea del Sur,1,Es el río más largo de Asia.
+18,Geografía,Medio,¿Qué cordillera atraviesa Sudamérica de norte a sur?,Himalayas-Andes-Rockies-Alpes,1,Es la cordillera más larga del mundo.
+19,Geografía,Medio,¿Cuál es la capital de Australia?,Sídney-Melbourne-Canberra-Brisbane,2,No es la ciudad más grande de Australia.
+20,Geografía,Medio,¿Qué país es conocido como la Tierra del Sol Naciente?,Corea del Sur-China-Japón-Tailandia,2,Está en Asia oriental.
+21,Geografía,Medio,¿Cuál es la capital de Canadá?,Toronto-Ottawa-Vancouver-Montreal,1,Es una ciudad bilingüe.
+22,Geografía,Difícil,¿Cuál es el río más largo de Europa?,Rin-Danubio-Volga-Tajo,2,Fluye a través de Rusia.
+23,Geografía,Difícil,¿Qué país tiene la mayor cantidad de lagos naturales?,Brasil-Canadá-Finlandia-Suecia,1,Está en América del Norte.
+24,Geografía,Difícil,¿Cuál es el pico más alto de África?,Monte Kenia-Monte Kilimanjaro-Monte Elbrus-Monte Meru,1,Se encuentra en Tanzania.
+25,Geografía,Difícil,¿Qué desierto cubre gran parte de Mongolia y el norte de China?,Sahara-Atacama-Gobi-Kalahari,2,Es uno de los desiertos más grandes del mundo.
+26,Geografía,Difícil,¿Cuál es la isla más grande del Mediterráneo?,Sicilia-Córcega-Sicilia-Creta,2,Es parte de Italia.
+27,Geografía,Difícil,¿Cuál es el nombre antiguo de Estambul?,Byzantium-Roma-Constantinopla-Atenas,2,Fue la capital del Imperio Bizantino.
+28,Geografía,Muy difícil,¿Cuál es el país más alto del mundo en términos de altitud promedio?,Nepal-Tíbet-Bolivia-Bután,2,Está en Sudamérica.
+29,Geografía,Muy difícil,¿Qué ciudad es conocida como la Ciudad Eterna?,Roma-Atenas-El Cairo-Beijing,0,Es la capital de Italia.
+30,Geografía,Muy difícil,¿Cuál es el país sin litoral más grande del mundo?,Kazajistán-Mongolia-Chad-República Centroafricana,0,Está en Asia Central.
+31,Geografía,Muy difícil,¿Cuál es el país más densamente poblado del mundo?,Bangladesh-Singapur-Mónaco-Malta,2,Es una ciudad-estado en Europa.
+32,Geografía,Muy difícil,¿Cuál es el país con la costa más larga del mundo?,Australia-Rusia-Canadá-Noruega,2,Está en América del Norte.
+
+
+
+######################################################################################################################################
+
+
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Deporte,Muy fácil,¿En qué deporte se utiliza una pelota redonda?,Fútbol-Baloncesto-Tenis-Voleibol,0,Es el deporte más popular del mundo.
+2,Deporte,Muy fácil,¿Qué deporte se juega en una pista con red en el medio?,Tenis-Pádel-Badminton-Voleibol,3,Se juega en equipos de seis jugadores.
+3,Deporte,Muy fácil,¿En qué deporte se utiliza un palo y una pelota pequeña?,Golf-Béisbol-Hockey-Críquet,0,Se juega en campos de 18 hoyos.
+4,Deporte,Muy fácil,¿Qué deporte se juega en una cancha con aros y balones?,Baloncesto-Fútbol americano-Béisbol-Hockey,0,Se juega en equipos de cinco jugadores.
+5,Deporte,Fácil,¿Qué deporte se juega en una piscina con carriles?,Natación-Waterpolo-Salto de trampolín-Sincronizada,1,Se juega en equipos de siete jugadores.
+6,Deporte,Fácil,¿En qué deporte se lanza una jabalina?,Atletismo-Tiro con arco-Lanzamiento de disco-Bádminton,0,Se juega en el campo de atletismo.
+7,Deporte,Fácil,¿Cuál es el deporte que se juega en una cancha de césped con palos?,Rugby-Críquet-Polo-Hockey,2,Se juega con equipos de cuatro jugadores.
+8,Deporte,Fácil,¿Qué deporte se juega en una pista ovalada con patines?,Patinaje artístico-Patinaje de velocidad-Hockey sobre hielo-Inline,1,Se juega en equipos de cinco jugadores.
+9,Deporte,Fácil,¿En qué deporte se realiza una clavada sobre un aro?,Baloncesto-Voleibol-Atletismo-Hockey,0,Se juega en equipos de cinco jugadores.
+10,Deporte,Fácil,¿Qué deporte se practica en una piscina con pelotas y porterías?,Waterpolo-Polo acuático-Natación sincronizada-Salto sincronizado,0,Se juega en equipos de seis jugadores.
+11,Deporte,Medio,¿Qué deporte se practica con un palo y una pelota pequeña en una cancha de césped?,Golf-Tenis-Críquet-Croquet,2,Es popular en Inglaterra.
+12,Deporte,Medio,¿En qué deporte se puede ganar un torneo usando raquetas y pelotas?,Tenis-Pádel-Bádminton-Voleibol,0,Se juega en individuales y dobles.
+13,Deporte,Medio,¿Qué deporte se juega en una cancha de césped y se lanza una bola de béisbol?,Fútbol americano-Béisbol-Rugby-Críquet,1,Se juega en equipos de nueve jugadores.
+14,Deporte,Medio,¿Cuál es el deporte que se juega en una pista de hielo con discos de piedra?,Hockey sobre hielo-Curling-Patinaje artístico-Bobsleigh,1,Se juega en equipos de cuatro jugadores.
+15,Deporte,Medio,¿En qué deporte se lanza una pelota con la mano hacia un compañero?,Balonmano-Voleibol-Bádminton-Tenis,0,Se juega en equipos de siete jugadores.
+16,Deporte,Medio,¿Qué deporte se practica en una piscina con carriles y se usa un palo para nadar?,Natación-Waterpolo-Salto de trampolín-Sincronizada,1,Se juega en equipos de siete jugadores.
+17,Deporte,Medio,¿En qué deporte se lanza una bola blanca hacia bolas de colores sobre una mesa con troneras?,Billar-Snooker-Dardos-Póker,1,Se juega en equipos de dos jugadores.
+18,Deporte,Medio,¿Qué deporte se juega en una cancha con redes y se golpea una pelota de plumas?,Bádminton-Pádel-Tenis-Voleibol,0,Se juega en individuales y dobles.
+19,Deporte,Medio,¿En qué deporte se corre por una pista con obstáculos y se salta en fosos?,Atletismo-Tiro con arco-Lanzamiento de disco-Natación,0,Se juega en un estadio.
+20,Deporte,Medio,¿Qué deporte se juega en una cancha rectangular con arcos y se utiliza un balón?,Fútbol-Baloncesto-Tenis-Voleibol,0,Se juega en equipos de once jugadores.
+21,Deporte,Difícil,¿En qué deporte se pedalea sobre una bicicleta y se recorren largas distancias?,Ciclismo-Motociclismo-Atletismo-Triatlón,0,Se compite en etapas y tours.
+22,Deporte,Difícil,¿Qué deporte se practica en una piscina con estilo libre y mariposa?,Natación-Waterpolo-Salto de trampolín-Sincronizada,0,Se compite en carreras individuales y relevos.
+23,Deporte,Difícil,¿Cuál es el deporte que se juega en un campo con agujeros y se utiliza un palo para golpear una pelota pequeña?,Golf-Críquet-Croquet-Tenis,0,Se juega en campos de 18 hoyos.
+24,Deporte,Difícil,¿En qué deporte se lanza una pelota blanca y se batea con un bate?,Béisbol-Sóftbol-Críquet-Rugby,0,Se juega en equipos de nueve jugadores.
+25,Deporte,Difícil,¿Qué deporte se practica en una cancha con raquetas y pelotas en individuales y dobles?,Tenis-Pádel-Bádminton-Voleibol,0,Se juega en una pista de césped.
+26,Deporte,Difícil,¿En qué deporte se juega en una piscina con pelotas y porterías?,Waterpolo-Polo acuático-Natación sincronizada-Salto sincronizado,0,Se juega en equipos de seis jugadores.
+27,Deporte,Difícil,¿Cuál es el deporte que se practica en una cancha con redes y se golpea una pelota de plumas?,Bádminton-Pádel-Tenis-Voleibol,0,Se juega en individuales y dobles.
+28,Deporte,Muy difícil,¿En qué deporte se compite en una pista con obstáculos y se realiza el salto con garrocha?,Atletismo-Tiro con arco-Lanzamiento de disco-Halterofilia,0,Se juega en un estadio.
+29,Deporte,Muy difícil,¿Qué deporte se juega en una cancha rectangular con arcos y se utiliza un balón?,Fútbol-Baloncesto-Tenis-Voleibol,0,Se juega en equipos de once jugadores.
+30,Deporte,Muy difícil,¿En qué deporte se lanza una bola blanca hacia bolas de colores sobre una mesa con troneras?,Billar-Snooker-Dardos-Póker,0,Se juega en equipos de dos jugadores.
+31,Deporte,Muy difícil,¿Cuál es el deporte que se juega en una cancha de césped y se lanza una bola de béisbol?,Fútbol americano-Béisbol-Rugby-Críquet,0,Se juega en equipos de nueve jugadores.
+32,Deporte,Muy difícil,¿Qué deporte se juega en una pista de hielo con discos de piedra?,Hockey sobre hielo-Curling-Patinaje artístico-Bobsleigh,0,Se juega en equipos de cuatro jugadores.
+
+
+
+
+#############################################################################################################################################
+
+
+
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Entretenimiento,Muy fácil,¿Quién interpretó a Harry Potter en las películas de la saga?,Daniel Radcliffe-Rupert Grint-Tom Felton-Emma Watson,0,Es el protagonista principal.
+2,Entretenimiento,Muy fácil,¿Cuál es el nombre del robot metálico protagonista de la película de animación de Pixar?,Wall-E-R2-D2-C3PO-Bender,0,Es conocido por limpiar basura en el espacio.
+3,Entretenimiento,Muy fácil,¿Qué personaje es conocido por llevar un traje rojo y azul y lanzar telarañas?,Spider-Man-Batman-Superman-Iron Man,0,Es conocido por su sentido arácnido.
+4,Entretenimiento,Muy fácil,¿Quién es el protagonista principal de la saga de películas 'Rocky'?,Sylvester Stallone-Arnold Schwarzenegger-Bruce Willis-Jean-Claude Van Damme,0,Es conocido por interpretar a un boxeador.
+5,Entretenimiento,Fácil,¿Qué actor es famoso por interpretar a Jack Sparrow en la serie de películas 'Piratas del Caribe'?,Johnny Depp-Orlando Bloom-Geoffrey Rush-Keira Knightley,0,Es conocido por su extravagante estilo pirata.
+6,Entretenimiento,Fácil,¿Qué película es conocida por la frase 'May the Force be with you'?,Star Wars-Star Trek-Interstellar-Guardians of the Galaxy,0,Es una famosa saga espacial.
+7,Entretenimiento,Fácil,¿Cuál es el nombre del personaje principal en la serie de películas 'James Bond'?,James Bond-Jason Bourne-Ethan Hunt-Jack Ryan,0,Es conocido por su número de agente 007.
+8,Entretenimiento,Fácil,¿Qué serie de películas es conocida por las aventuras de Luke Skywalker y Darth Vader?,Star Wars-Star Trek-Lord of the Rings-Harry Potter,0,Es una saga épica de ciencia ficción.
+9,Entretenimiento,Fácil,¿Quién es el actor principal en la serie de películas 'The Matrix'?,Keanu Reeves-Laurence Fishburne-Carrie-Anne Moss-Hugo Weaving,0,Es conocido por su papel como Neo.
+10,Entretenimiento,Fácil,¿Qué serie de películas es conocida por los personajes Buzz Lightyear y Woody?,Toy Story-Monsters, Inc.-Buscando a Nemo-Cars,0,Es una serie de animación por ordenador.
+11,Entretenimiento,Medio,¿Qué actor interpretó a Wolverine en la serie de películas 'X-Men'?,Hugh Jackman-Patrick Stewart-Ian McKellen-James McAvoy,0,Es conocido por sus garras retráctiles.
+12,Entretenimiento,Medio,¿Cuál es el nombre del director de la trilogía 'El Señor de los Anillos'?,Peter Jackson-Steven Spielberg-Christopher Nolan-George Lucas,0,Es conocido por adaptar la obra de J.R.R. Tolkien.
+13,Entretenimiento,Medio,¿Qué actriz interpretó a Katniss Everdeen en la serie de películas 'Los Juegos del Hambre'?,Jennifer Lawrence-Emma Watson-Scarlett Johansson-Natalie Portman,0,Es conocida por su habilidad con el arco.
+14,Entretenimiento,Medio,¿Qué actor interpretó a Tony Stark en la serie de películas del Universo Cinematográfico de Marvel?,Robert Downey Jr.-Chris Evans-Chris Hemsworth-Mark Ruffalo,0,Es conocido por ser Iron Man.
+15,Entretenimiento,Medio,¿Cuál es el nombre del actor que interpretó a Joker en la película 'The Dark Knight'?,Heath Ledger-Joaquin Phoenix-Jack Nicholson-Jared Leto,0,Es conocido por su actuación post mortem.
+16,Entretenimiento,Medio,¿Qué serie de películas es conocida por el personaje Indiana Jones?,Indiana Jones-James Bond-Jason Bourne-Ethan Hunt,0,Es conocida por sus aventuras arqueológicas.
+17,Entretenimiento,Medio,¿Quién es el actor que interpretó a Tony Montana en la película 'Scarface'?,Al Pacino-Robert De Niro-Johnny Depp-Jack Nicholson,0,Es conocido por su frase 'Say hello to my little friend'.
+18,Entretenimiento,Medio,¿Qué actor es famoso por interpretar a Neo en la serie de películas 'The Matrix'?,Keanu Reeves-Laurence Fishburne-Hugo Weaving-Carrie-Anne Moss,0,Es conocido por su papel como el Elegido.
+19,Entretenimiento,Medio,¿Qué serie de películas es conocida por los personajes Marty McFly y Doc Brown?,Back to the Future-Men in Black-Ghostbusters-Jurassic Park,0,Es una saga de viajes en el tiempo.
+20,Entretenimiento,Medio,¿Qué actor interpretó a Jack en la película 'Titanic'?,Leonardo DiCaprio-Kate Winslet-Kathy Bates-Billy Zane,0,Es conocido por su frase 'I'm the king of the world!'.
+21,Entretenimiento,Difícil,¿Cuál es el nombre del director de la película 'Pulp Fiction'?,Quentin Tarantino-Steven Spielberg-Martin Scorsese-Christopher Nolan,0,Es conocido por su estilo único de narrativa.
+22,Entretenimiento,Difícil,¿Qué actor interpretó a Vito Corleone en la película 'El Padrino'?,Marlon Brando-Al Pacino-Robert De Niro-James Caan,0,Es conocido por su actuación como Don.
+23,Entretenimiento,Difícil,¿Qué actriz interpretó a Rose en la película 'Titanic'?,Kate Winslet-Leonardo DiCaprio-Kathy Bates-Billy Zane,0,Es conocida por su papel como la joven enamorada.
+24,Entretenimiento,Difícil,¿Cuál es el nombre del director de la película 'El Resplandor'?,Stanley Kubrick-Alfred Hitchcock-Martin Scorsese-Francis Ford Coppola,0,Es conocido por sus películas de terror psicológico.
+25,Entretenimiento,Difícil,¿Qué actor interpretó a Hannibal Lecter en la película 'El Silencio de los Corderos'?,Anthony Hopkins-Jodie Foster-Julianne Moore-Edward Norton,0,Es conocido por su intelecto y canibalismo.
+26,Entretenimiento,Difícil,¿Qué director es famoso por las películas 'Tiburón', 'ET' y 'Jurassic Park'?,Steven Spielberg-George Lucas-Martin Scorsese-Francis Ford Coppola,0,Es conocido por sus películas de aventuras.
+27,Entretenimiento,Difícil,¿Quién interpretó a Tyler Durden en la película 'Fight Club'?,Brad Pitt-Edward Norton-Jared Leto-Sean Penn,0,Es conocido por ser el alter ego del protagonista.
+28,Entretenimiento,Difícil,¿Qué actor interpretó a Gandalf en la trilogía 'El Señor de los Anillos'?,Ian McKellen-Viggo Mortensen-Orlando Bloom-Sean Bean,0,Es conocido por su sabiduría y magia.
+29,Entretenimiento,Muy difícil,¿Cuál es el nombre del director de la película 'La Naranja Mecánica'?,Stanley Kubrick-Quentin Tarantino-Martin Scorsese-Alfred Hitchcock,0,Es conocido por su estilo visual y crítico.
+30,Entretenimiento,Muy difícil,¿Qué director es famoso por las películas 'Blade Runner', 'Alien' y 'Thelma & Louise'?,Ridley Scott-Steven Spielberg-George Lucas-Christopher Nolan,0,Es conocido por sus películas de ciencia ficción.
+31,Entretenimiento,Muy difícil,¿Qué actor interpretó a Andy Dufresne en la película 'The Shawshank Redemption'?,Tim Robbins-Morgan Freeman-Tom Hanks-Brad Pitt,0,Es conocido por su fuga de prisión.
+32,Entretenimiento,Muy difícil,¿Quién es el actor que interpretó a Michael Corleone en la película 'El Padrino'?,Al Pacino-Robert De Niro-James Caan-Andy García,0,Es conocido por su ascenso al poder en la familia.
+
+
+
+
+#############################################################################################################################################
+
+
+
+id,Categoría,Dificultad,Pregunta,Respuestas,Respuesta_correcta,Palabra_clave
+1,Ciencia,Muy fácil,¿Cuál es el centro del sistema solar?,Sol-Tierra-Luna-Marte,0,Es una estrella.
+2,Ciencia,Muy fácil,¿Cuál es el planeta más cercano al Sol?,Mercurio-Venus-Tierra-Marte,0,Tiene el nombre de un dios romano mensajero.
+3,Ciencia,Muy fácil,¿Cuál es la fórmula química del agua?,H2O-CO2-CH4-O2,0,Es un compuesto común.
+4,Ciencia,Muy fácil,¿Qué gas necesitan las plantas para realizar la fotosíntesis?,Dióxido de carbono-Oxígeno-Nitrógeno-Hidrógeno,0,Los humanos lo exhalan.
+5,Ciencia,Fácil,¿Cuál es el hueso más largo del cuerpo humano?,Fémur-Tibia-Fibula-Húmero,0,Está en la pierna.
+6,Ciencia,Fácil,¿Qué elemento químico tiene el símbolo Fe?,Hierro-Cobre-Zinc-Aluminio,0,Es usado en la fabricación de acero.
+7,Ciencia,Fácil,¿Cuál es la capa más externa de la Tierra?,Corteza-Manto-Núcleo exterior-Núcleo interior,0,Donde vivimos.
+8,Ciencia,Fácil,¿Qué parte del cuerpo humano contiene el cerebro?,Cabeza-Tórax-Abdomen-Piernas,0,Es el centro de control.
+9,Ciencia,Fácil,¿Cuál es la velocidad de la luz en el vacío?,299,792,458 metros por segundo-100,000 kilómetros por hora-186,282 millas por segundo-300,000,000 metros por segundo,0,Es una constante física.
+10,Ciencia,Fácil,¿Qué animal es conocido por cambiar de color para camuflarse?,Cameleon-Pulpo-Tarántula-Lagarto,0,Es reptiliano.
+11,Ciencia,Medio,¿Cuál es la distancia promedio entre la Tierra y el Sol?,149.6 millones de kilómetros-100,000 kilómetros-300,000 kilómetros-1 millón de kilómetros,0,Es una unidad astronómica.
+12,Ciencia,Medio,¿Cuál es el proceso por el cual las plantas convierten la luz solar en energía?,Fotosíntesis-Respiración-Fotocinesis-Quimiosíntesis,0,Ocurre en las hojas.
+13,Ciencia,Medio,¿Qué tipo de sangre es conocido como el donante universal?,O-A-B-AB,0,Puede donar a todos los grupos sanguíneos.
+14,Ciencia,Medio,¿Cuál es la unidad básica de la herencia genética?,Gen-Ácido ribonucleico-Cromosoma-Mutación,0,Se transmite de generación en generación.
+15,Ciencia,Medio,¿Qué tipo de estrella es nuestro Sol?,Enana amarilla-Enana roja-Gigante azul-Supergigante,0,Es de color amarillo.
+16,Ciencia,Medio,¿Qué sustancia química es responsable del cambio de color de las hojas en otoño?,Clorofila-Caroteno-Antraceno-Fitocromo,0,Es un pigmento.
+17,Ciencia,Medio,¿Cuál es la fórmula química del dióxido de carbono?,CO2-H2O-O2-N2,0,Es un gas de efecto invernadero.
+18,Ciencia,Medio,¿Cuál es la capa más grande del cerebro humano?,Corteza cerebral-Cerebelo-Tallo cerebral-Lóbulos,0,Es responsable de la cognición.
+19,Ciencia,Medio,¿Qué elemento químico es esencial para la vida y se encuentra en todas las proteínas?,Nitrógeno-Oxígeno-Carbono-Hidrógeno,0,Es un componente de los aminoácidos.
+20,Ciencia,Medio,¿Cuál es el órgano más grande del cuerpo humano por área de superficie?,Piel-Pulmones-Hígado-Cerebro,0,Es un órgano externo.
+21,Ciencia,Difícil,¿Cuál es la molécula responsable del almacenamiento de energía en las células vivas?,ATP-ADN-ARN-RNA,0,Es una forma de energía química.
+22,Ciencia,Difícil,¿Qué tipo de células son las únicas células del cuerpo humano que no pueden dividirse por mitosis?,Neuronas-Células musculares-Células epiteliales-Células de la piel,0,Se encuentran en el cerebro.
+23,Ciencia,Difícil,¿Cuál es el metal más reactivo y liviano de los elementos químicos?,Litio-Sodio-Potasio-Calcio,0,Es usado en baterías.
+24,Ciencia,Difícil,¿Cuál es el primer elemento en la tabla periódica?,Hidrógeno-Helio-Litio-Berilio,0,Es un gas.
+25,Ciencia,Difícil,¿Qué fenómeno físico es responsable de la aurora boreal?,Interacción de partículas solares con la atmósfera terrestre-Rotación de la Tierra sobre su eje-Gravitación de la Luna sobre la Tierra-Fricción atmosférica,0,Ocurre cerca de los polos.
+26,Ciencia,Difícil,¿Cuál es el único planeta del sistema solar que rota sobre su lado?,Urano-Venus-Neptuno-Mercurio,0,Tiene un eje de inclinación extremo.
+27,Ciencia,Difícil,¿Cuál es la molécula responsable de transportar oxígeno en los glóbulos rojos?,Hemoglobina-Miocina-Globulina-Albúmina,0,Es una proteína.
+28,Ciencia,Difícil,¿Qué estructura celular es responsable de la respiración celular y la producción de energía en las células?,Mitocondria-Ribosoma-Lisosoma-Endoplásmico,0,Es la 'central energética' de la célula.
+29,Ciencia,Muy difícil,¿Qué teoría científica describe el origen del universo a partir de una singularidad?,Big Bang-Teoría de cuerdas-Teoría de la relatividad-Teoría del caos,0,Es un evento cósmico.
+30,Ciencia,Muy difícil,¿Qué componente del átomo tiene carga positiva?,Protón-Neutrón-Electrón-Mesón,0,Se encuentra en el núcleo.
+31,Ciencia,Muy difícil,¿Cuál es la fuerza fundamental responsable de la atracción entre objetos con masa?,Gravedad-Electromagnetismo-Fuerza nuclear fuerte-Fuerza nuclear débil,0,Es una fuerza universal.
+32,Ciencia,Muy difícil,¿Cuál es el nombre del científico que desarrolló la teoría de la relatividad?,Albert Einstein-Isaac Newton-Nikola Tesla-Stephen Hawking,0,Es conocido por su fórmula E=mc^2.
