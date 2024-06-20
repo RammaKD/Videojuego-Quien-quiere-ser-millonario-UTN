@@ -102,7 +102,9 @@ def cargar_paths(archivo_data):
         for path in diccionario_paths:
             archivo_preguntas = diccionario_paths[path]["path_preguntas"]
             archivo_premios = diccionario_paths[path]["path_premios"]
-        lista_paths = [archivo_preguntas, archivo_premios]
+            archivo_fondo_menu = diccionario_paths[path]["path_fondo_menu"]
+            archivo_logo = diccionario_paths[path]["path_logo"]
+        lista_paths = [archivo_preguntas, archivo_premios, archivo_fondo_menu, archivo_logo]
         
     return lista_paths
         

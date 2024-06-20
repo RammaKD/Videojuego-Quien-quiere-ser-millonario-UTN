@@ -1,6 +1,9 @@
 {
     "paths" : {
         "path_preguntas" : "preguntas.csv",
-        "path_premios" : "premios.json"
+        "path_premios" : "premios.json",
+        "path_fondo_menu" : "fondo_menu_juego.jpg",
+        "path_logo" : "logo.png"
     }
+
 }
