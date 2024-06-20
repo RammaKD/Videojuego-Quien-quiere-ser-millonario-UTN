@@ -1,24 +1,26 @@
 from generales import *
 
-archivo_preguntas = "preguntas.csv"
-archivo_premios = "premios.json"
+lista_preguntas = []
+lista_preguntas_tocadas = []
+path_preguntas = cargar_paths("paths.json")[0]
+path_dinero = cargar_paths("paths.json")[1]
 
 piramide_premios =  [
-    [1, 100, False],
-    [2, 200, False],
-    [3, 300, False],
-    [4, 500, False],
-    [5, 1000, False],
-    [6, 2000, False],
-    [7, 4000, False],
-    [8, 8000, False],
-    [9, 16000, False],
-    [10, 32000, False],
-    [11, 64000, False],
-    [12, 125000, False],
-    [13, 250000, False],
-    [14, 500000, False],
-    [15, 1000000, False]
+    ["Muy fácil", 100],
+    ["Muy fácil", 200],
+    ["Fácil", 300],
+    ["Fácil", 500],
+    ["Fácil", 1000],
+    ["Medio", 2000],
+    ["Medio", 4000],
+    ["Medio", 8000],
+    ["Medio", 16000],
+    ["Medio", 32000],
+    ["Dificil", 64000],
+    ["Dificil", 125000],
+    ["Dificil", 250000],
+    ["Muy dificil", 500000],
+    ["Muy dificil", 1000000]
 ]
 
 
@@ -38,20 +40,32 @@ while seguir:
                 print("4. Ciencia")
                 print("5. Geografía")
                 print("6. Salir")
+                lista_categorias = ["Historia", "Deporte", "Entretenimiento", "Ciencia", "Geografía"]
                 opcion_categoria = seleccionar_opcion_menu("Elija una opción: ")
-
+                lista_preguntas.clear()
+                if opcion_categoria != 6:
+                    categoria_elegida = lista_categorias[opcion_categoria - 1]
+                    leer_preguntas_desde_csv(lista_preguntas, categoria_elegida, path_preguntas)
+                    billetera = cargar_puntuaciones_json(path_dinero)
+                    print(f"Billetera: ${billetera}")
+                
                 match opcion_categoria:
                     case 1:
-                        nivel = piramide_premios[0][0]
-                        
+                        ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero)
+                        break
                     case 2: 
-                        pass
+                        ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero)
+                        break
                     case 3:
-                        pass
+                        ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero)
+                        break
                     case 4:
-                        pass
+                        ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero)
+                        break
                     case 5:
-                        pass
+                        ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero)
+                        break
+                        
                     case 6:
                         if desea_continuar("Desea dejar de elegir? SI/NO: ", "Error. Ingrese SI/NO: "):
                             seguir_eligiendo = False

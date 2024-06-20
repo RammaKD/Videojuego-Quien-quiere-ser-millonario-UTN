@@ -2,31 +2,6 @@ import json
 import re
 import random
 
-lista_preguntas_historia = []
-lista_preguntas_ciencia = []
-lista_preguntas_geografia = []
-lista_preguntas_deporte = []
-lista_preguntas_entretenimiento = []
-lista_preguntas_tocadas = []
-
-piramide_premios =  [
-    ["Muy fácil", 100],
-    ["Muy fácil", 200],
-    ["Fácil", 300],
-    ["Fácil", 500],
-    ["Fácil", 1000],
-    ["Medio", 2000],
-    ["Medio", 4000],
-    ["Medio", 8000],
-    ["Medio", 16000],
-    ["Medio", 32000],
-    ["Dificil", 64000],
-    ["Dificil", 125000],
-    ["Dificil", 250000],
-    ["Muy dificil", 500000],
-    ["Muy dificil", 1000000]
-]
-
 def desea_continuar(mensaje:str, mensaje_error: str) -> bool:
     """Pregunta al usuario si quiere continuar con una determinada funcion o no.
 
@@ -88,8 +63,7 @@ def comprobar_len_lista(lista: list) -> bool:
     
     return lenght
 
-def leer_preguntas_desde_csv(lista_preguntas_historia, lista_preguntas_ciencia, lista_preguntas_geografia,
-                             lista_preguntas_deporte,  lista_preguntas_entretenimiento, archivo_csv):
+def leer_preguntas_desde_csv(lista_preguntas, categoria_elegida, archivo_csv):
     exito = True
     try:
         with open(archivo_csv, "r", encoding="utf8") as archivo:
@@ -98,18 +72,10 @@ def leer_preguntas_desde_csv(lista_preguntas_historia, lista_preguntas_ciencia, 
                 
                 if registro[0] != "id":
                     diccionario = crear_pregunta(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5], registro[6])
-                    match diccionario["categoria"]:
-                        case "Historia":
-                            lista_preguntas_historia.append(diccionario)
-                        case "Ciencia":
-                            lista_preguntas_ciencia.append(diccionario)
-                        case "Geografía":
-                            lista_preguntas_geografia.append(diccionario)
-                        case "Deporte":
-                            lista_preguntas_deporte.append(diccionario)
-                        case "Entretenimiento":
-                            lista_preguntas_entretenimiento.append(diccionario)
-    except:
+                    if diccionario["categoria"] == categoria_elegida:
+                        lista_preguntas.append(diccionario)
+    except Exception as e:
+        print(f"Se ha producido una excepcio {e}")
         exito = False
 
     return exito
@@ -252,81 +218,75 @@ def llamada(pregunta_tocada):
     print(f"-{palabra_clave}-")
     return palabra_clave
 
-bandera_50_50 = True
-bandera_publico = True
-bandera_llamada = True
-m = 0
-n = -1
-path_csv = cargar_paths("paths.json")[0]
-path_json = cargar_paths("paths.json")[1]
-billetera = cargar_puntuaciones_json(path_json)
-dinero_acumulado = 0
-leer_preguntas_desde_csv(lista_preguntas_historia, lista_preguntas_ciencia, lista_preguntas_geografia,
-                         lista_preguntas_deporte,  lista_preguntas_entretenimiento, path_csv)
-
-print(f"Billetera: ${billetera}")
-
-while True:
-    nivel = piramide_premios[m][0]
-    id_pregunta = elegir_pregunta_random(nivel, lista_preguntas_tocadas)
-    pregunta_tocada = mostrar_pregunta(lista_preguntas_historia, id_pregunta)
-    respuestas = pregunta_tocada["respuestas"].split("-")
-    respuesta_correcta = pregunta_tocada["respuesta_correcta"]
+def ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, billetera, path_dinero):
+    bandera_50_50 = True
+    bandera_publico = True
+    bandera_llamada = True
+    m = 0
+    n = -1
+    dinero_acumulado = 0
     
-    seguir_comodines = True
-    while seguir_comodines:
-        print("1. 50-50%")
-        print("2. Público")
-        print("3. Amigo")
-        print("4. Salir")
-        comodin = seleccionar_opcion_menu("Selecciones una opción: ")
+    while True:
+        nivel = piramide_premios[m][0]
+        id_pregunta = elegir_pregunta_random(nivel, lista_preguntas_tocadas)
+        pregunta_tocada = mostrar_pregunta(lista_preguntas, id_pregunta)
+        respuestas = pregunta_tocada["respuestas"].split("-")
+        respuesta_correcta = pregunta_tocada["respuesta_correcta"]
         
-        match comodin:
-            case 1:
-                if bandera_50_50:
-                    print(realizar_50_50(respuestas, respuesta_correcta))
-                    bandera_50_50 = False
-                else:
-                    print("No tiene mas el comodín 50-50%")
-            case 2:
-                if bandera_publico:
-                    print(ayuda_del_publico(respuestas, respuesta_correcta))
-                    bandera_publico = False
-                else:
-                    print("No tiene mas el comodín del público")
-            case 3:
-                if bandera_llamada:
-                    llamada(pregunta_tocada)
-                    bandera_llamada = False
-                else:
-                    print("No tiene mas el comodín de llamada")
-            case 4:
-                if desea_continuar("Seguro que no quiere uitilizar comodines? SI/NO: ", "Error. Ingrese SI/NO: "):
-                    seguir_comodines = False
-            case _:
-                print("Elija una opción válida.")
+        seguir_comodines = True
+        while seguir_comodines:
+            print("1. 50-50%")
+            print("2. Público")
+            print("3. Amigo")
+            print("4. Salir")
+            comodin = seleccionar_opcion_menu("Selecciones una opción: ")
+            
+            match comodin:
+                case 1:
+                    if bandera_50_50:
+                        print(realizar_50_50(respuestas, respuesta_correcta))
+                        bandera_50_50 = False
+                    else:
+                        print("No tiene mas el comodín 50-50%")
+                case 2:
+                    if bandera_publico:
+                        print(ayuda_del_publico(respuestas, respuesta_correcta))
+                        bandera_publico = False
+                    else:
+                        print("No tiene mas el comodín del público")
+                case 3:
+                    if bandera_llamada:
+                        llamada(pregunta_tocada)
+                        bandera_llamada = False
+                    else:
+                        print("No tiene mas el comodín de llamada")
+                case 4:
+                    if desea_continuar("Seguro que no quiere uitilizar comodines? SI/NO: ", "Error. Ingrese SI/NO: "):
+                        seguir_comodines = False
+                case _:
+                    print("Elija una opción válida.")
 
-    opcion_elegida = seleccionar_opcion_menu("Seleccione una opción, 1-2-3-4: ") - 1
-    if opcion_elegida == pregunta_tocada["respuesta_correcta"]:
-        m += 1
-        n += 1
-        dinero_acumulado += piramide_premios[n][1]
-        lista_preguntas_tocadas.append(pregunta_tocada["id"])
-        print("Respuesta correcta.")
-        print(f"Usted tiene acumulado: ${dinero_acumulado}")
-        if m == 2:
-            billetera += dinero_acumulado
-            actualizar_puntuaciones_json(path_json, billetera)
-            print("Felicidades, ha ganado el millón!")
+        opcion_elegida = seleccionar_opcion_menu("Seleccione una opción, 1-2-3-4: ") - 1
+        if opcion_elegida == pregunta_tocada["respuesta_correcta"]:
+            m += 1
+            n += 1
+            dinero_acumulado += piramide_premios[n][1]
+            lista_preguntas_tocadas.append(pregunta_tocada["id"])
+            print("Respuesta correcta.")
+            print(f"Usted tiene acumulado: ${dinero_acumulado}")
+            if m == 15:
+                billetera += dinero_acumulado
+                actualizar_puntuaciones_json(path_dinero, billetera)
+                print("Felicidades, ha ganado el millón!")
+                print(f"Billetera: ${billetera}")
+                break
+            elif not desea_continuar("Desea seguir jugando? SI/NO: ", "Error. Ingrese SI/NO: "):
+                billetera += dinero_acumulado
+                actualizar_puntuaciones_json(path_dinero, billetera)
+                print(f"Usted ha ganado: ${dinero_acumulado}")
+                print(f"Billetera: ${billetera}")
+                break
+        else:
+            print("Respuesta incorrecta, ha perdido.")
             print(f"Billetera: ${billetera}")
             break
-        elif not desea_continuar("Desea seguir jugando? SI/NO: ", "Error. Ingrese SI/NO: "):
-            billetera += dinero_acumulado
-            actualizar_puntuaciones_json(path_json, billetera)
-            print(f"Usted ha ganado: ${dinero_acumulado}")
-            print(f"Billetera: ${billetera}")
-            break
-    else:
-        print("Respuesta incorrecta, ha perdido.")
-        print(f"Billetera: ${billetera}")
-        break
