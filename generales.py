@@ -1,4 +1,3 @@
-import csv
 import json
 import re
 import random
@@ -8,7 +7,6 @@ lista_preguntas_ciencia = []
 lista_preguntas_geografia = []
 lista_preguntas_deporte = []
 lista_preguntas_entretenimiento = []
-
 lista_preguntas_tocadas = []
 
 piramide_premios =  [
@@ -121,6 +119,17 @@ def cargar_puntuaciones_json(archivo_json):
         puntuaciones = json.load(file)["premio"]
     return puntuaciones
 
+def actualizar_puntuaciones_json(archivo_json, puntuacion_actualizada):
+    exito = True
+    try:
+        with open(archivo_json, "w") as archivo:
+            nueva_puntuacion = {"premio" : puntuacion_actualizada}
+            json.dump(nueva_puntuacion, archivo, indent=2)
+    except:
+        exito = False
+    
+    return exito
+
 def cargar_paths(archivo_data):
     with open(archivo_data, "r") as file:
         diccionario_paths = json.load(file)
@@ -162,13 +171,31 @@ def elegir_pregunta_random(nivel: int, lista_preguntas_tocadas: list):
         match nivel:
             case "Muy fácil":
                 while True:
-                    id_random = random.randint(1,3)
+                    id_random = random.randint(1,4)
                     if id_random not in lista_preguntas_tocadas:
                         id_retorno = id_random
                         break
             case "Fácil":
                 while True:
-                    id_random = random.randint(4,5)
+                    id_random = random.randint(5,10)
+                    if id_random not in lista_preguntas_tocadas:
+                        id_retorno = id_random
+                        break
+            case "Medio":
+                while True:
+                    id_random = random.randint(11,21)
+                    if id_random not in lista_preguntas_tocadas:
+                        id_retorno = id_random
+                        break
+            case "Difícil":
+                while True:
+                    id_random = random.randint(22,27)
+                    if id_random not in lista_preguntas_tocadas:
+                        id_retorno = id_random
+                        break
+            case "Muy difícil":
+                while True:
+                    id_random = random.randint(28,32)
                     if id_random not in lista_preguntas_tocadas:
                         id_retorno = id_random
                         break
@@ -225,13 +252,19 @@ def llamada(pregunta_tocada):
     print(f"-{palabra_clave}-")
     return palabra_clave
 
-leer_preguntas_desde_csv(lista_preguntas_historia, lista_preguntas_ciencia, lista_preguntas_geografia,
-                         lista_preguntas_deporte,  lista_preguntas_entretenimiento, cargar_paths("paths.json")[0])
 bandera_50_50 = True
 bandera_publico = True
 bandera_llamada = True
 m = 0
+n = -1
+path_csv = cargar_paths("paths.json")[0]
+path_json = cargar_paths("paths.json")[1]
+billetera = cargar_puntuaciones_json(path_json)
+dinero_acumulado = 0
+leer_preguntas_desde_csv(lista_preguntas_historia, lista_preguntas_ciencia, lista_preguntas_geografia,
+                         lista_preguntas_deporte,  lista_preguntas_entretenimiento, path_csv)
 
+print(f"Billetera: ${billetera}")
 
 while True:
     nivel = piramide_premios[m][0]
@@ -239,7 +272,6 @@ while True:
     pregunta_tocada = mostrar_pregunta(lista_preguntas_historia, id_pregunta)
     respuestas = pregunta_tocada["respuestas"].split("-")
     respuesta_correcta = pregunta_tocada["respuesta_correcta"]
-    
     
     seguir_comodines = True
     while seguir_comodines:
@@ -277,8 +309,24 @@ while True:
     opcion_elegida = seleccionar_opcion_menu("Seleccione una opción, 1-2-3-4: ") - 1
     if opcion_elegida == pregunta_tocada["respuesta_correcta"]:
         m += 1
+        n += 1
+        dinero_acumulado += piramide_premios[n][1]
         lista_preguntas_tocadas.append(pregunta_tocada["id"])
         print("Respuesta correcta.")
+        print(f"Usted tiene acumulado: ${dinero_acumulado}")
+        if m == 2:
+            billetera += dinero_acumulado
+            actualizar_puntuaciones_json(path_json, billetera)
+            print("Felicidades, ha ganado el millón!")
+            print(f"Billetera: ${billetera}")
+            break
+        elif not desea_continuar("Desea seguir jugando? SI/NO: ", "Error. Ingrese SI/NO: "):
+            billetera += dinero_acumulado
+            actualizar_puntuaciones_json(path_json, billetera)
+            print(f"Usted ha ganado: ${dinero_acumulado}")
+            print(f"Billetera: ${billetera}")
+            break
     else:
         print("Respuesta incorrecta, ha perdido.")
+        print(f"Billetera: ${billetera}")
         break
