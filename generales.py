@@ -2,6 +2,7 @@ import json
 import re
 import random
 
+
 def desea_continuar(mensaje:str, mensaje_error: str) -> bool:
     """Pregunta al usuario si quiere continuar con una determinada funcion o no.
 
@@ -104,7 +105,10 @@ def cargar_paths(archivo_data):
             archivo_premios = diccionario_paths[path]["path_premios"]
             archivo_fondo_menu = diccionario_paths[path]["path_fondo_menu"]
             archivo_logo = diccionario_paths[path]["path_logo"]
-        lista_paths = [archivo_preguntas, archivo_premios, archivo_fondo_menu, archivo_logo]
+            archivo_fondo_juego = diccionario_paths[path]["path_fondo_juego"]
+            archivo_presentador = diccionario_paths[path]["path_presentador"]
+            archivo_cuadro_de_texto = diccionario_paths[path]["path_cuadro_texto"]
+        lista_paths = [archivo_preguntas, archivo_premios, archivo_fondo_menu, archivo_logo, archivo_fondo_juego, archivo_presentador, archivo_cuadro_de_texto]
         
     return lista_paths
         
@@ -292,3 +296,14 @@ def ejecutar_juego(lista_preguntas, lista_preguntas_tocadas, piramide_premios, b
             print("Respuesta incorrecta, ha perdido.")
             print(f"Billetera: ${billetera}")
             break
+
+
+
+
+
+
+
+
+
+
+

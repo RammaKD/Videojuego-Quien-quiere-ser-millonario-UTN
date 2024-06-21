@@ -3,7 +3,10 @@
         "path_preguntas" : "preguntas.csv",
         "path_premios" : "premios.json",
         "path_fondo_menu" : "fondo_menu_juego.jpg",
-        "path_logo" : "logo.png"
+        "path_logo" : "logo.png",
+        "path_fondo_juego" : "",
+        "path_presentador" : "",
+        "path_cuadro_texto" : "cuadro_de_texto.png"
     }
 
 }
