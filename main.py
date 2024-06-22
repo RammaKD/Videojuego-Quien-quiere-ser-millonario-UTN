@@ -3,7 +3,7 @@ from generales import *
 
 lista_preguntas = []
 lista_preguntas_tocadas = []
-paths = cargar_paths("paths.json")
+paths = cargar_paths("archivos\paths.json")
 path_preguntas = paths[0]
 path_dinero = paths[1]
 path_fondo_menu = paths[2]

@@ -1,6 +1,7 @@
 import json
 import re
 import random
+import os
 
 
 def desea_continuar(mensaje:str, mensaje_error: str) -> bool:
@@ -98,6 +99,7 @@ def actualizar_puntuaciones_json(archivo_json, puntuacion_actualizada):
     return exito
 
 def cargar_paths(archivo_data):
+    archivo_data = os.path.abspath(archivo_data)
     with open(archivo_data, "r") as file:
         diccionario_paths = json.load(file)
         for path in diccionario_paths:
