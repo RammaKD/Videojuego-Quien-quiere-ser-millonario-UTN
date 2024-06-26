@@ -118,10 +118,10 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     
     return lista_preguntas
 
-def cargar_posibles_preguntas(lista_preguntas, lista_preguntas_superadas, categoria_elegida, nivel):
+def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel):
     lista_preguntas_posibles = []
     for pregunta in lista_preguntas:
-        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == nivel and pregunta not in lista_preguntas_superadas:
+        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == nivel:
            lista_preguntas_posibles.append(pregunta)
 
     return lista_preguntas_posibles
@@ -134,7 +134,7 @@ def crear_lista_respuestas(pregunta):
     lista_respuestas = pregunta["Respuestas"].split("-")
     return lista_respuestas
     
-def cargar_pantalla_menu(ventana_principal, elementos):
+def cargar_pantalla(ventana_principal, elementos):
     exito = True
     try:
         for elemento in elementos:
@@ -146,13 +146,19 @@ def cargar_pantalla_menu(ventana_principal, elementos):
     
     return exito
 
+def crear_texto_renderizado(texto, fuente, color):
+    texto_renderizado = fuente.render(texto, True, color)
+    return texto_renderizado
 
+def crear_fondo_texto(rect_texto, color_fondo):
+    fondo_surface = pygame.Surface((rect_texto.width, rect_texto.height))
+    fondo_surface.fill(color_fondo)
+    return fondo_surface
 
-
-
-
-
-
+def crear_rect_texto(texto_renderizado, posicion):
+    rect_texto = texto_renderizado.get_rect()
+    rect_texto.topleft = posicion
+    return rect_texto
 
 
 
