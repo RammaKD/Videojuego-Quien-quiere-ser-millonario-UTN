@@ -118,10 +118,10 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     
     return lista_preguntas
 
-def cargar_posibles_preguntas(lista_preguntas, lista_preguntas_superadas, categoria_elegida, nivel):
+def cargar_posibles_preguntas(lista_preguntas, lista_preguntas_superadas, nivel):
     lista_preguntas_posibles = []
     for pregunta in lista_preguntas:
-        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == nivel and pregunta not in lista_preguntas_superadas:
+        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == nivel:
            lista_preguntas_posibles.append(pregunta)
 
     return lista_preguntas_posibles
