@@ -160,12 +160,20 @@ def crear_rect_texto(texto_renderizado, posicion):
     rect_texto.topleft = posicion
     return rect_texto
 
-
-
-
-
-
-
+def dibujar_piramide_premios(ventana, niveles_premios, ANCHO_VENTANA, color_fuente, color_fondo):
+    fuente_premios = pygame.font.SysFont("sinsum", 50)
+    x_base = ANCHO_VENTANA - 200 
+    y_base = 30
+    espacio_entre_premios = 40
+    
+    for i in range(len(niveles_premios)):
+        premio = niveles_premios[i][1]
+        texto_premio = crear_texto_renderizado(premio, fuente_premios, color_fuente)
+        rect_texto_premio = texto_premio.get_rect(left=x_base, top=y_base)
+        fondo_premio = crear_fondo_texto(rect_texto_premio, color_fondo)
+        ventana.blit(fondo_premio, rect_texto_premio)
+        ventana.blit(texto_premio, rect_texto_premio.topleft)
+        y_base += espacio_entre_premios
 
 
 
