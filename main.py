@@ -60,25 +60,46 @@ fuente = pygame.font.SysFont("sinsum", 70)
 fuente_juego = pygame.font.SysFont("sinsum", 35)
 fuente_cronometro = pygame.font.SysFont("sinsum", 75)
 
-# Textos
-texto_play = crear_texto_renderizado("JUGAR", fuente, BLANCO)
-texto_salir = crear_texto_renderizado("SALIR", fuente, BLANCO)
-texto_elegir_categoria = crear_texto_renderizado("Elija la categoría", fuente, BLANCO)
-texto_historia = crear_texto_renderizado("HISTORIA", fuente, BLANCO)
-texto_deporte = crear_texto_renderizado("DEPORTE", fuente, BLANCO)
-texto_ciencia = crear_texto_renderizado("CIENCIA", fuente, BLANCO)
-texto_entretenimiento = crear_texto_renderizado("ENTRETENIMIENTO", fuente, BLANCO)
-texto_geografia = crear_texto_renderizado("GEOGRAFIA", fuente, BLANCO)
+# # Textos
+# texto_play = crear_texto_renderizado("JUGAR", fuente, BLANCO)
+# texto_salir = crear_texto_renderizado("SALIR", fuente, BLANCO)
+# texto_elegir_categoria = crear_texto_renderizado("Elija la categoría", fuente, BLANCO)
+# texto_historia = crear_texto_renderizado("HISTORIA", fuente, BLANCO)
+# texto_deporte = crear_texto_renderizado("DEPORTE", fuente, BLANCO)
+# texto_ciencia = crear_texto_renderizado("CIENCIA", fuente, BLANCO)
+# texto_entretenimiento = crear_texto_renderizado("ENTRETENIMIENTO", fuente, BLANCO)
+# texto_geografia = crear_texto_renderizado("GEOGRAFIA", fuente, BLANCO)
 
-# Rectángulos de los textos
-rect_texto_play = crear_rect_texto(texto_play, (380, 515))
-rect_texto_salir = crear_rect_texto(texto_salir, (750, 515))
-rect_texto_categoria = crear_rect_texto(texto_elegir_categoria, (450, 365))
-rect_texto_historia = crear_rect_texto(texto_historia, (250, 500))
-rect_texto_deporte = crear_rect_texto(texto_deporte, (527, 500))
-rect_texto_ciencia = crear_rect_texto(texto_ciencia, (800, 500))
-rect_texto_entretenimiento = crear_rect_texto(texto_entretenimiento, (200, 600))
-rect_texto_geografia = crear_rect_texto(texto_geografia, (750, 600))
+listas_textos_menu = ["JUGAR", "Salir"]
+listas_textos_categorias = ["Elija la categoria", "HISTORIA","DEPORTE" ,"CIENCIA" , "ENTRETENIMIENTO", "GEOGRAFÍA"]
+lista_pos_text_menu = [(380, 515),(750, 515)]
+lista_pos_text_categorias = [(450, 365),
+                             (250, 500),
+                             (527, 500),
+                             (800, 500),
+                             (200, 600),
+                             (750, 600)]
+lista_renders_menu = listar_renders(listas_textos_menu, fuente, BLANCO)
+lista_renders_categorias = lista_renders(listas_textos_categorias, fuente, BLANCO)
+lista_rects_menu = lista_rects_menu(lista_renders_menu, lista_pos_text_menu)
+
+lista_renders_categorias = listar_renders(listas_textos_categorias, fuente, BLANCO)
+lista_rects_categorias = listar_rects(lista_renders_categorias, lista_pos_text_categorias)
+print("Renders del menú:", lista_renders_menu)
+print("Rectángulos del menú:", lista_rects_menu)
+print("Renders de categorías:", lista_renders_categorias)
+print("Rectángulos de categorías:", lista_rects_categorias)
+
+
+# # Rectángulos de los textos
+# rect_texto_play = crear_rect_texto(texto_play, (380, 515))
+# rect_texto_salir = crear_rect_texto(texto_salir, (750, 515))
+# rect_texto_categoria = crear_rect_texto(texto_elegir_categoria, (450, 365))
+# rect_texto_historia = crear_rect_texto(texto_historia, (250, 500))
+# rect_texto_deporte = crear_rect_texto(texto_deporte, (527, 500))
+# rect_texto_ciencia = crear_rect_texto(texto_ciencia, (800, 500))
+# rect_texto_entretenimiento = crear_rect_texto(texto_entretenimiento, (200, 600))
+# rect_texto_geografia = crear_rect_texto(texto_geografia, (750, 600))
 
 # Fondos de los textos
 fondo_texto_play = crear_fondo_texto(rect_texto_play, VIOLETA)
@@ -150,15 +171,19 @@ while flag_run:
                     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Historia", "1")
                 elif rect_texto_deporte.collidepoint(evento.pos):
                     flag_pantalla_juego = True
+                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Deporte", "1")
                     print("Usted ha elegido Deporte.")
                 elif rect_texto_ciencia.collidepoint(evento.pos):
                     flag_pantalla_juego = True
+                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Ciencia", "1")
                     print("Usted ha elegido Ciencia.")
                 elif rect_texto_entretenimiento.collidepoint(evento.pos):
                     flag_pantalla_juego = True
+                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Entretenimiento", "1")
                     print("Usted ha elegido Entretenimiento.")
                 elif rect_texto_geografia.collidepoint(evento.pos):
                     flag_pantalla_juego = True
+                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Geografía", "1")
                     print("Usted ha elegido Geografía.")
                 if flag_pantalla_juego:
                     flag_pantalla_categorias = False
@@ -247,6 +272,7 @@ while flag_run:
 
         flag_pregunta_mostrada = True
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+        
 
     if flag_pantalla_juego and flag_respuesta_seleccionada:
         flag_pantalla_juego = False
@@ -256,14 +282,28 @@ while flag_run:
         contador_cronometro = 10
         texto_cronometro = str(contador_cronometro).zfill(2)
         pygame.time.set_timer(CRONOMETRO, 0)  
-
+    # Dentro del bucle principal de eventos y antes de pygame.display.update()
     if flag_pantalla_juego:
+        ventana_principal.fill(BLANCO)
+        cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+        dibujar_piramide_premios(ventana_principal, niveles_premios, ANCHO_VENTANA, BLANCO, VIOLETA)
         texto_cronometro_render = crear_texto_renderizado(texto_cronometro, fuente_cronometro, BLANCO)
         rect_texto_cronometro = crear_rect_texto(texto_cronometro_render, (25, 50))
         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-
+        
     pygame.display.update()
 
 pygame.quit()
+
+#     if flag_pantalla_juego:
+#         texto_cronometro_render = crear_texto_renderizado(texto_cronometro, fuente_cronometro, BLANCO)
+#         rect_texto_cronometro = crear_rect_texto(texto_cronometro_render, (25, 50))
+#         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
+#         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
+#         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
+
+#     pygame.display.update()
+
+# pygame.quit()mos

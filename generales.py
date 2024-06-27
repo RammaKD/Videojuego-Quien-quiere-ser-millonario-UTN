@@ -145,6 +145,12 @@ def cargar_pantalla(ventana_principal, elementos):
         exito = False
     
     return exito
+def listar_renders(lista_textos,fuente,color):
+    lista_renders = []
+    for textos in lista_textos:
+        texto_renderizado = crear_texto_renderizado(textos,fuente,color)
+        lista_renders.append(texto_renderizado)
+    return lista_renders
 
 def crear_texto_renderizado(texto, fuente, color):
     texto_renderizado = fuente.render(texto, True, color)
@@ -154,6 +160,15 @@ def crear_fondo_texto(rect_texto, color_fondo):
     fondo_surface = pygame.Surface((rect_texto.width, rect_texto.height))
     fondo_surface.fill(color_fondo)
     return fondo_surface
+
+def listar_rects(lista_elementos, lista_posiciones):
+    lista_rects = []
+    for i in range(len(lista_elementos)):
+        elemento = lista_elementos[i]
+        posicion = lista_posiciones[i]
+        rect_texto = crear_rect_texto(elemento, posicion)
+        lista_rects.append(rect_texto)
+    return lista_rects
 
 def crear_rect_texto(texto_renderizado, posicion):
     rect_texto = texto_renderizado.get_rect()
