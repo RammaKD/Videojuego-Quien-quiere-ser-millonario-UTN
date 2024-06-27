@@ -3,7 +3,7 @@ from generales import *
 
 lista_preguntas = []
 lista_categorias = ["Historia", "Deporte", "Ciencia", "Entretenimiento", "Geografía"]
-diccionario_paths = obtener_paths("archivos\\paths.json")
+diccionario_paths = obtener_paths("Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
 crear_diccionario_preguntas(lista_datos_csv, lista_preguntas)
 
@@ -100,7 +100,7 @@ flag_pantalla_categorias = False
 flag_pantalla_juego = False
 flag_boton_salir = True
 flag_boton_play = True
-
+flag_pregunta_mostrada = False
 
 while flag_run:
     for evento in pygame.event.get():
@@ -132,10 +132,24 @@ while flag_run:
                     flag_pantalla_juego = True
                     print("Usted ha elegido Geografía.")
         elif flag_pantalla_juego:
-            pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
-            lista_respuestas = crear_lista_respuestas(pregunta_cargada)
-            texto_pregunta = crear_texto_renderizado(pregunta_cargada["Pregunta"], fuente, VIOLETA)
-            rect_texto_pregunta = crear_rect_texto(texto_pregunta, 20)
+            if not flag_pregunta_mostrada:
+                    pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
+                    lista_respuestas = crear_lista_respuestas(pregunta_cargada)
+                    print(pregunta_cargada["Pregunta"])
+                    texto_pregunta = crear_texto_renderizado(pregunta_cargada["Pregunta"], fuente, BLANCO)
+                    rect_texto_pregunta = crear_rect_texto(texto_pregunta, (190,450))
+                    fondo_texto_pregunta = crear_fondo_texto(rect_texto_pregunta, VIOLETA)
+                    lista_elementos_pantalla_jugando = [
+                        (fondo_menu, (0, 0)),
+                        (fondo_texto_pregunta, (rect_texto_pregunta)),
+                        (texto_pregunta, rect_texto_pregunta.topleft)
+                    ]
+                    flag_pantalla_categorias = False
+                    cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+                    flag_pregunta_mostrada = True
+            else:
+                
+                print("Se hizo clic en el fondo de la pantalla de juego.")
 
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_menu)

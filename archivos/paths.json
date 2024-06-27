@@ -1,10 +1,10 @@
 {
     "paths" : {
-        "path_preguntas" : "archivos\\preguntas.csv",
-        "path_billetera" : "archivos\\billetera.json",
-        "path_fondo_menu" : "imgs\\fondo_menu_juego.jpg",
-        "path_logo" : "imgs\\logo.png",
-        "path_presentador" : "imgs\\messi.png"
+        "path_preguntas" : "Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\archivos\\preguntas.csv",
+        "path_billetera" : "Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\archivos\\billetera.json",
+        "path_fondo_menu" : "Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\imgs\\fondo_menu_juego.jpg",
+        "path_logo" : "Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\imgs\\logo.png",
+        "path_presentador" : "Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\imgs\\messi.png"
         
     }
 
