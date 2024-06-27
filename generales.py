@@ -145,12 +145,6 @@ def cargar_pantalla(ventana_principal, elementos):
         exito = False
     
     return exito
-def listar_renders(lista_textos,fuente,color):
-    lista_renders = []
-    for textos in lista_textos:
-        texto_renderizado = crear_texto_renderizado(textos,fuente,color)
-        lista_renders.append(texto_renderizado)
-    return lista_renders
 
 def crear_texto_renderizado(texto, fuente, color):
     texto_renderizado = fuente.render(texto, True, color)
@@ -160,15 +154,6 @@ def crear_fondo_texto(rect_texto, color_fondo):
     fondo_surface = pygame.Surface((rect_texto.width, rect_texto.height))
     fondo_surface.fill(color_fondo)
     return fondo_surface
-
-def listar_rects(lista_elementos, lista_posiciones):
-    lista_rects = []
-    for i in range(len(lista_elementos)):
-        elemento = lista_elementos[i]
-        posicion = lista_posiciones[i]
-        rect_texto = crear_rect_texto(elemento, posicion)
-        lista_rects.append(rect_texto)
-    return lista_rects
 
 def crear_rect_texto(texto_renderizado, posicion):
     rect_texto = texto_renderizado.get_rect()
@@ -190,63 +175,57 @@ def dibujar_piramide_premios(ventana, niveles_premios, ANCHO_VENTANA, color_fuen
         ventana.blit(texto_premio, rect_texto_premio.topleft)
         y_base += espacio_entre_premios
 
+def listar_rects(lista_elementos, lista_posiciones):
+    lista_rects = []
+    for i in range(len(lista_elementos)):
+        elemento = lista_elementos[i]
+        posicion = lista_posiciones[i]
+        rect_texto = crear_rect_texto(elemento, posicion)
+        lista_rects.append(rect_texto)
+    return lista_rects
+
+def listar_renders(lista_textos,fuente,color):
+    lista_renders = []
+    for textos in lista_textos:
+        texto_renderizado = crear_texto_renderizado(textos,fuente,color)
+        lista_renders.append(texto_renderizado)
+    return lista_renders
+
+def listar_fondos(lista_rects, color_fondo):
+    lista_fondos = []
+    for rect in lista_rects:
+        fondo_texto = crear_fondo_texto(rect, color_fondo)
+        lista_fondos.append(fondo_texto)
+    return lista_fondos
+
+def generar_lista_elementos(lista_textos, lista_rects, lista_fondos):
+    lista_elementos = []
+    for i in range(len(lista_textos)):
+        posicion = lista_rects[i].topleft
+        elemento_1 = lista_fondos[i],(lista_rects[i])
+        elemento_2 = lista_textos[i],posicion
+        lista_elementos.append(elemento_1)
+        lista_elementos.append(elemento_2)
+        
+
+    return lista_elementos
 
 
 
 
+def dividir_pregunta(pregunta, limite=75):
+    if len(pregunta) <= limite:
+        return [pregunta]
 
+    corte = limite
+    for i in range(limite, 0, -1):
+        if pregunta[i] == ' ':
+            corte = i
+            break
+    primera_parte = pregunta[:corte].rstrip()
+    segunda_parte = pregunta[corte:].lstrip()
 
-
-
-
-
-
-
-#REVEERLAS#####################################################################
-def activar__50_50(respuestas: list, respuesta_correcta: int):
-    respuestas_incorrectas = []
-    
-    for respuesta in respuestas:
-        indice = respuestas.index(respuesta)
-        if indice != respuesta_correcta:
-            respuestas_incorrectas.append(respuesta)
-    
-    respuesta_incorrecta_mantenida = random.choice(respuestas_incorrectas)
-    respuestas_finales = [respuestas[respuesta_correcta], respuesta_incorrecta_mantenida]
-    
-    
-    return respuestas_finales
-
-def activar_ayuda_del_publico(respuestas: list, indice_correcto: int):
-    num_respuestas = len(respuestas)
-    
-    # Probabilidad base para la respuesta correcta (50% a 70%)
-    prob_correcta = random.uniform(50, 70)
-    
-    # Probabilidad restante para distribuir entre las respuestas incorrectas
-    prob_restante = 100 - prob_correcta
-    
-    # Lista para almacenar las probabilidades de las respuestas incorrectas
-    prob_incorrectas = [0] * num_respuestas
-    
-    # Ajustar la probabilidad de la respuesta correcta
-    prob_incorrectas[indice_correcto] = prob_correcta
-    
-    # Calcular el espacio restante para las respuestas incorrectas
-    espacio_restante = prob_restante
-    
-    # Distribuir proporcionalmente el espacio restante entre las respuestas incorrectas
-    for i in range(num_respuestas):
-        if i != indice_correcto:
-            prob_incorrecta = random.uniform(0, espacio_restante)
-            prob_incorrectas[i] = prob_incorrecta
-            espacio_restante -= prob_incorrecta
-    
-    # Ajustar cualquier diferencia debido a redondeos
-    prob_incorrectas[indice_correcto] += espacio_restante
-    
-    return prob_incorrectas
-
+    return [primera_parte, segunda_parte]
 
 
 

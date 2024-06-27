@@ -25,7 +25,6 @@ niveles_premios = [
     [15, "$1000000"],
 ]
 
-
 # Inicializa Pygame
 pygame.init()
 
@@ -41,6 +40,7 @@ VIOLETA = (67, 0, 103)
 # Dimensiones de la ventana
 ANCHO_VENTANA = 1280
 ALTO_VENTANA = 720
+POS_INICIAL = (0,0)
 DIMENSIONES_VENTANA = (ANCHO_VENTANA, ALTO_VENTANA)
 DIMENSIONES_BOTON = (280, 70)
 
@@ -60,83 +60,37 @@ fuente = pygame.font.SysFont("sinsum", 70)
 fuente_juego = pygame.font.SysFont("sinsum", 35)
 fuente_cronometro = pygame.font.SysFont("sinsum", 75)
 
-# # Textos
-# texto_play = crear_texto_renderizado("JUGAR", fuente, BLANCO)
-# texto_salir = crear_texto_renderizado("SALIR", fuente, BLANCO)
-# texto_elegir_categoria = crear_texto_renderizado("Elija la categoría", fuente, BLANCO)
-# texto_historia = crear_texto_renderizado("HISTORIA", fuente, BLANCO)
-# texto_deporte = crear_texto_renderizado("DEPORTE", fuente, BLANCO)
-# texto_ciencia = crear_texto_renderizado("CIENCIA", fuente, BLANCO)
-# texto_entretenimiento = crear_texto_renderizado("ENTRETENIMIENTO", fuente, BLANCO)
-# texto_geografia = crear_texto_renderizado("GEOGRAFIA", fuente, BLANCO)
-
-listas_textos_menu = ["JUGAR", "Salir"]
-listas_textos_categorias = ["Elija la categoria", "HISTORIA","DEPORTE" ,"CIENCIA" , "ENTRETENIMIENTO", "GEOGRAFÍA"]
-lista_pos_text_menu = [(380, 515),(750, 515)]
-lista_pos_text_categorias = [(450, 365),
+lista_elementos_menu_principal_inicial = []
+lista_elementos_menu_categorias_inicial = []
+lista_textos_menu = ["JUGAR", "SALIR"]
+lista_textos_categorias = ["Elija la categoria", "HISTORIA", "DEPORTE" ,"CIENCIA" , "ENTRETENIMIENTO", "GEOGRAFÍA"]
+lista_pos_texto_menu = [(380, 515),(750, 515)]
+lista_pos_texto_categorias = [(450, 365),
                              (250, 500),
                              (527, 500),
                              (800, 500),
                              (200, 600),
                              (750, 600)]
-lista_renders_menu = listar_renders(listas_textos_menu, fuente, BLANCO)
-lista_renders_categorias = lista_renders(listas_textos_categorias, fuente, BLANCO)
-lista_rects_menu = lista_rects_menu(lista_renders_menu, lista_pos_text_menu)
 
-lista_renders_categorias = listar_renders(listas_textos_categorias, fuente, BLANCO)
-lista_rects_categorias = listar_rects(lista_renders_categorias, lista_pos_text_categorias)
-print("Renders del menú:", lista_renders_menu)
-print("Rectángulos del menú:", lista_rects_menu)
-print("Renders de categorías:", lista_renders_categorias)
-print("Rectángulos de categorías:", lista_rects_categorias)
+lista_imgs_menu_principal = [(fondo_menu, POS_INICIAL), (logo, (450,75))]
+lista_imgs_menu_categorias = [(fondo_menu, POS_INICIAL), (logo, (450,0))]
+lista_elementos_menu_principal_inicial += lista_imgs_menu_principal
+lista_elementos_menu_categorias_inicial += lista_imgs_menu_principal
 
+lista_renders_menu = listar_renders(lista_textos_menu, fuente, BLANCO)
+lista_renders_categorias = listar_renders(lista_textos_categorias, fuente, BLANCO)
 
-# # Rectángulos de los textos
-# rect_texto_play = crear_rect_texto(texto_play, (380, 515))
-# rect_texto_salir = crear_rect_texto(texto_salir, (750, 515))
-# rect_texto_categoria = crear_rect_texto(texto_elegir_categoria, (450, 365))
-# rect_texto_historia = crear_rect_texto(texto_historia, (250, 500))
-# rect_texto_deporte = crear_rect_texto(texto_deporte, (527, 500))
-# rect_texto_ciencia = crear_rect_texto(texto_ciencia, (800, 500))
-# rect_texto_entretenimiento = crear_rect_texto(texto_entretenimiento, (200, 600))
-# rect_texto_geografia = crear_rect_texto(texto_geografia, (750, 600))
+lista_rects_menu = listar_rects(lista_renders_menu, lista_pos_texto_menu)
+lista_rects_categorias = listar_rects(lista_renders_categorias, lista_pos_texto_categorias)
 
-# Fondos de los textos
-fondo_texto_play = crear_fondo_texto(rect_texto_play, VIOLETA)
-fondo_texto_salir = crear_fondo_texto(rect_texto_salir, VIOLETA)
-fondo_texto_categoria = crear_fondo_texto(rect_texto_categoria, VIOLETA)
-fondo_texto_historia = crear_fondo_texto(rect_texto_historia, VIOLETA)
-fondo_texto_deporte = crear_fondo_texto(rect_texto_deporte, VIOLETA)
-fondo_texto_ciencia = crear_fondo_texto(rect_texto_ciencia, VIOLETA)
-fondo_texto_entretenimiento = crear_fondo_texto(rect_texto_entretenimiento, VIOLETA)
-fondo_texto_geografia = crear_fondo_texto(rect_texto_geografia, VIOLETA)
+lista_fondos_menu = listar_fondos(lista_rects_menu, VIOLETA)
+lista_fondos_categorias = listar_fondos(lista_rects_categorias, VIOLETA)
 
-# Listas de elementos de las pantallas
-lista_elementos_pantalla_menu = [
-    (fondo_menu, (0, 0)),
-    (logo, (450, 75)),
-    (fondo_texto_play, (rect_texto_play)),
-    (fondo_texto_salir, (rect_texto_salir)),
-    (texto_play, rect_texto_play.topleft),
-    (texto_salir, rect_texto_salir.topleft),
-]
+lista_elementos_menu_interactivos = generar_lista_elementos(lista_renders_menu, lista_rects_menu, lista_fondos_menu)
+lista_elementos_menu_categorias_interactivos = generar_lista_elementos(lista_renders_categorias, lista_rects_categorias, lista_fondos_categorias)
 
-lista_elementos_pantalla_categorias = [
-    (fondo_menu, (0, 0)),
-    (logo, (450, 0)),
-    (fondo_texto_categoria, (rect_texto_categoria)),
-    (fondo_texto_historia, (rect_texto_historia)),
-    (fondo_texto_deporte, (rect_texto_deporte)),
-    (fondo_texto_ciencia, (rect_texto_ciencia)),
-    (fondo_texto_entretenimiento, (rect_texto_entretenimiento)),
-    (fondo_texto_geografia, (rect_texto_geografia)),
-    (texto_elegir_categoria, rect_texto_categoria.topleft),
-    (texto_historia, rect_texto_historia.topleft),
-    (texto_deporte, rect_texto_deporte.topleft),
-    (texto_ciencia, rect_texto_ciencia.topleft),
-    (texto_entretenimiento, rect_texto_entretenimiento.topleft),
-    (texto_geografia, rect_texto_geografia.topleft)
-]
+lista_elementos_menu = lista_elementos_menu_principal_inicial + lista_elementos_menu_interactivos
+lista_elementos_menu_categorias = lista_elementos_menu_categorias_inicial + lista_elementos_menu_categorias_interactivos
 
 
 contador_cronometro = 10
@@ -158,30 +112,30 @@ while flag_run:
             flag_run = False
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if flag_pantalla_principal:
-                if rect_texto_play.collidepoint(evento.pos) and flag_boton_play:
+                if lista_rects_menu[0].collidepoint(evento.pos) and flag_boton_play:
                     flag_pantalla_principal = False
                     flag_boton_salir = False
                     flag_pantalla_categorias = True
-                    cargar_pantalla(ventana_principal, lista_elementos_pantalla_categorias)
-                elif rect_texto_salir.collidepoint(evento.pos) and flag_boton_salir:
+                    cargar_pantalla(ventana_principal, lista_elementos_menu_categorias)
+                elif lista_rects_menu[1].collidepoint(evento.pos) and flag_boton_salir:
                     flag_run = False
             elif flag_pantalla_categorias:
-                if rect_texto_historia.collidepoint(evento.pos):
+                if lista_rects_categorias[1].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Historia", "1")
-                elif rect_texto_deporte.collidepoint(evento.pos):
+                elif lista_rects_categorias[2].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Deporte", "1")
+                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Deportes", "1")
                     print("Usted ha elegido Deporte.")
-                elif rect_texto_ciencia.collidepoint(evento.pos):
+                elif lista_rects_categorias[3].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Ciencia", "1")
                     print("Usted ha elegido Ciencia.")
-                elif rect_texto_entretenimiento.collidepoint(evento.pos):
+                elif lista_rects_categorias[4].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Entretenimiento", "1")
                     print("Usted ha elegido Entretenimiento.")
-                elif rect_texto_geografia.collidepoint(evento.pos):
+                elif lista_rects_categorias[5].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Geografía", "1")
                     print("Usted ha elegido Geografía.")
@@ -214,11 +168,13 @@ while flag_run:
                 flag_respuesta_seleccionada = True
 
     if flag_pantalla_principal:
-        cargar_pantalla(ventana_principal, lista_elementos_pantalla_menu)
+        cargar_pantalla(ventana_principal, lista_elementos_menu)
     
     if flag_pantalla_juego and not flag_pregunta_mostrada:
         pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
-        texto_pregunta = crear_texto_renderizado(pregunta_cargada["Pregunta"], fuente_juego, BLANCO)
+        pregunta = dividir_pregunta(pregunta_cargada["Pregunta"])
+        
+        texto_pregunta = crear_texto_renderizado(pregunta[0], fuente_juego, BLANCO)
         rect_texto_pregunta = crear_rect_texto(texto_pregunta, (25, 450))
         fondo_texto_pregunta = crear_fondo_texto(rect_texto_pregunta, VIOLETA)
 
@@ -255,7 +211,7 @@ while flag_run:
 
         lista_elementos_pantalla_jugando = [
             (fondo_menu, (0, 0)),
-            (presentador, (600, 250)),
+            (presentador, (650, 250)),
             (fondo_texto_pregunta, (rect_texto_pregunta)),
             (fondo_texto_respuesta_a, (rect_respuesta_a)),
             (fondo_texto_respuesta_b, (rect_respuesta_b)),
@@ -282,7 +238,7 @@ while flag_run:
         contador_cronometro = 10
         texto_cronometro = str(contador_cronometro).zfill(2)
         pygame.time.set_timer(CRONOMETRO, 0)  
-    # Dentro del bucle principal de eventos y antes de pygame.display.update()
+    
     if flag_pantalla_juego:
         ventana_principal.fill(BLANCO)
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
@@ -297,13 +253,3 @@ while flag_run:
 
 pygame.quit()
 
-#     if flag_pantalla_juego:
-#         texto_cronometro_render = crear_texto_renderizado(texto_cronometro, fuente_cronometro, BLANCO)
-#         rect_texto_cronometro = crear_rect_texto(texto_cronometro_render, (25, 50))
-#         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
-#         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
-#         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-
-#     pygame.display.update()
-
-# pygame.quit()mos
