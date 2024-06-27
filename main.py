@@ -3,7 +3,7 @@ from generales import *
 
 lista_preguntas = []
 lista_categorias = ["Historia", "Deporte", "Ciencia", "Entretenimiento", "Geografía"]
-diccionario_paths = obtener_paths("Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela\\archivos\\paths.json")
+diccionario_paths = obtener_paths("archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
 crear_diccionario_preguntas(lista_datos_csv, lista_preguntas)
 
@@ -29,11 +29,14 @@ logo = pygame.image.load(diccionario_paths["path_logo"])
 logo = pygame.transform.scale(logo, (400,350))
 fondo_menu = pygame.image.load(diccionario_paths["path_fondo_menu"])
 fondo_menu = pygame.transform.scale(fondo_menu, DIMENSIONES_VENTANA)
+presentador = pygame.image.load(diccionario_paths["path_presentador"])
+presentador = pygame.transform.scale(presentador, (375,500))
 pygame.display.set_caption("¿Quien quiere ser millonario?")
 pygame.display.set_icon(logo)
 
 #FUENTES 
-fuente = pygame.font.SysFont("sinsum", 75)
+fuente = pygame.font.SysFont("sinsum", 70)
+fuente_juego = pygame.font.SysFont("sinsum", 35)
 
 #TEXTOS
 texto_play = crear_texto_renderizado("JUGAR", fuente, BLANCO)
@@ -101,6 +104,7 @@ flag_pantalla_juego = False
 flag_boton_salir = True
 flag_boton_play = True
 flag_pregunta_mostrada = False
+flag_respuesta_seleccionada = False
 
 while flag_run:
     for evento in pygame.event.get():
@@ -133,23 +137,59 @@ while flag_run:
                     print("Usted ha elegido Geografía.")
         elif flag_pantalla_juego:
             if not flag_pregunta_mostrada:
-                    pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
-                    lista_respuestas = crear_lista_respuestas(pregunta_cargada)
-                    print(pregunta_cargada["Pregunta"])
-                    texto_pregunta = crear_texto_renderizado(pregunta_cargada["Pregunta"], fuente, BLANCO)
-                    rect_texto_pregunta = crear_rect_texto(texto_pregunta, (190,450))
-                    fondo_texto_pregunta = crear_fondo_texto(rect_texto_pregunta, VIOLETA)
-                    lista_elementos_pantalla_jugando = [
-                        (fondo_menu, (0, 0)),
-                        (fondo_texto_pregunta, (rect_texto_pregunta)),
-                        (texto_pregunta, rect_texto_pregunta.topleft)
-                    ]
-                    flag_pantalla_categorias = False
-                    cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
-                    flag_pregunta_mostrada = True
-            else:
+                pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
+                texto_pregunta = crear_texto_renderizado(pregunta_cargada["Pregunta"], fuente_juego, BLANCO)
+                rect_texto_pregunta = crear_rect_texto(texto_pregunta, (25,450))
+                fondo_texto_pregunta = crear_fondo_texto(rect_texto_pregunta, VIOLETA)
                 
-                print("Se hizo clic en el fondo de la pantalla de juego.")
+                lista_respuestas = crear_lista_respuestas(pregunta_cargada)
+                respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
+
+                respuesta_a = lista_respuestas[0]
+                respuesta_b = lista_respuestas[1]
+                respuesta_c = lista_respuestas[2]
+                respuesta_d = lista_respuestas[3]
+                
+                #region Texto respuestas
+                texto_respuesta_a = crear_texto_renderizado(respuesta_a, fuente_juego, BLANCO)
+                texto_respuesta_b = crear_texto_renderizado(respuesta_b, fuente_juego, BLANCO)
+                texto_respuesta_c = crear_texto_renderizado(respuesta_c, fuente_juego, BLANCO)
+                texto_respuesta_d = crear_texto_renderizado(respuesta_d, fuente_juego, BLANCO)
+                #endregion
+                
+                #region Rectángulos respuestas
+                rect_respuesta_a = crear_rect_texto(texto_respuesta_a, (25,550))
+                rect_respuesta_b = crear_rect_texto(texto_respuesta_b, (450,550))
+                rect_respuesta_c = crear_rect_texto(texto_respuesta_c, (25,650))
+                rect_respuesta_d = crear_rect_texto(texto_respuesta_d, (450,650))
+                #endregion
+                
+                #region Fondos respuestas
+                fondo_texto_respuesta_a = crear_fondo_texto(rect_respuesta_a, VIOLETA)
+                fondo_texto_respuesta_b = crear_fondo_texto(rect_respuesta_b, VIOLETA)
+                fondo_texto_respuesta_c = crear_fondo_texto(rect_respuesta_c, VIOLETA)
+                fondo_texto_respuesta_d = crear_fondo_texto(rect_respuesta_d, VIOLETA)
+                #endregion
+                
+                lista_elementos_pantalla_jugando = [
+                    (fondo_menu, (0, 0)),
+                    (presentador, (600,250)),
+                    (fondo_texto_pregunta, (rect_texto_pregunta)),
+                    (fondo_texto_respuesta_a, (rect_respuesta_a)),
+                    (fondo_texto_respuesta_b, (rect_respuesta_b)),
+                    (fondo_texto_respuesta_c, (rect_respuesta_c)),
+                    (fondo_texto_respuesta_d, (rect_respuesta_d)),
+                    (texto_pregunta, rect_texto_pregunta.topleft),
+                    (texto_respuesta_a, rect_respuesta_a.topleft),
+                    (texto_respuesta_b, rect_respuesta_b.topleft),
+                    (texto_respuesta_c, rect_respuesta_c.topleft),
+                    (texto_respuesta_d, rect_respuesta_d.topleft)
+                ]
+                
+                flag_pantalla_categorias = False
+                cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+                flag_pregunta_mostrada = True
+            
 
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_menu)
