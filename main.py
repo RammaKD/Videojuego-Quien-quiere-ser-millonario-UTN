@@ -92,10 +92,10 @@ lista_elementos_menu_categorias_interactivos = generar_lista_elementos(lista_ren
 lista_elementos_menu = lista_elementos_menu_principal_inicial + lista_elementos_menu_interactivos
 lista_elementos_menu_categorias = lista_elementos_menu_categorias_inicial + lista_elementos_menu_categorias_interactivos
 
-
 contador_cronometro = 10
 CRONOMETRO = pygame.USEREVENT + 1  
 pygame.time.set_timer(CRONOMETRO, 0)  
+
 
 flag_run = True
 flag_pantalla_principal = True
@@ -105,6 +105,9 @@ flag_boton_salir = True
 flag_boton_play = True
 flag_pregunta_mostrada = False
 flag_respuesta_seleccionada = False
+flag_respuesta_correcta = False
+contador_nivel = 1
+flag_cronometro_activo = True
 
 while flag_run:
     for evento in pygame.event.get():
@@ -122,23 +125,21 @@ while flag_run:
             elif flag_pantalla_categorias:
                 if lista_rects_categorias[1].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Historia", "1")
+                    categoria_elegida = "Historia"
                 elif lista_rects_categorias[2].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Deportes", "1")
-                    print("Usted ha elegido Deporte.")
+                    categoria_elegida = "Deportes"
                 elif lista_rects_categorias[3].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Ciencia", "1")
-                    print("Usted ha elegido Ciencia.")
+                    categoria_elegida = "Ciencia"
                 elif lista_rects_categorias[4].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Entretenimiento", "1")
-                    print("Usted ha elegido Entretenimiento.")
+                    categoria_elegida = "Entretenimiento"
                 elif lista_rects_categorias[5].collidepoint(evento.pos):
                     flag_pantalla_juego = True
-                    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, "Geografía", "1")
-                    print("Usted ha elegido Geografía.")
+                    categoria_elegida = "Geografía"
+                flag_cronometro_activo = True
+
                 if flag_pantalla_juego:
                     flag_pantalla_categorias = False
                     flag_pregunta_mostrada = False
@@ -146,98 +147,92 @@ while flag_run:
                     contador_cronometro = 10
                     texto_cronometro = str(contador_cronometro).zfill(2)
                     pygame.time.set_timer(CRONOMETRO, 1000)
+            
             elif flag_pantalla_juego:
-                if rect_respuesta_a.collidepoint(evento.pos):
-                    print("Respuesta A seleccionada")
-                    flag_respuesta_seleccionada = True
-                elif rect_respuesta_b.collidepoint(evento.pos):
-                    print("Respuesta B seleccionada")
-                    flag_respuesta_seleccionada = True
-                elif rect_respuesta_c.collidepoint(evento.pos):
-                    print("Respuesta C seleccionada")
-                    flag_respuesta_seleccionada = True
-                elif rect_respuesta_d.collidepoint(evento.pos):
-                    print("Respuesta D seleccionada")
+                respuesta_seleccionada = None
+
+                if lista_rects_jugando[2].collidepoint(evento.pos):
+                    respuesta_seleccionada = lista_respuestas[0]
+                elif lista_rects_jugando[3].collidepoint(evento.pos):
+                    respuesta_seleccionada = lista_respuestas[1]
+                elif lista_rects_jugando[4].collidepoint(evento.pos):
+                    respuesta_seleccionada = lista_respuestas[2]
+                elif lista_rects_jugando[5].collidepoint(evento.pos):
+                    respuesta_seleccionada = lista_respuestas[3]
+
+                if respuesta_seleccionada is not None:
+                    if respuesta_seleccionada == respuesta_correcta:
+                        print("Respuesta correcta")
+                        flag_respuesta_correcta = True
+                    else:
+                        print("Respuesta incorrecta")
+                        flag_respuesta_correcta = False
                     flag_respuesta_seleccionada = True
 
-        elif evento.type == CRONOMETRO:
+            
+        elif evento.type == CRONOMETRO and flag_cronometro_activo:
             contador_cronometro -= 1
             texto_cronometro = str(contador_cronometro).zfill(2)
             if contador_cronometro <= 0:
-                print("Se le acabó el tiempo")
+                print("Se le acabó el tiempo\n1")
                 flag_respuesta_seleccionada = True
+                flag_respuesta_correcta = False
 
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_elementos_menu)
     
-    if flag_pantalla_juego and not flag_pregunta_mostrada:
+    elif flag_pantalla_juego and not flag_pregunta_mostrada:
+        nivel = str(contador_nivel)
+        lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
         pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
         pregunta = dividir_pregunta(pregunta_cargada["Pregunta"])
-        
-        texto_pregunta = crear_texto_renderizado(pregunta[0], fuente_juego, BLANCO)
-        rect_texto_pregunta = crear_rect_texto(texto_pregunta, (25, 450))
-        fondo_texto_pregunta = crear_fondo_texto(rect_texto_pregunta, VIOLETA)
-
         lista_respuestas = crear_lista_respuestas(pregunta_cargada)
         respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
+        
+        if len(pregunta) == 1:
+            texto_pregunta_corte_1 = pregunta[0]
+            texto_pregunta_corte_2 = ""
+        else:
+            texto_pregunta_corte_1 = pregunta[0]
+            texto_pregunta_corte_2 = pregunta[1]
+        
+        respuesta_a = f"A: {lista_respuestas[0]}"
+        respuesta_b = f"B: {lista_respuestas[1]}"
+        respuesta_c = f"C: {lista_respuestas[2]}"
+        respuesta_d = f"D: {lista_respuestas[3]}"
 
-        respuesta_a = lista_respuestas[0]
-        respuesta_b = lista_respuestas[1]
-        respuesta_c = lista_respuestas[2]
-        respuesta_d = lista_respuestas[3]
+        lista_elementos_pantalla_jugando_inicial = []
+        lista_imgs_jugando = [(fondo_menu, POS_INICIAL), (presentador, (650,250))]
+        lista_textos_pantalla_jugando = [texto_pregunta_corte_1, texto_pregunta_corte_2, respuesta_a, respuesta_b, respuesta_c, respuesta_d, texto_cronometro]
+        lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (450, 550), (25, 650), (450, 650), (25, 50)]
+        lista_elementos_pantalla_jugando_inicial += lista_imgs_jugando
 
-        # Texto respuestas
-        texto_respuesta_a = crear_texto_renderizado(respuesta_a, fuente_juego, BLANCO)
-        texto_respuesta_b = crear_texto_renderizado(respuesta_b, fuente_juego, BLANCO)
-        texto_respuesta_c = crear_texto_renderizado(respuesta_c, fuente_juego, BLANCO)
-        texto_respuesta_d = crear_texto_renderizado(respuesta_d, fuente_juego, BLANCO)
+        lista_renders_jugando = listar_renders(lista_textos_pantalla_jugando, fuente_juego, BLANCO)
+        lista_rects_jugando = listar_rects(lista_renders_jugando, lista_pos_elementos_pantalla_jugando)
+        lista_fondos_jugando = listar_fondos(lista_rects_jugando, VIOLETA)
 
-        # Rectángulos respuestas
-        rect_respuesta_a = crear_rect_texto(texto_respuesta_a, (25, 550))
-        rect_respuesta_b = crear_rect_texto(texto_respuesta_b, (450, 550))
-        rect_respuesta_c = crear_rect_texto(texto_respuesta_c, (25, 650))
-        rect_respuesta_d = crear_rect_texto(texto_respuesta_d, (450, 650))
-
-        # Fondos respuestas
-        fondo_texto_respuesta_a = crear_fondo_texto(rect_respuesta_a, VIOLETA)
-        fondo_texto_respuesta_b = crear_fondo_texto(rect_respuesta_b, VIOLETA)
-        fondo_texto_respuesta_c = crear_fondo_texto(rect_respuesta_c, VIOLETA)
-        fondo_texto_respuesta_d = crear_fondo_texto(rect_respuesta_d, VIOLETA)
-
-        # Cronómetro
-        texto_cronometro_render = crear_texto_renderizado(texto_cronometro, fuente_cronometro, BLANCO)
-        rect_texto_cronometro = crear_rect_texto(texto_cronometro_render, (25, 50))
-        fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
-
-        lista_elementos_pantalla_jugando = [
-            (fondo_menu, (0, 0)),
-            (presentador, (650, 250)),
-            (fondo_texto_pregunta, (rect_texto_pregunta)),
-            (fondo_texto_respuesta_a, (rect_respuesta_a)),
-            (fondo_texto_respuesta_b, (rect_respuesta_b)),
-            (fondo_texto_respuesta_c, (rect_respuesta_c)),
-            (fondo_texto_respuesta_d, (rect_respuesta_d)),
-            (texto_pregunta, rect_texto_pregunta.topleft),
-            (texto_respuesta_a, rect_respuesta_a.topleft),
-            (texto_respuesta_b, rect_respuesta_b.topleft),
-            (texto_respuesta_c, rect_respuesta_c.topleft),
-            (texto_respuesta_d, rect_respuesta_d.topleft),
-            (fondo_texto_cronometro, rect_texto_cronometro.topleft),
-            (texto_cronometro_render, rect_texto_cronometro.topleft)
-        ]
+        lista_elementos_jugando_interactivos = generar_lista_elementos(lista_renders_jugando, lista_rects_jugando, lista_fondos_jugando)
+        lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando_inicial + lista_elementos_jugando_interactivos
 
         flag_pregunta_mostrada = True
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
-        
 
     if flag_pantalla_juego and flag_respuesta_seleccionada:
-        flag_pantalla_juego = False
-        flag_pregunta_mostrada = False
-        flag_respuesta_seleccionada = False
-        flag_pantalla_principal = True
-        contador_cronometro = 10
-        texto_cronometro = str(contador_cronometro).zfill(2)
-        pygame.time.set_timer(CRONOMETRO, 0)  
+        
+        if flag_respuesta_correcta:
+            contador_nivel += 1
+            flag_pregunta_mostrada = False
+            flag_respuesta_seleccionada = False
+            contador_cronometro = 10
+            texto_cronometro = str(contador_cronometro).zfill(2)
+            pygame.time.set_timer(CRONOMETRO, 1000)
+        elif not flag_respuesta_correcta:
+            flag_pantalla_juego = False
+            flag_pregunta_mostrada = False
+            flag_respuesta_seleccionada = False
+            flag_pantalla_principal = True
+            contador_nivel = 1
+            flag_cronometro_activo = False
     
     if flag_pantalla_juego:
         ventana_principal.fill(BLANCO)
@@ -252,4 +247,3 @@ while flag_run:
     pygame.display.update()
 
 pygame.quit()
-

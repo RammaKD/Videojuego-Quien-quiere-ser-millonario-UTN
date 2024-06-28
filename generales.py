@@ -1,3 +1,5 @@
+
+import random
 import json
 import random
 import pygame
@@ -224,6 +226,44 @@ def dividir_pregunta(pregunta, limite=75):
 
     return [primera_parte, segunda_parte]
 
+
+import random
+
+def generar_porcentajes(lista_respuestas, respuesta_correcta):
+    # Separar las respuestas en una lista
+    respuestas = lista_respuestas.split('-')
+    n = len(respuestas)
+    
+    # Inicializar una lista de porcentajes
+    porcentajes = [0] * n
+
+    # Generar porcentajes aleatorios para las respuestas incorrectas
+    suma_porcentajes = 0
+    porcentaje_correcta = 0
+    for i in range(n):
+        if respuestas[i] != respuesta_correcta:
+            porcentajes[i] = random.randint(0, 100)
+            suma_porcentajes += porcentajes[i]
+        else:
+            porcentaje_correcta = 100 + random.randint(0, 100 - suma_porcentajes)
+            porcentajes[i] = porcentaje_correcta
+            suma_porcentajes += porcentaje_correcta
+
+    # Ajustar los porcentajes para que sumen 100
+    diferencia = 100 - suma_porcentajes
+    for i in range(n):
+        if respuestas[i] == respuesta_correcta:
+            porcentajes[i] += diferencia
+            break
+
+    return porcentajes
+
+# Ejemplo de uso
+lista_respuestas = "Negro-Blanco-Gris-Marrón"
+respuesta_correcta = "Blanco"
+
+porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
+print(f"Porcentajes: {porcentajes}")
 
 
 

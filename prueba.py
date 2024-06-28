@@ -92,7 +92,7 @@ lista_elementos_menu_categorias_interactivos = generar_lista_elementos(lista_ren
 lista_elementos_menu = lista_elementos_menu_principal_inicial + lista_elementos_menu_interactivos
 lista_elementos_menu_categorias = lista_elementos_menu_categorias_inicial + lista_elementos_menu_categorias_interactivos
 
-contador_cronometro = 30
+contador_cronometro = 10
 CRONOMETRO = pygame.USEREVENT + 1  
 pygame.time.set_timer(CRONOMETRO, 0)  
 
@@ -107,6 +107,7 @@ flag_pregunta_mostrada = False
 flag_respuesta_seleccionada = False
 flag_respuesta_correcta = False
 contador_nivel = 1
+flag_cronometro_activo = True
 
 while flag_run:
     for evento in pygame.event.get():
@@ -137,16 +138,19 @@ while flag_run:
                 elif lista_rects_categorias[5].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Geografía"
-                
+                flag_cronometro_activo = True
+
                 if flag_pantalla_juego:
                     flag_pantalla_categorias = False
                     flag_pregunta_mostrada = False
                     flag_respuesta_seleccionada = False
-                    contador_cronometro = 30
+                    contador_cronometro = 10
                     texto_cronometro = str(contador_cronometro).zfill(2)
                     pygame.time.set_timer(CRONOMETRO, 1000)
             
             elif flag_pantalla_juego:
+                respuesta_seleccionada = None
+
                 if lista_rects_jugando[2].collidepoint(evento.pos):
                     respuesta_seleccionada = lista_respuestas[0]
                 elif lista_rects_jugando[3].collidepoint(evento.pos):
@@ -155,20 +159,22 @@ while flag_run:
                     respuesta_seleccionada = lista_respuestas[2]
                 elif lista_rects_jugando[5].collidepoint(evento.pos):
                     respuesta_seleccionada = lista_respuestas[3]
-                    
-                if respuesta_seleccionada == respuesta_correcta:
-                    print("Respuesta correcta")
-                    flag_respuesta_correcta = True
-                else:
-                    print("Respuesta incorrecta")
-                    flag_respuesta_correcta = False
-                flag_respuesta_seleccionada = True
 
-        elif evento.type == CRONOMETRO:
+                if respuesta_seleccionada is not None:
+                    if respuesta_seleccionada == respuesta_correcta:
+                        print("Respuesta correcta")
+                        flag_respuesta_correcta = True
+                    else:
+                        print("Respuesta incorrecta")
+                        flag_respuesta_correcta = False
+                    flag_respuesta_seleccionada = True
+
+            
+        elif evento.type == CRONOMETRO and flag_cronometro_activo:
             contador_cronometro -= 1
             texto_cronometro = str(contador_cronometro).zfill(2)
             if contador_cronometro <= 0:
-                print("Se le acabó el tiempo")
+                print("Se le acabó el tiempo\n1")
                 flag_respuesta_seleccionada = True
                 flag_respuesta_correcta = False
 
@@ -212,14 +218,21 @@ while flag_run:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
 
     if flag_pantalla_juego and flag_respuesta_seleccionada:
+        
         if flag_respuesta_correcta:
             contador_nivel += 1
             flag_pregunta_mostrada = False
             flag_respuesta_seleccionada = False
-            contador_cronometro = 30
+            contador_cronometro = 10
             texto_cronometro = str(contador_cronometro).zfill(2)
             pygame.time.set_timer(CRONOMETRO, 1000)
-
+        elif not flag_respuesta_correcta:
+            flag_pantalla_juego = False
+            flag_pregunta_mostrada = False
+            flag_respuesta_seleccionada = False
+            flag_pantalla_principal = True
+            contador_nivel = 1
+            flag_cronometro_activo = False
     
     if flag_pantalla_juego:
         ventana_principal.fill(BLANCO)
