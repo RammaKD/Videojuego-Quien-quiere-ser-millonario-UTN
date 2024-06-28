@@ -210,9 +210,6 @@ def generar_lista_elementos(lista_textos, lista_rects, lista_fondos):
 
     return lista_elementos
 
-
-
-
 def dividir_pregunta(pregunta, limite=75):
     if len(pregunta) <= limite:
         return [pregunta]
