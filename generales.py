@@ -129,7 +129,8 @@ def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel):
     return lista_preguntas_posibles
 
 def cargar_pregunta_aleatoriamente(lista_preguntas):
-    pregunta_aleatoria = random.choice(lista_preguntas)
+    indice_random = random.randint(0, len(lista_preguntas) - 1)
+    pregunta_aleatoria = lista_preguntas[indice_random]
     return pregunta_aleatoria
            
 def crear_lista_respuestas(pregunta):
@@ -226,44 +227,118 @@ def dividir_pregunta(pregunta, limite=75):
 
     return [primera_parte, segunda_parte]
 
-
-import random
-
 def generar_porcentajes(lista_respuestas, respuesta_correcta):
-    # Separar las respuestas en una lista
-    respuestas = lista_respuestas.split('-')
-    n = len(respuestas)
+    lista_porcentajes = []
+    porcentaje_maximo = 100
+    porcentaje_respuesta_correcta = random.randint(50, 100)
+    porcentaje_restante = porcentaje_maximo - porcentaje_respuesta_correcta
     
-    # Inicializar una lista de porcentajes
-    porcentajes = [0] * n
-
-    # Generar porcentajes aleatorios para las respuestas incorrectas
-    suma_porcentajes = 0
-    porcentaje_correcta = 0
-    for i in range(n):
-        if respuestas[i] != respuesta_correcta:
-            porcentajes[i] = random.randint(0, 100)
-            suma_porcentajes += porcentajes[i]
-        else:
-            porcentaje_correcta = 100 + random.randint(0, 100 - suma_porcentajes)
-            porcentajes[i] = porcentaje_correcta
-            suma_porcentajes += porcentaje_correcta
-
-    # Ajustar los porcentajes para que sumen 100
-    diferencia = 100 - suma_porcentajes
-    for i in range(n):
-        if respuestas[i] == respuesta_correcta:
-            porcentajes[i] += diferencia
+    for _ in lista_respuestas:
+        lista_porcentajes.append(0)
+    
+    for i in range(len(lista_respuestas)):
+        if lista_respuestas[i] == respuesta_correcta:
+            lista_porcentajes[i] = porcentaje_respuesta_correcta
             break
+    
+    respuestas_incorrectas = len(lista_respuestas) - 1
+    porcentaje_asignado = []
+    suma_asignados = 0
 
-    return porcentajes
+    if respuestas_incorrectas > 0:
+        for _ in range(respuestas_incorrectas):
+            asignacion = random.randint(0, porcentaje_restante)
+            porcentaje_asignado.append(asignacion)
+            suma_asignados += asignacion
 
-# Ejemplo de uso
-lista_respuestas = "Negro-Blanco-Gris-Marrón"
-respuesta_correcta = "Blanco"
+        # Ajustamos los valores de los porcentajes asignados
+        for i in range(respuestas_incorrectas):
+            porcentaje_asignado[i] = int(porcentaje_restante * porcentaje_asignado[i] / suma_asignados)
+        
+        # Aseguramos que la suma final sea 100 ajustando el último elemento
+        suma_porcentaje_asignado = 0
+        for valor in porcentaje_asignado:
+            suma_porcentaje_asignado += valor
+        
+        ultimo_indice = len(porcentaje_asignado) - 1
+        porcentaje_asignado[ultimo_indice] += porcentaje_restante - suma_porcentaje_asignado
 
-porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
-print(f"Porcentajes: {porcentajes}")
+        j = 0
+        for i in range(len(lista_respuestas)):
+            if lista_respuestas[i] != respuesta_correcta:
+                lista_porcentajes[i] = porcentaje_asignado[j]
+                j += 1
+
+    return lista_porcentajes
+
+def mostrar_tabla_porcentajes_en_ventana(porcentajes, respuestas, pantalla, fuente, color_texto, color_fondo):
+    x = 150
+    y = 150
+    ancho_celda = 300
+    alto_celda = 50
+    
+    texto_encabezado = fuente.render("Resp.", False, color_texto)
+    texto_porcentaje_encabezado = fuente.render("%", False, color_texto)
+    
+    pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
+    pantalla.blit(texto_encabezado, (x + 10, y + 10))
+    pantalla.blit(texto_porcentaje_encabezado, (x + 180, y + 10))
+    y += alto_celda 
+    
+    for i in range(len(respuestas)):
+        pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
+        texto_respuesta = fuente.render(respuestas[i], True, color_texto)
+        texto_porcentaje = fuente.render(f"{porcentajes[i]}%", True, color_texto)
+        pantalla.blit(texto_respuesta, (x + 10, y + 10))
+        pantalla.blit(texto_porcentaje, (x + 180, y + 10))  
+        y += alto_celda  
+
+def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_texto, texto, fuente):
+    texto_renderizado = crear_texto_renderizado(texto, fuente, color_texto)
+    margen = 10
+    ancho_texto = texto_renderizado.get_width() + margen * 2
+    alto_texto = texto_renderizado.get_height() + margen * 2
+    tamaño_elipse = (ancho_texto, alto_texto)
+    elipse_rect = pygame.Rect(posicion, tamaño_elipse)
+    
+    pygame.draw.ellipse(ventana_principal, color_elipse, elipse_rect)
+    texto_rect = texto_renderizado.get_rect(center=elipse_rect.center)
+    ventana_principal.blit(texto_renderizado, texto_rect)
+    
+    return elipse_rect
+
+def usar_comodin_50_50(lista_respuestas, respuesta_correcta):
+    respuestas_correctas = [respuesta_correcta]
+    respuestas_incorrectas = []
+
+    # Separar respuestas correctas de incorrectas
+    for resp in lista_respuestas:
+        if resp != respuesta_correcta:
+            respuestas_incorrectas.append(resp)
+
+    # Selección manual aleatoria de dos respuestas incorrectas
+    respuestas_eliminar = []
+    if len(respuestas_incorrectas) > 0:
+        indice_1 = random.randint(0, len(respuestas_incorrectas))
+        respuestas_eliminar.append(respuestas_incorrectas.pop(indice_1))
+
+        if len(respuestas_incorrectas) > 0:
+            indice_2 = random.randint(0, len(respuestas_incorrectas))
+            respuestas_eliminar.append(respuestas_incorrectas.pop(indice_2))
+
+    # Reconstruir lista_respuestas con respuestas correctas e incorrectas
+    lista_respuestas.clear()
+    lista_respuestas.extend(respuestas_correctas + respuestas_incorrectas)
+
+    return respuestas_eliminar
+
+
+lista_respuestas = ["A", "B", "C", "D"]
+respuesta_correcta = "C"
+
+respuestas_eliminadas = usar_comodin_50_50(lista_respuestas, respuesta_correcta)
+print("Respuestas eliminadas:", respuestas_eliminadas)
+print("Lista actual de respuestas:", lista_respuestas)
 
 
 

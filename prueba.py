@@ -188,6 +188,8 @@ while flag_run:
         pregunta = dividir_pregunta(pregunta_cargada["Pregunta"])
         lista_respuestas = crear_lista_respuestas(pregunta_cargada)
         respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
+        lista_porcentajes_preguntas = generar_porcentajes(lista_respuestas, respuesta_correcta)
+        lista_letras_preguntas = ["A", "B", "C", "D"]
         
         if len(pregunta) == 1:
             texto_pregunta_corte_1 = pregunta[0]
@@ -204,7 +206,7 @@ while flag_run:
         lista_elementos_pantalla_jugando_inicial = []
         lista_imgs_jugando = [(fondo_menu, POS_INICIAL), (presentador, (650,250))]
         lista_textos_pantalla_jugando = [texto_pregunta_corte_1, texto_pregunta_corte_2, respuesta_a, respuesta_b, respuesta_c, respuesta_d, texto_cronometro]
-        lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (450, 550), (25, 650), (450, 650), (25, 50)]
+        lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (550, 550), (25, 650), (550, 650), (25, 50)]
         lista_elementos_pantalla_jugando_inicial += lista_imgs_jugando
 
         lista_renders_jugando = listar_renders(lista_textos_pantalla_jugando, fuente_juego, BLANCO)
@@ -213,7 +215,7 @@ while flag_run:
 
         lista_elementos_jugando_interactivos = generar_lista_elementos(lista_renders_jugando, lista_rects_jugando, lista_fondos_jugando)
         lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando_inicial + lista_elementos_jugando_interactivos
-
+        
         flag_pregunta_mostrada = True
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
 
@@ -243,7 +245,12 @@ while flag_run:
         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-        
+        mostrar_tabla_porcentajes_en_ventana(lista_porcentajes_preguntas, lista_letras_preguntas, ventana_principal, fuente_juego, BLANCO, VIOLETA)
+        comodin_publico = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Público", fuente_juego)
+        comodin_50_50 = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, f"50%-50%", fuente_juego)
+        comodin_llamada = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Llamada", fuente_juego)
+
+
     pygame.display.update()
 
 pygame.quit()
