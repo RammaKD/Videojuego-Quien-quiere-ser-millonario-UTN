@@ -307,38 +307,42 @@ def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_text
     
     return elipse_rect
 
-def usar_comodin_50_50(lista_respuestas, respuesta_correcta):
-    respuestas_correctas = [respuesta_correcta]
+
+def usar_comodin_50_50(lista_textos, respuesta_correcta, lista_posiciones):
     respuestas_incorrectas = []
 
-    # Separar respuestas correctas de incorrectas
-    for resp in lista_respuestas:
-        if resp != respuesta_correcta:
-            respuestas_incorrectas.append(resp)
+    # Encontrar las respuestas incorrectas y guardar sus índices
+    for i in range(len(lista_textos)):
+        if lista_textos[i] != respuesta_correcta:
+            respuestas_incorrectas.append(i)
 
-    # Selección manual aleatoria de dos respuestas incorrectas
-    respuestas_eliminar = []
-    if len(respuestas_incorrectas) > 0:
-        indice_1 = random.randint(0, len(respuestas_incorrectas))
-        respuestas_eliminar.append(respuestas_incorrectas.pop(indice_1))
+    # Seleccionar dos respuestas incorrectas aleatoriamente si hay suficientes
+    if len(respuestas_incorrectas) >= 2:
+        # Seleccionar dos índices aleatorios diferentes
+        indice1 = random.randint(0, len(respuestas_incorrectas) - 1)
+        indice2 = random.randint(0, len(respuestas_incorrectas) - 1)
+        
+        while indice2 == indice1:  # Asegurar que los índices sean diferentes
+            indice2 = random.randint(0, len(respuestas_incorrectas) - 1)
+        
+        # Obtener los índices correspondientes en la lista original
+        indice_eliminar1 = respuestas_incorrectas[indice1]
+        indice_eliminar2 = respuestas_incorrectas[indice2]
+        
+        # Eliminar las respuestas incorrectas de lista_textos y lista_posiciones
+        lista_textos.pop(indice_eliminar1)
+        lista_posiciones.pop(indice_eliminar1)
+        
+        # Ajustar el segundo índice después de la primera eliminación
+        if indice_eliminar2 > indice_eliminar1:
+            indice_eliminar2 -= 1
+        lista_textos.pop(indice_eliminar2)
+        lista_posiciones.pop(indice_eliminar2)
 
-        if len(respuestas_incorrectas) > 0:
-            indice_2 = random.randint(0, len(respuestas_incorrectas))
-            respuestas_eliminar.append(respuestas_incorrectas.pop(indice_2))
-
-    # Reconstruir lista_respuestas con respuestas correctas e incorrectas
-    lista_respuestas.clear()
-    lista_respuestas.extend(respuestas_correctas + respuestas_incorrectas)
-
-    return respuestas_eliminar
+    return lista_textos, lista_posiciones
 
 
-lista_respuestas = ["A", "B", "C", "D"]
-respuesta_correcta = "C"
 
-respuestas_eliminadas = usar_comodin_50_50(lista_respuestas, respuesta_correcta)
-print("Respuestas eliminadas:", respuestas_eliminadas)
-print("Lista actual de respuestas:", lista_respuestas)
 
 
 

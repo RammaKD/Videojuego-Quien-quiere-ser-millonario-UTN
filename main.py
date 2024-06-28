@@ -108,11 +108,30 @@ flag_respuesta_seleccionada = False
 flag_respuesta_correcta = False
 contador_nivel = 1
 flag_cronometro_activo = True
-
+flag_comodin_usado = False
 while flag_run:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             flag_run = False
+        elif evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_c and flag_comodin_usado:
+                ventana_principal.fill(BLANCO)
+                
+                # Lógica para usar el comodín 50:50 y actualizar listas
+                lista_respuestas, lista_elementos_pantalla_jugando = usar_comodin_50_50(lista_respuestas, respuesta_correcta, lista_elementos_pantalla_jugando)
+                
+                # Mantener solo las dos primeras respuestas
+                lista_respuestas = lista_respuestas[:2]
+                
+                # Mantener solo los primeros 7 elementos de lista_elementos_pantalla_jugando
+                lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando[:7]
+                
+                # Recargar la pantalla con las listas actualizadas
+                cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+                
+                pygame.display.update() 
+
+
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if flag_pantalla_principal:
                 if lista_rects_menu[0].collidepoint(evento.pos) and flag_boton_play:
@@ -243,7 +262,8 @@ while flag_run:
         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-        
+        flag_comodin_usado = True
+
     pygame.display.update()
 
 pygame.quit()

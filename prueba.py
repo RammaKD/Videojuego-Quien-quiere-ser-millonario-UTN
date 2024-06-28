@@ -108,6 +108,7 @@ flag_respuesta_seleccionada = False
 flag_respuesta_correcta = False
 contador_nivel = 1
 flag_cronometro_activo = True
+flag_comodin_usado = False
 
 while flag_run:
     for evento in pygame.event.get():
@@ -169,7 +170,11 @@ while flag_run:
                         flag_respuesta_correcta = False
                     flag_respuesta_seleccionada = True
 
-            
+        elif evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_c and not flag_comodin_usado and flag_pantalla_juego:
+                lista_respuestas, lista_pos_elementos_pantalla_jugando = usar_comodin_50_50(lista_respuestas, respuesta_correcta, lista_pos_elementos_pantalla_jugando)
+                flag_comodin_usado = True
+
         elif evento.type == CRONOMETRO and flag_cronometro_activo:
             contador_cronometro -= 1
             texto_cronometro = str(contador_cronometro).zfill(2)
@@ -245,10 +250,10 @@ while flag_run:
         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-        mostrar_tabla_porcentajes_en_ventana(lista_porcentajes_preguntas, lista_letras_preguntas, ventana_principal, fuente_juego, BLANCO, VIOLETA)
-        comodin_publico = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Público", fuente_juego)
-        comodin_50_50 = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, f"50%-50%", fuente_juego)
-        comodin_llamada = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Llamada", fuente_juego)
+        # mostrar_tabla_porcentajes_en_ventana(lista_porcentajes_preguntas, lista_letras_preguntas, ventana_principal, fuente_juego, BLANCO, VIOLETA)
+        # comodin_publico = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Público", fuente_juego)
+        # comodin_50_50 = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, f"50%-50%", fuente_juego)
+        # comodin_llamada = crear_elipse_con_texto(ventana_principal, (550,70), VIOLETA, BLANCO, "Llamada", fuente_juego)
 
 
     pygame.display.update()
