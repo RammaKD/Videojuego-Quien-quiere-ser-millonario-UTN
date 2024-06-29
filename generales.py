@@ -1,9 +1,9 @@
 
 import random
-import json
 import random
-import pygame
+from funciones_visuales import *
 
+#Funciones generales
 def desea_continuar(mensaje:str, mensaje_error: str) -> bool:
     """Pregunta al usuario si quiere continuar con una determinada funcion o no.
 
@@ -65,52 +65,7 @@ def comprobar_len_lista(lista: list) -> bool:
     
     return lenght
 
-def cargar_billetera_json(ruta_archivo_json):
-    billetera = True
-    try:
-        with open(ruta_archivo_json, 'r') as file:
-            billetera = json.load(file)["billetera"]
-    except:
-        billetera = False
-    
-    return billetera
-
-def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
-    exito = True
-    try:
-        with open(ruta_archivo_json, "w") as archivo:
-            nueva_puntuacion = {"billetera" : puntuacion_actualizada}
-            json.dump(nueva_puntuacion, archivo, indent=2)
-    except:
-        exito = False
-    
-    return exito
-
-def obtener_paths(ruta_archivo_json):
-    with open(ruta_archivo_json, "r", encoding="utf-8") as archivo:
-        data = json.load(archivo)
-    diccionario_paths = {}
-    
-    for clave, valor in data["paths"].items():
-        diccionario_paths[clave] = valor
-    
-    return diccionario_paths
-        
-def leer_preguntas_csv(ruta_archivo_csv):
-    lista_datos_csv = []
-    with open(ruta_archivo_csv, "r", encoding="utf-8") as archivo:
-        lineas = archivo.readlines()
-        encabezado = lineas[0].strip().split(',')
-        lista_datos_csv.append(encabezado)
-        
-        valores_preguntas = []
-        for linea in lineas[1:]:
-            valores_preguntas.append(linea.strip().split(','))
-        
-        lista_datos_csv.append(valores_preguntas)
-    
-    return lista_datos_csv
-
+#Funciones preguntas/respuestas
 def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     for valores in lista_datos[1]:
         pregunta = {}
@@ -133,51 +88,55 @@ def cargar_pregunta_aleatoriamente(lista_preguntas):
     pregunta_aleatoria = lista_preguntas[indice_random]
     return pregunta_aleatoria
            
+def dividir_pregunta(pregunta, limite=75):
+    if len(pregunta) <= limite:
+        return [pregunta]
+
+    corte = limite
+    for i in range(limite, 0, -1):
+        if pregunta[i] == ' ':
+            corte = i
+            break
+    primera_parte = pregunta[:corte].rstrip()
+    segunda_parte = pregunta[corte:].lstrip()
+
+    return [primera_parte, segunda_parte]
+
 def crear_lista_respuestas(pregunta):
     lista_respuestas = pregunta["Respuestas"].split("-")
     return lista_respuestas
+
+def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
+    if respuesta_seleccionada == respuesta_correcta:
+        retorno = True
+    else:
+        retorno = False
     
-def cargar_pantalla(ventana_principal, elementos):
-    exito = True
-    try:
-        for elemento in elementos:
-            imagen = elemento[0]
-            coordenadas = elemento[1]
-            ventana_principal.blit(imagen, coordenadas)
-    except:
-        exito = False
-    
-    return exito
+    return retorno
 
-def crear_texto_renderizado(texto, fuente, color):
-    texto_renderizado = fuente.render(texto, True, color)
-    return texto_renderizado
+def manejar_respuesta_correcta(m, contador_nivel, niveles_premios, CRONOMETRO):
+    m += 1
+    contador_nivel = niveles_premios[m][0]
+    flag_pregunta_mostrada = False
+    flag_respuesta_seleccionada = False
+    contador_cronometro = 10
+    texto_cronometro = str(contador_cronometro).zfill(2)
+    pygame.time.set_timer(CRONOMETRO, 1000)
+    return m, contador_nivel, flag_pregunta_mostrada, flag_respuesta_seleccionada, contador_cronometro, texto_cronometro
 
-def crear_fondo_texto(rect_texto, color_fondo):
-    fondo_surface = pygame.Surface((rect_texto.width, rect_texto.height))
-    fondo_surface.fill(color_fondo)
-    return fondo_surface
+def manejar_respuesta_incorrecta(niveles_premios):
+    flag_pantalla_juego = False
+    flag_pregunta_mostrada = False
+    flag_respuesta_seleccionada = False
+    flag_pantalla_principal = True
+    flag_cronometro_activo = False
+    flag_comodin_50_50_usado = False
+    flag_boton_salir = True
+    m = 0
+    contador_nivel = niveles_premios[m][0]
+    return flag_pantalla_juego, flag_pregunta_mostrada, flag_respuesta_seleccionada, flag_pantalla_principal, flag_cronometro_activo, flag_comodin_50_50_usado, flag_boton_salir, m, contador_nivel
 
-def crear_rect_texto(texto_renderizado, posicion):
-    rect_texto = texto_renderizado.get_rect()
-    rect_texto.topleft = posicion
-    return rect_texto
-
-def dibujar_piramide_premios(ventana, niveles_premios, ANCHO_VENTANA, color_fuente, color_fondo):
-    fuente_premios = pygame.font.SysFont("sinsum", 50)
-    x_base = ANCHO_VENTANA - 200 
-    y_base = 30
-    espacio_entre_premios = 40
-    
-    for i in range(len(niveles_premios)):
-        premio = niveles_premios[i][1]
-        texto_premio = crear_texto_renderizado(premio, fuente_premios, color_fuente)
-        rect_texto_premio = texto_premio.get_rect(left=x_base, top=y_base)
-        fondo_premio = crear_fondo_texto(rect_texto_premio, color_fondo)
-        ventana.blit(fondo_premio, rect_texto_premio)
-        ventana.blit(texto_premio, rect_texto_premio.topleft)
-        y_base += espacio_entre_premios
-
+#Funciones listas
 def listar_rects(lista_elementos, lista_posiciones):
     lista_rects = []
     for i in range(len(lista_elementos)):
@@ -213,20 +172,7 @@ def generar_lista_elementos(lista_textos, lista_rects, lista_fondos):
 
     return lista_elementos
 
-def dividir_pregunta(pregunta, limite=75):
-    if len(pregunta) <= limite:
-        return [pregunta]
-
-    corte = limite
-    for i in range(limite, 0, -1):
-        if pregunta[i] == ' ':
-            corte = i
-            break
-    primera_parte = pregunta[:corte].rstrip()
-    segunda_parte = pregunta[corte:].lstrip()
-
-    return [primera_parte, segunda_parte]
-
+#Funciones lógica comodines
 def generar_porcentajes(lista_respuestas, respuesta_correcta):
     lista_porcentajes = []
     porcentaje_maximo = 100
@@ -235,7 +181,6 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     
     for _ in lista_respuestas:
         lista_porcentajes.append(0)
-    
     for i in range(len(lista_respuestas)):
         if lista_respuestas[i] == respuesta_correcta:
             lista_porcentajes[i] = porcentaje_respuesta_correcta
@@ -250,19 +195,15 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
             asignacion = random.randint(0, porcentaje_restante)
             porcentaje_asignado.append(asignacion)
             suma_asignados += asignacion
-
-        # Ajustamos los valores de los porcentajes asignados
         for i in range(respuestas_incorrectas):
             porcentaje_asignado[i] = int(porcentaje_restante * porcentaje_asignado[i] / suma_asignados)
         
-        # Aseguramos que la suma final sea 100 ajustando el último elemento
         suma_porcentaje_asignado = 0
         for valor in porcentaje_asignado:
             suma_porcentaje_asignado += valor
         
         ultimo_indice = len(porcentaje_asignado) - 1
         porcentaje_asignado[ultimo_indice] += porcentaje_restante - suma_porcentaje_asignado
-
         j = 0
         for i in range(len(lista_respuestas)):
             if lista_respuestas[i] != respuesta_correcta:
@@ -270,42 +211,6 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
                 j += 1
 
     return lista_porcentajes
-
-def mostrar_tabla_porcentajes_en_ventana(porcentajes, respuestas, pantalla, fuente, color_texto, color_fondo):
-    x = 150
-    y = 150
-    ancho_celda = 300
-    alto_celda = 50
-    
-    texto_encabezado = fuente.render("Resp.", False, color_texto)
-    texto_porcentaje_encabezado = fuente.render("%", False, color_texto)
-    
-    pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
-    pantalla.blit(texto_encabezado, (x + 10, y + 10))
-    pantalla.blit(texto_porcentaje_encabezado, (x + 180, y + 10))
-    y += alto_celda 
-    
-    for i in range(len(respuestas)):
-        pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
-        texto_respuesta = fuente.render(respuestas[i], True, color_texto)
-        texto_porcentaje = fuente.render(f"{porcentajes[i]}%", True, color_texto)
-        pantalla.blit(texto_respuesta, (x + 10, y + 10))
-        pantalla.blit(texto_porcentaje, (x + 180, y + 10))  
-        y += alto_celda  
-
-def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_texto, texto, fuente):
-    texto_renderizado = crear_texto_renderizado(texto, fuente, color_texto)
-    margen = 10
-    ancho_texto = texto_renderizado.get_width() + margen * 3
-    alto_texto = texto_renderizado.get_height() + margen * 3
-    tamaño_elipse = (ancho_texto, alto_texto)
-    elipse_rect = pygame.Rect(posicion, tamaño_elipse)
-    
-    pygame.draw.ellipse(ventana_principal, color_elipse, elipse_rect)
-    texto_rect = texto_renderizado.get_rect(center=elipse_rect.center)
-    ventana_principal.blit(texto_renderizado, texto_rect)
-    
-    return elipse_rect
 
 def usar_comodin_50_50(lista_textos, lista_posiciones, respuesta_correcta):
     indices_incorrectos = []
@@ -334,7 +239,20 @@ def usar_comodin_50_50(lista_textos, lista_posiciones, respuesta_correcta):
     return nuevos_textos, nuevas_posiciones
 
 
+
+def actualizar_cronometro_pantalla_juego(ventana_principal, lista_elementos_pantalla_jugando, niveles_premios, ANCHO_VENTANA, texto_cronometro, fuente, color_texto, color_fondo):
+    cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+    dibujar_piramide_premios(ventana_principal, niveles_premios, ANCHO_VENTANA, color_texto, color_fondo)
     
+    texto_cronometro_render, rect_texto_cronometro, fondo_texto_cronometro = crear_texto_cronometro(texto_cronometro, fuente, color_texto, color_fondo)
+    ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
+    ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
+
+def crear_texto_cronometro(texto_cronometro, fuente, color_texto, color_fondo):
+    texto_cronometro_render = crear_texto_renderizado(texto_cronometro, fuente, color_texto)
+    rect_texto_cronometro = crear_rect_texto(texto_cronometro_render, (25, 50))
+    fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, color_fondo)
+    return texto_cronometro_render, rect_texto_cronometro, fondo_texto_cronometro
 
     
     

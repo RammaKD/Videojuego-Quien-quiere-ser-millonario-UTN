@@ -4,7 +4,8 @@
         "path_billetera" : "archivos\\billetera.json",
         "path_fondo_menu" : "imgs\\fondo_menu_juego.jpg",
         "path_logo" : "imgs\\logo.png",
-        "path_presentador" : "imgs\\messi.png"
+        "path_presentador" : "imgs\\messi.png",
+        "path_flecha" : "imgs\\flecha.png"
     }
 
 }
