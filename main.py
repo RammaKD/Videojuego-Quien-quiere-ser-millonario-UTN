@@ -41,6 +41,10 @@ VIOLETA = (67, 0, 103)
 ANCHO_VENTANA = 1280
 ALTO_VENTANA = 720
 POS_INICIAL = (0,0)
+POS_RESP_A = (25, 550)
+POS_RESP_B = (450, 550) 
+POS_RESP_C = (25, 650)
+POS_RESP_D = (450, 650)
 DIMENSIONES_VENTANA = (ANCHO_VENTANA, ALTO_VENTANA)
 DIMENSIONES_BOTON = (280, 70)
 
@@ -59,6 +63,7 @@ pygame.display.set_icon(logo)
 fuente = pygame.font.SysFont("sinsum", 70)
 fuente_juego = pygame.font.SysFont("sinsum", 35)
 fuente_cronometro = pygame.font.SysFont("sinsum", 75)
+fuente_comodines = pygame.font.SysFont("sinsum", 60)
 
 lista_elementos_menu_principal_inicial = []
 lista_elementos_menu_categorias_inicial = []
@@ -96,7 +101,6 @@ contador_cronometro = 10
 CRONOMETRO = pygame.USEREVENT + 1  
 pygame.time.set_timer(CRONOMETRO, 0)  
 
-
 flag_run = True
 flag_pantalla_principal = True
 flag_pantalla_categorias = False
@@ -108,6 +112,7 @@ flag_respuesta_seleccionada = False
 flag_respuesta_correcta = False
 contador_nivel = 1
 flag_cronometro_activo = True
+flag_comodin_50_50_usado = False
 
 while flag_run:
     for evento in pygame.event.get():
@@ -150,7 +155,6 @@ while flag_run:
             
             elif flag_pantalla_juego:
                 respuesta_seleccionada = None
-
                 if lista_rects_jugando[2].collidepoint(evento.pos):
                     respuesta_seleccionada = lista_respuestas[0]
                 elif lista_rects_jugando[3].collidepoint(evento.pos):
@@ -159,8 +163,30 @@ while flag_run:
                     respuesta_seleccionada = lista_respuestas[2]
                 elif lista_rects_jugando[5].collidepoint(evento.pos):
                     respuesta_seleccionada = lista_respuestas[3]
+                
+                if comodin_50_50.collidepoint(evento.pos) and not flag_comodin_50_50_usado:
+                    flag_comodin_50_50_usado = True
+                    
+                    
+                    textos_respuestas = lista_textos_pantalla_jugando[2:]  
+                    posiciones_respuestas = lista_pos_elementos_pantalla_jugando[2:]
 
-                if respuesta_seleccionada is not None:
+                    nuevos_textos, nuevas_posiciones = usar_comodin_50_50(textos_respuestas, posiciones_respuestas, respuesta_correcta)
+                    print(nuevos_textos)
+                    nuevos_textos_completos = lista_textos_pantalla_jugando[:2] + nuevos_textos
+                    nuevas_posiciones_completas = lista_pos_elementos_pantalla_jugando[:2] + nuevas_posiciones
+
+                    lista_renders_jugando = listar_renders(nuevos_textos_completos, fuente_juego, BLANCO)
+                    lista_rects_jugando = listar_rects(lista_renders_jugando, nuevas_posiciones_completas)
+                    lista_fondos_jugando = listar_fondos(lista_rects_jugando, VIOLETA)
+                    
+                    lista_elementos_jugando_interactivos = generar_lista_elementos(lista_renders_jugando, lista_rects_jugando, lista_fondos_jugando)
+                    lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando_inicial + lista_elementos_jugando_interactivos
+                    
+                    cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
+                    
+
+                if respuesta_seleccionada != None:
                     if respuesta_seleccionada == respuesta_correcta:
                         print("Respuesta correcta")
                         flag_respuesta_correcta = True
@@ -169,7 +195,6 @@ while flag_run:
                         flag_respuesta_correcta = False
                     flag_respuesta_seleccionada = True
 
-            
         elif evento.type == CRONOMETRO and flag_cronometro_activo:
             contador_cronometro -= 1
             texto_cronometro = str(contador_cronometro).zfill(2)
@@ -185,27 +210,32 @@ while flag_run:
         nivel = str(contador_nivel)
         lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
         pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
-        pregunta = dividir_pregunta(pregunta_cargada["Pregunta"])
+        pregunta_dividida = dividir_pregunta(pregunta_cargada["Pregunta"])
         lista_respuestas = crear_lista_respuestas(pregunta_cargada)
         respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
         
-        if len(pregunta) == 1:
-            texto_pregunta_corte_1 = pregunta[0]
+        if len(pregunta_dividida) == 1:
+            texto_pregunta_corte_1 = pregunta_dividida[0]
             texto_pregunta_corte_2 = ""
         else:
-            texto_pregunta_corte_1 = pregunta[0]
-            texto_pregunta_corte_2 = pregunta[1]
+            texto_pregunta_corte_1 = pregunta_dividida[0]
+            texto_pregunta_corte_2 = pregunta_dividida[1]
         
-        respuesta_a = f"A: {lista_respuestas[0]}"
-        respuesta_b = f"B: {lista_respuestas[1]}"
-        respuesta_c = f"C: {lista_respuestas[2]}"
-        respuesta_d = f"D: {lista_respuestas[3]}"
+        respuesta_a = lista_respuestas[0]
+        respuesta_b = lista_respuestas[1]
+        respuesta_c = lista_respuestas[2]
+        respuesta_d = lista_respuestas[3]
 
         lista_elementos_pantalla_jugando_inicial = []
         lista_imgs_jugando = [(fondo_menu, POS_INICIAL), (presentador, (650,250))]
-        lista_textos_pantalla_jugando = [texto_pregunta_corte_1, texto_pregunta_corte_2, respuesta_a, respuesta_b, respuesta_c, respuesta_d, texto_cronometro]
-        lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (450, 550), (25, 650), (450, 650), (25, 50)]
+        
+        textos_juego = [texto_pregunta_corte_1, texto_pregunta_corte_2]
+        textos_respuestas = [respuesta_a, respuesta_b, respuesta_c, respuesta_d]
+        
+        lista_textos_pantalla_jugando = textos_juego + textos_respuestas
+        lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (450, 550), (25, 650), (450, 650)]
         lista_elementos_pantalla_jugando_inicial += lista_imgs_jugando
+        
 
         lista_renders_jugando = listar_renders(lista_textos_pantalla_jugando, fuente_juego, BLANCO)
         lista_rects_jugando = listar_rects(lista_renders_jugando, lista_pos_elementos_pantalla_jugando)
@@ -226,6 +256,7 @@ while flag_run:
             contador_cronometro = 10
             texto_cronometro = str(contador_cronometro).zfill(2)
             pygame.time.set_timer(CRONOMETRO, 1000)
+        
         elif not flag_respuesta_correcta:
             flag_pantalla_juego = False
             flag_pregunta_mostrada = False
@@ -233,6 +264,7 @@ while flag_run:
             flag_pantalla_principal = True
             contador_nivel = 1
             flag_cronometro_activo = False
+            flag_comodin_50_50_usado = False
     
     if flag_pantalla_juego:
         ventana_principal.fill(BLANCO)
@@ -243,7 +275,10 @@ while flag_run:
         fondo_texto_cronometro = crear_fondo_texto(rect_texto_cronometro, VIOLETA)
         ventana_principal.blit(fondo_texto_cronometro, rect_texto_cronometro.topleft)
         ventana_principal.blit(texto_cronometro_render, rect_texto_cronometro.topleft)
-        
+        comodin_publico = crear_elipse_con_texto(ventana_principal, (150,45), VIOLETA, BLANCO, "Público", fuente_comodines)
+        comodin_50_50 = crear_elipse_con_texto(ventana_principal, (350,45), VIOLETA, BLANCO, f"50% - 50%", fuente_comodines)
+        comodin_llamada = crear_elipse_con_texto(ventana_principal, (600,45), VIOLETA, BLANCO, "Llamada", fuente_comodines)
+    
     pygame.display.update()
 
 pygame.quit()

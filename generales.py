@@ -296,8 +296,8 @@ def mostrar_tabla_porcentajes_en_ventana(porcentajes, respuestas, pantalla, fuen
 def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_texto, texto, fuente):
     texto_renderizado = crear_texto_renderizado(texto, fuente, color_texto)
     margen = 10
-    ancho_texto = texto_renderizado.get_width() + margen * 2
-    alto_texto = texto_renderizado.get_height() + margen * 2
+    ancho_texto = texto_renderizado.get_width() + margen * 3
+    alto_texto = texto_renderizado.get_height() + margen * 3
     tamaño_elipse = (ancho_texto, alto_texto)
     elipse_rect = pygame.Rect(posicion, tamaño_elipse)
     
@@ -307,38 +307,63 @@ def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_text
     
     return elipse_rect
 
-def usar_comodin_50_50(lista_respuestas, respuesta_correcta):
-    respuestas_correctas = [respuesta_correcta]
-    respuestas_incorrectas = []
+def usar_comodin_50_50(lista_textos, lista_posiciones, respuesta_correcta):
+    indices_incorrectos = []
+    indice_correcto = -1
 
-    # Separar respuestas correctas de incorrectas
-    for resp in lista_respuestas:
-        if resp != respuesta_correcta:
-            respuestas_incorrectas.append(resp)
+    for i in range(len(lista_textos)):
+        if lista_textos[i] == respuesta_correcta:
+            indice_correcto = i
+        else:
+            indices_incorrectos.append(i)
 
-    # Selección manual aleatoria de dos respuestas incorrectas
-    respuestas_eliminar = []
-    if len(respuestas_incorrectas) > 0:
-        indice_1 = random.randint(0, len(respuestas_incorrectas))
-        respuestas_eliminar.append(respuestas_incorrectas.pop(indice_1))
+    while len(indices_incorrectos) > 1:
+        indice = random.randint(0, len(indices_incorrectos) - 1)
+        indices_incorrectos[indice], indices_incorrectos[-1] = indices_incorrectos[-1], indices_incorrectos[indice]
+        indices_incorrectos.pop()
+    
+    indices_a_eliminar = indices_incorrectos[:2]
+    nuevos_textos = [lista_textos[indice_correcto]]
+    nuevas_posiciones = [lista_posiciones[indice_correcto]]
 
-        if len(respuestas_incorrectas) > 0:
-            indice_2 = random.randint(0, len(respuestas_incorrectas))
-            respuestas_eliminar.append(respuestas_incorrectas.pop(indice_2))
+    for i in range(len(lista_textos)):
+        if i in indices_a_eliminar:
+            nuevos_textos.append(lista_textos[i])
+            nuevas_posiciones.append(lista_posiciones[i])
 
-    # Reconstruir lista_respuestas con respuestas correctas e incorrectas
-    lista_respuestas.clear()
-    lista_respuestas.extend(respuestas_correctas + respuestas_incorrectas)
-
-    return respuestas_eliminar
+    return nuevos_textos, nuevas_posiciones
 
 
-lista_respuestas = ["A", "B", "C", "D"]
-respuesta_correcta = "C"
+    
 
-respuestas_eliminadas = usar_comodin_50_50(lista_respuestas, respuesta_correcta)
-print("Respuestas eliminadas:", respuestas_eliminadas)
-print("Lista actual de respuestas:", lista_respuestas)
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
