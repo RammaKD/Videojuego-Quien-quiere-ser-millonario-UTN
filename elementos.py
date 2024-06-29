@@ -116,7 +116,17 @@ def cargar_elementos_pantalla_jugando(categoria_elegida, nivel):
     textos_respuestas = [respuesta_a, respuesta_b, respuesta_c, respuesta_d]
     
     lista_textos_pantalla_jugando = textos_juego + textos_respuestas
-    lista_pos_elementos_pantalla_jugando = [(25, 425), (25, 475), (25, 550), (450, 550), (25, 650), (450, 650)]
+    # dict_respuestas_y_pos = {
+    #                         "posicion_respuesta_a": (respuesta_a, (25, 550)),
+    #                         "posicion_respuesta_b": (respuesta_b, (450, 550)),
+    #                         "posicion_respuesta_c": (respuesta_c, (25, 650)),
+    #                         "posicion_respuesta_d": (respuesta_d, (450, 650))
+    #                         }
+    # dict_textos_y_pos_preguntas = {
+    #                                 "posicion_pregunta_a" : (texto_pregunta_corte_1, (25, 425)), 
+    #                                 "posicion_pregunta_b" : (texto_pregunta_corte_2, (25, 475)),
+    #                                 }       
+    
     lista_elementos_pantalla_jugando_inicial += lista_imgs_jugando
     
 
