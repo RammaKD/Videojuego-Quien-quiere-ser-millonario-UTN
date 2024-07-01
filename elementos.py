@@ -40,6 +40,7 @@ flag_boton_salir = True
 flag_pregunta_mostrada = False
 flag_respuesta_seleccionada = False
 flag_respuesta_correcta = False
+flag_pantalla_retirarse = False
 flag_cronometro_activo = True
 flag_comodin_50_50_usado = False
 flag_comodin_publico_usado = False
@@ -112,8 +113,8 @@ def cargar_elementos_pantalla_jugando(categoria_elegida, nivel):
                                (lista_respuestas[2], POS_RESP_C), 
                                (lista_respuestas[3], POS_RESP_D)]
     
-    if not flag_comodin_50_50_usado:
-        lista_textos_respuestas = aplicar_comodin_5050(lista_textos_respuestas, respuesta_correcta)
+    # if not flag_comodin_50_50_usado:
+    #     lista_textos_respuestas = aplicar_comodin_5050(lista_textos_respuestas, respuesta_correcta)
 
         
     lista_textos_pantalla_jugando = lista_textos_juego + lista_textos_respuestas
@@ -127,3 +128,35 @@ def cargar_elementos_pantalla_jugando(categoria_elegida, nivel):
     lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando_inicial + lista_elementos_jugando_interactivos
 
     return lista_elementos_pantalla_jugando, lista_rects_jugando, lista_respuestas, respuesta_correcta
+
+def cargar_elementos_pantalla_retirarse(ventana_principal):
+    ventana_principal.blit(fondo_menu, POS_INICIAL_FONDO)
+
+    # Texto de la pregunta
+    fuente = pygame.font.Font(None, 74)
+    texto = fuente.render("¿Deseas retirarte?", True, BLANCO)
+    texto_rect = texto.get_rect(center=(DIMENSIONES_VENTANA[0] // 2, DIMENSIONES_VENTANA[1] // 4))
+    ventana_principal.blit(texto, texto_rect)
+
+    # Botón continuar
+    texto_continuar = fuente.render("Continuar", True, BLANCO)
+    rect_continuar = texto_continuar.get_rect(center=(DIMENSIONES_VENTANA[0] // 2, DIMENSIONES_VENTANA[1] // 2))
+    ventana_principal.blit(texto_continuar, rect_continuar)
+
+    # Botón retirarse
+    texto_retirarse = fuente.render("Retirarse", True, BLANCO)
+    rect_retirarse = texto_retirarse.get_rect(center=(DIMENSIONES_VENTANA[0] // 2, 3 * DIMENSIONES_VENTANA[1] // 4))
+    ventana_principal.blit(texto_retirarse, rect_retirarse)
+
+    return rect_continuar, rect_retirarse
+
+
+
+
+
+
+
+
+
+
+

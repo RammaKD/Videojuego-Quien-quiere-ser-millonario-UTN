@@ -1,120 +1,126 @@
 import pygame
-import random
+from generales import *
+from configuraciones import *
+from elementos import *
 
-# Inicialización de Pygame
 pygame.init()
 
-# Funciones de creación de elementos
+ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
+pygame.display.set_caption("¿Quién quiere ser millonario?")
+pygame.display.set_icon(logo)
 
-def crear_texto_renderizado(texto, fuente, color):
-    """ Crea y devuelve un texto renderizado con la fuente y color dados. """
-    texto_renderizado = fuente.render(texto, True, color)
-    return texto_renderizado
+CRONOMETRO = pygame.USEREVENT + 1  
+pygame.time.set_timer(CRONOMETRO, 0)  
+m = 0
+contador_nivel = niveles_premios[m][0]
 
-def aplicar_comodin_5050(dict_respuestas_y_pos, respuesta_correcta):
-    """ Aplica el comodín 50:50 seleccionando una respuesta incorrecta aleatoria junto con la correcta. """
-    respuestas = []
-    claves_respuestas = []
+while flag_run:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            flag_run = False
+        elif evento.type == pygame.MOUSEBUTTONDOWN:
+            if flag_pantalla_principal:
+                if lista_rects_menu[0].collidepoint(evento.pos) and flag_boton_play:
+                    flag_pantalla_principal = False
+                    flag_boton_salir = False
+                    flag_pantalla_categorias = True
+                    cargar_pantalla(ventana_principal, lista_elementos_menu_categorias)
+                elif lista_rects_menu[1].collidepoint(evento.pos) and flag_boton_salir:
+                    flag_run = False
+            elif flag_pantalla_categorias:
+                if lista_rects_categorias[1].collidepoint(evento.pos):
+                    flag_pantalla_juego = True
+                    categoria_elegida = "Historia"
+                elif lista_rects_categorias[2].collidepoint(evento.pos):
+                    flag_pantalla_juego = True
+                    categoria_elegida = "Deportes"
+                elif lista_rects_categorias[3].collidepoint(evento.pos):
+                    flag_pantalla_juego = True
+                    categoria_elegida = "Ciencia"
+                elif lista_rects_categorias[4].collidepoint(evento.pos):
+                    flag_pantalla_juego = True
+                    categoria_elegida = "Entretenimiento"
+                elif lista_rects_categorias[5].collidepoint(evento.pos):
+                    flag_pantalla_juego = True
+                    categoria_elegida = "Geografía"
+                flag_cronometro_activo = True
 
-    # Extraer respuestas y sus claves del diccionario
-    for clave, valor in dict_respuestas_y_pos.items():
-        respuestas.append(valor[0])
-        claves_respuestas.append(clave)
+                if flag_pantalla_juego:
+                    flag_pantalla_categorias = False
+                    flag_pregunta_mostrada = False
+                    flag_respuesta_seleccionada = False
+                    contador_cronometro = 10
+                    texto_cronometro = str(contador_cronometro).zfill(2)
+                    pygame.time.set_timer(CRONOMETRO, 1000)
+            
+            elif flag_pantalla_juego:
+                respuesta_seleccionada = None
+                for i in range(2, len(lista_rects_jugando)):  
+                    if lista_rects_jugando[i].collidepoint(evento.pos):
+                        respuesta_seleccionada = lista_respuestas[i - 2]
+
+                if respuesta_seleccionada != None:
+                    if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
+                        flag_respuesta_correcta = True
+                        print("Respuesta correcta")
+                    else:
+                        flag_respuesta_correcta = False
+                        print("Respuesta incorrecta")
+                    flag_respuesta_seleccionada = True
+                    
+        elif evento.type == CRONOMETRO and flag_cronometro_activo:
+            contador_cronometro -= 1
+            texto_cronometro = str(contador_cronometro).zfill(2)
+            if contador_cronometro <= 0:
+                print("Se le acabó el tiempo\n1")
+                flag_respuesta_seleccionada = True
+                flag_respuesta_correcta = False
+
+    if flag_pantalla_principal:
+        cargar_pantalla(ventana_principal, lista_elementos_menu)
     
-    # Crear una lista de respuestas incorrectas y sus claves
-    incorrectas = []
-    claves_incorrectas = []
+    elif flag_pantalla_juego and not flag_pregunta_mostrada:
+        nivel = str(contador_nivel)
+        lista_elementos_pantalla_jugando, lista_rects_jugando, lista_respuestas, respuesta_correcta = cargar_elementos_pantalla_jugando(categoria_elegida, nivel)
+        flag_pregunta_mostrada = True
+        cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
 
-    for i in range(len(respuestas)):
-        if respuestas[i] != respuesta_correcta:
-            incorrectas.append(respuestas[i])
-            claves_incorrectas.append(claves_respuestas[i])
+    elif flag_pantalla_juego and flag_respuesta_seleccionada:
+        if flag_respuesta_correcta:
+            (m, contador_nivel, flag_pregunta_mostrada, flag_respuesta_seleccionada, 
+            contador_cronometro, texto_cronometro) = manejar_respuesta_correcta(m, contador_nivel, niveles_premios, CRONOMETRO)
+            if contador_nivel == 2:  
+                flag_pantalla_retirarse = True
+        else:
+            (flag_pantalla_juego, flag_pregunta_mostrada, flag_respuesta_seleccionada, 
+            flag_pantalla_principal, flag_cronometro_activo, flag_comodin_50_50_usado, 
+            flag_boton_salir, m, contador_nivel) = manejar_respuesta_incorrecta(niveles_premios)
     
-    # Seleccionar una respuesta incorrecta aleatoriamente
-    indice_incorrecta = random.randint(0, len(incorrectas) - 1)
-    respuesta_incorrecta = incorrectas[indice_incorrecta]
-    clave_incorrecta = claves_incorrectas[indice_incorrecta]
-
-    # Crear el nuevo diccionario con solo la respuesta correcta y una incorrecta aleatoria
-    nuevo_dict_respuestas_y_pos = {}
-    for clave, valor in dict_respuestas_y_pos.items():
-        if valor[0] == respuesta_correcta:
-            nuevo_dict_respuestas_y_pos[clave] = valor
-        elif valor[0] == respuesta_incorrecta:
-            nuevo_dict_respuestas_y_pos[clave] = valor
-
-    return nuevo_dict_respuestas_y_pos
-
-def crear_fuente(fuente, tamaño):
-    """ Crea y devuelve una fuente de Pygame con el tipo y tamaño especificados. """
-    fuente = pygame.font.SysFont(fuente, tamaño)
-    return fuente
-
-# Configuración de la ventana y variables globales
-
-ANCHO_VENTANA = 800
-ALTO_VENTANA = 600
-ventana = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
-pygame.display.set_caption('Ejemplo de Juego con Comodín 50:50')
-
-FUENTE_PANTALLA_JUEGO = crear_fuente("Arial", 35)
-BLANCO = (255, 255, 255)
-
-# Datos de prueba
-texto_pregunta_corte_1 = "¿Cuántos años tenés?"
-dict_textos_y_pos_preguntas = {
-    "posicion_pregunta_a": (texto_pregunta_corte_1, (25, 425))
-}
-
-dict_respuestas_y_pos = {
-    "posicion_respuesta_a": ("París", (25, 50)),
-    "posicion_respuesta_b": ("Londres", (450, 50)),
-    "posicion_respuesta_c": ("Madrid", (25, 150)),
-    "posicion_respuesta_d": ("Berlín", (450, 150))
-}
-respuesta_correcta = "Madrid"
-
-# Función para listar renders y rects y devolver una lista para blitear luego
-def listar_renders_pos(ventana, dict_textos_pos, fuente, color):
-    """ Lista los renders y rects de texto y los devuelve en una lista para blitear después. """
-    renders_y_rects = []
-    for key in dict_textos_pos:
-        texto = dict_textos_pos[key][0]
-        posicion = dict_textos_pos[key][1]
-        texto_renderizado = crear_texto_renderizado(texto, fuente, color)
-        renders_y_rects.append((texto_renderizado, posicion))
-        
-    return renders_y_rects
-
-# Listar renders y rects de preguntas y respuestas
-lista_renders_rects_preguntas = listar_renders_pos(ventana, dict_textos_y_pos_preguntas, FUENTE_PANTALLA_JUEGO, BLANCO)
-lista_renders_rects_respuestas = listar_renders_pos(ventana, dict_respuestas_y_pos, FUENTE_PANTALLA_JUEGO, BLANCO)
-
-# Aplicar comodín 50:50 a las respuestas
-dict_respuestas_y_pos = aplicar_comodin_5050(dict_respuestas_y_pos, respuesta_correcta)
-lista_renders_rects_respuestas_actualizadas = listar_renders_pos(ventana, dict_respuestas_y_pos, FUENTE_PANTALLA_JUEGO, BLANCO)
-
-# Bucle principal del juego
-ejecutando = True
-while ejecutando:
-    # Manejo de eventos
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            ejecutando = False
-
-    # Dibujar elementos en la ventana
-    ventana.fill((0, 0, 0))  # Limpiar pantalla con color negro
+    elif flag_pantalla_juego:
+        actualizar_cronometro_pantalla_juego(ventana_principal, lista_elementos_pantalla_jugando, 
+                                  niveles_premios, ANCHO_VENTANA, texto_cronometro, 
+                                  FUENTE_CRONOMETRO, BLANCO, VIOLETA)
     
-    # Blitear renders de preguntas
-    for render, posicion in lista_renders_rects_preguntas:
-        ventana.blit(render, posicion)
+    # Nueva pantalla de retirada
+    if flag_pantalla_retirarse:
+        rect_continuar, rect_retirarse = cargar_elementos_pantalla_retirarse(ventana_principal)
+        for evento in pygame.event.get():
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                if rect_continuar.collidepoint(evento.pos):
+                    flag_pantalla_retirarse = False
+                    flag_pantalla_juego = True
+                elif rect_retirarse.collidepoint(evento.pos):
+                    flag_pantalla_retirarse = False
+                    flag_pantalla_principal = True
+                    flag_pantalla_juego = False
+                    flag_pantalla_categorias = False
+                    flag_boton_salir = True
+                    flag_pregunta_mostrada = False
+                    flag_respuesta_seleccionada = False
+                    m = 1
+                    pygame.time.set_timer(CRONOMETRO, 0)  # Detener el cronómetro
+                    cargar_pantalla(ventana_principal, lista_elementos_menu)
     
-    # Blitear renders de respuestas actualizadas
-    for render, posicion in lista_renders_rects_respuestas_actualizadas:
-        ventana.blit(render, posicion)
+    pygame.display.update()
 
-    # Actualizar pantalla una sola vez por ciclo
-    pygame.display.flip()
-
-# Salir del juego
 pygame.quit()

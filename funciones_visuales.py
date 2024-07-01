@@ -5,6 +5,10 @@ def cargar_imagen(path, dimensiones):
     imagen = pygame.transform.scale(imagen, dimensiones)
     return imagen
 
+def crear_fuente(fuente, tamaño):
+    fuente = pygame.font.SysFont(fuente, tamaño)
+    return fuente
+
 def cargar_pantalla(ventana_principal, elementos):
     exito = True
     try:
@@ -68,9 +72,6 @@ def usar_comodin_publico(pantalla, porcentajes, respuestas, fuente, color_texto,
         pantalla.blit(texto_porcentaje, (x + 180, y + 10))  
         y += alto_celda  
 
-def crear_fuente(fuente, tamaño):
-    fuente = pygame.font.SysFont(fuente, tamaño)
-    return fuente
 
 
 
