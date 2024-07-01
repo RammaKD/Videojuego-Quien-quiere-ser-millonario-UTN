@@ -216,18 +216,21 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
 def aplicar_comodin_5050(lista_respuestas_y_pos, respuesta_correcta):
     """Aplica el comodín 50:50 seleccionando una respuesta incorrecta aleatoria junto con la correcta."""
     incorrectas = []
-    for i in range(len(lista_respuestas_y_pos)):
-        if lista_respuestas_y_pos[i][0] != respuesta_correcta:
-            incorrectas.append(lista_respuestas_y_pos[i])
-               
+    for respuesta in lista_respuestas_y_pos:
+        if respuesta[0] != respuesta_correcta:
+            incorrectas.append(respuesta)
+    
     indice_incorrecta = random.randint(0, len(incorrectas) - 1)
     respuesta_incorrecta = incorrectas[indice_incorrecta]
     
-    for respuesta in lista_respuestas_y_pos[:]:
-        if respuesta[0] != respuesta_correcta and respuesta != respuesta_incorrecta:
-            lista_respuestas_y_pos.remove(respuesta)
+    nuevas_respuestas = []
+    for respuesta in lista_respuestas_y_pos:
+        if respuesta[0] == respuesta_correcta or respuesta == respuesta_incorrecta:
+            nuevas_respuestas.append(respuesta)
+        else:
+            nuevas_respuestas.append(("", respuesta[1]))
 
-    return lista_respuestas_y_pos
+    return nuevas_respuestas
 
 
 

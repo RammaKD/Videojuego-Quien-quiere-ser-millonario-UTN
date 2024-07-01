@@ -28,19 +28,19 @@ while flag_run:
                 elif lista_rects_menu[1].collidepoint(evento.pos) and flag_boton_salir:
                     flag_run = False
             elif flag_pantalla_categorias:
-                if lista_rects_categorias[1].collidepoint(evento.pos):
+                if lista_rects_categorias_interactuables[0].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Historia"
-                elif lista_rects_categorias[2].collidepoint(evento.pos):
+                elif lista_rects_categorias_interactuables[1].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Deportes"
-                elif lista_rects_categorias[3].collidepoint(evento.pos):
+                elif lista_rects_categorias_interactuables[2].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Ciencia"
-                elif lista_rects_categorias[4].collidepoint(evento.pos):
+                elif lista_rects_categorias_interactuables[3].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Entretenimiento"
-                elif lista_rects_categorias[5].collidepoint(evento.pos):
+                elif lista_rects_categorias_interactuables[4].collidepoint(evento.pos):
                     flag_pantalla_juego = True
                     categoria_elegida = "Geografía"
                 flag_cronometro_activo = True
@@ -98,7 +98,9 @@ while flag_run:
         actualizar_cronometro_pantalla_juego(ventana_principal, lista_elementos_pantalla_jugando, 
                                   niveles_premios, ANCHO_VENTANA, texto_cronometro, 
                                   FUENTE_CRONOMETRO, BLANCO, VIOLETA)
-        
+        if not flag_comodin_50_50_usado:
+            pass
+
     pygame.display.update()
 
 pygame.quit()

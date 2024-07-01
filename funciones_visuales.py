@@ -9,12 +9,14 @@ def crear_fuente(fuente, tamaño):
     fuente = pygame.font.SysFont(fuente, tamaño)
     return fuente
 
-def cargar_pantalla(ventana_principal, elementos):
+def cargar_pantalla(ventana_principal, list_diccionarios):
+
     exito = True
     try:
+        
         for elemento in elementos:
-            imagen = elemento[0]
-            coordenadas = elemento[1]
+            imagen = elemento["superficie"]
+            coordenadas = elemento["posicion"]
             ventana_principal.blit(imagen, coordenadas)
     except:
         exito = False
