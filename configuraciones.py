@@ -22,6 +22,8 @@ POS_RESP_A = (25, 550)
 POS_RESP_B = (450, 550) 
 POS_RESP_C = (25, 650)
 POS_RESP_D = (450, 650)
+POS_PREG_CORTE_1 = (25, 425)
+POS_PREG_CORTE_2 = (25, 475)
 
 # Fuentes
 FUENTE_PRINCIPAL = crear_fuente("sinsum", 70)

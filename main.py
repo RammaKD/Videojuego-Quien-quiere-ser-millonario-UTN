@@ -55,41 +55,9 @@ while flag_run:
             
             elif flag_pantalla_juego:
                 respuesta_seleccionada = None
-                if lista_rects_jugando[2].collidepoint(evento.pos):
-                    respuesta_seleccionada = lista_respuestas[0]
-                elif lista_rects_jugando[3].collidepoint(evento.pos):
-                    respuesta_seleccionada = lista_respuestas[1]
-                elif lista_rects_jugando[4].collidepoint(evento.pos):
-                    respuesta_seleccionada = lista_respuestas[2]
-                elif lista_rects_jugando[5].collidepoint(evento.pos):
-                    respuesta_seleccionada = lista_respuestas[3]
-                
-                # if comodin_50_50.collidepoint(evento.pos) and not flag_comodin_50_50_usado:
-                #     flag_comodin_50_50_usado = True
-                    
-                #     textos_respuestas = lista_textos_pantalla_jugando[2:]  
-                #     posiciones_respuestas = lista_pos_elementos_pantalla_jugando[2:]
-
-                #     nuevos_textos, nuevas_posiciones = usar_comodin_50_50(textos_respuestas, posiciones_respuestas, respuesta_correcta)
-                #     print(nuevos_textos)
-                #     nuevos_textos_completos = lista_textos_pantalla_jugando[:2] + nuevos_textos
-                #     nuevas_posiciones_completas = lista_pos_elementos_pantalla_jugando[:2] + nuevas_posiciones
-
-                #     lista_renders_jugando = listar_renders(nuevos_textos_completos, FUENTE_PANTALLA_JUEGO, BLANCO)
-                #     lista_rects_jugando = listar_rects(lista_renders_jugando, nuevas_posiciones_completas)
-                #     lista_fondos_jugando = listar_fondos(lista_rects_jugando, VIOLETA)
-                    
-                #     lista_elementos_jugando_interactivos = generar_lista_elementos(lista_renders_jugando, lista_rects_jugando, lista_fondos_jugando)
-                #     lista_elementos_pantalla_jugando = lista_elementos_pantalla_jugando_inicial + lista_elementos_jugando_interactivos
-                    
-                #     cargar_pantalla(ventana_principal, lista_elementos_pantalla_jugando)
-                    
-                # if comodin_publico.collidepoint(evento.pos) and not flag_comodin_publico_usado:
-                #     flag_comodin_publico_usado = True
-                #     lista_porcentajes = generar_porcentajes(textos_respuestas, respuesta_correcta)
-                #     lista_posibles_respuestas = ["A", "B", "C", "D"]
-                #     usar_comodin_publico(ventana_principal, lista_porcentajes, textos_respuestas, FUENTE_COMODINES, BLANCO,
-                #                          VIOLETA)
+                for i in range(2, len(lista_rects_jugando)):  
+                    if lista_rects_jugando[i].collidepoint(evento.pos):
+                        respuesta_seleccionada = lista_respuestas[i - 2]
 
                 if respuesta_seleccionada != None:
                     if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
@@ -99,7 +67,7 @@ while flag_run:
                         flag_respuesta_correcta = False
                         print("Respuesta incorrecta")
                     flag_respuesta_seleccionada = True
-
+                    
         elif evento.type == CRONOMETRO and flag_cronometro_activo:
             contador_cronometro -= 1
             texto_cronometro = str(contador_cronometro).zfill(2)
@@ -131,10 +99,6 @@ while flag_run:
                                   niveles_premios, ANCHO_VENTANA, texto_cronometro, 
                                   FUENTE_CRONOMETRO, BLANCO, VIOLETA)
         
-        comodin_publico = crear_elipse_con_texto(ventana_principal, (150,45), VIOLETA, BLANCO, "Público", FUENTE_COMODINES)
-        comodin_50_50 = crear_elipse_con_texto(ventana_principal, (350,45), VIOLETA, BLANCO, f"50% - 50%", FUENTE_COMODINES)
-        comodin_llamada = crear_elipse_con_texto(ventana_principal, (600,45), VIOLETA, BLANCO, "Llamada", FUENTE_COMODINES)
-    
     pygame.display.update()
 
 pygame.quit()

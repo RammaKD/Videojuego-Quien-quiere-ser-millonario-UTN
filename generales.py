@@ -137,20 +137,21 @@ def manejar_respuesta_incorrecta(niveles_premios):
     return flag_pantalla_juego, flag_pregunta_mostrada, flag_respuesta_seleccionada, flag_pantalla_principal, flag_cronometro_activo, flag_comodin_50_50_usado, flag_boton_salir, m, contador_nivel
 
 #Funciones listas
-def listar_rects(lista_elementos, lista_posiciones):
+def listar_rects(lista_elementos):
     lista_rects = []
     for i in range(len(lista_elementos)):
-        elemento = lista_elementos[i]
-        posicion = lista_posiciones[i]
+        elemento = lista_elementos[i][0]
+        posicion = lista_elementos[i][1]
         rect_texto = crear_rect_texto(elemento, posicion)
         lista_rects.append(rect_texto)
     return lista_rects
 
-def listar_renders(lista_textos,fuente,color):
+def listar_renders(lista_textos_y_pos,fuente,color):
     lista_renders = []
-    for textos in lista_textos:
-        texto_renderizado = crear_texto_renderizado(textos,fuente,color)
-        lista_renders.append(texto_renderizado)
+    for elemento in lista_textos_y_pos:
+        texto = elemento[0]
+        texto_renderizado = crear_texto_renderizado(texto,fuente,color)
+        lista_renders.append((texto_renderizado, elemento[1]))
     return lista_renders
 
 def listar_fondos(lista_rects, color_fondo):
@@ -163,9 +164,9 @@ def listar_fondos(lista_rects, color_fondo):
 def generar_lista_elementos(lista_textos, lista_rects, lista_fondos):
     lista_elementos = []
     for i in range(len(lista_textos)):
-        posicion = lista_rects[i].topleft
+        posicion = lista_textos[i][1]
         elemento_1 = lista_fondos[i],(lista_rects[i])
-        elemento_2 = lista_textos[i],posicion
+        elemento_2 = lista_textos[i][0],posicion
         lista_elementos.append(elemento_1)
         lista_elementos.append(elemento_2)
         
@@ -212,31 +213,24 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
 
     return lista_porcentajes
 
-def usar_comodin_50_50(lista_textos, lista_posiciones, respuesta_correcta):
-    indices_incorrectos = []
-    indice_correcto = -1
-
-    for i in range(len(lista_textos)):
-        if lista_textos[i] == respuesta_correcta:
-            indice_correcto = i
-        else:
-            indices_incorrectos.append(i)
-
-    while len(indices_incorrectos) > 1:
-        indice = random.randint(0, len(indices_incorrectos) - 1)
-        indices_incorrectos[indice], indices_incorrectos[-1] = indices_incorrectos[-1], indices_incorrectos[indice]
-        indices_incorrectos.pop()
+def aplicar_comodin_5050(lista_respuestas_y_pos, respuesta_correcta):
+    """Aplica el comodín 50:50 seleccionando una respuesta incorrecta aleatoria junto con la correcta."""
+    incorrectas = []
+    for i in range(len(lista_respuestas_y_pos)):
+        if lista_respuestas_y_pos[i][0] != respuesta_correcta:
+            incorrectas.append(lista_respuestas_y_pos[i])
+               
+    indice_incorrecta = random.randint(0, len(incorrectas) - 1)
+    respuesta_incorrecta = incorrectas[indice_incorrecta]
     
-    indices_a_eliminar = indices_incorrectos[:2]
-    nuevos_textos = [lista_textos[indice_correcto]]
-    nuevas_posiciones = [lista_posiciones[indice_correcto]]
+    for respuesta in lista_respuestas_y_pos[:]:
+        if respuesta[0] != respuesta_correcta and respuesta != respuesta_incorrecta:
+            lista_respuestas_y_pos.remove(respuesta)
 
-    for i in range(len(lista_textos)):
-        if i in indices_a_eliminar:
-            nuevos_textos.append(lista_textos[i])
-            nuevas_posiciones.append(lista_posiciones[i])
+    return lista_respuestas_y_pos
 
-    return nuevos_textos, nuevas_posiciones
+
+
 
 
 

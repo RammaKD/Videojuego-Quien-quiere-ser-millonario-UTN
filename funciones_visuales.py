@@ -68,20 +68,6 @@ def usar_comodin_publico(pantalla, porcentajes, respuestas, fuente, color_texto,
         pantalla.blit(texto_porcentaje, (x + 180, y + 10))  
         y += alto_celda  
 
-def crear_elipse_con_texto(ventana_principal, posicion, color_elipse, color_texto, texto, fuente):
-    texto_renderizado = crear_texto_renderizado(texto, fuente, color_texto)
-    margen = 10
-    ancho_texto = texto_renderizado.get_width() + margen * 3
-    alto_texto = texto_renderizado.get_height() + margen * 3
-    tamaño_elipse = (ancho_texto, alto_texto)
-    elipse_rect = pygame.Rect(posicion, tamaño_elipse)
-    
-    pygame.draw.ellipse(ventana_principal, color_elipse, elipse_rect)
-    texto_rect = texto_renderizado.get_rect(center=elipse_rect.center)
-    ventana_principal.blit(texto_renderizado, texto_rect)
-    
-    return elipse_rect
-
 def crear_fuente(fuente, tamaño):
     fuente = pygame.font.SysFont(fuente, tamaño)
     return fuente
