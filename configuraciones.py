@@ -30,5 +30,6 @@ FUENTE_PRINCIPAL = crear_fuente("sinsum", 70)
 FUENTE_PANTALLA_JUEGO = crear_fuente("sinsum", 35)
 FUENTE_CRONOMETRO = crear_fuente("sinsum", 75)
 FUENTE_COMODINES = crear_fuente("sinsum", 60)
+FUENTE_PANTALLA_GAME_OVER = crear_fuente("sinsum", 90)
 
 

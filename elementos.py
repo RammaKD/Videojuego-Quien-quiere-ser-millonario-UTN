@@ -4,11 +4,6 @@ from funciones_visuales import *
 from funciones_archivos import *
 
 lista_preguntas = []
-lista_elementos_menu_principal_inicial = []
-lista_elementos_menu_categorias_inicial = []
-lista_rects_categorias_total = []
-lista_renders_categorias_interactuables = []
-lista_categorias = ["Historia", "Deporte", "Ciencia", "Entretenimiento", "Geografía"]
 diccionario_paths = obtener_paths("archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
 crear_diccionario_preguntas(lista_datos_csv, lista_preguntas)
@@ -32,10 +27,6 @@ niveles_premios = [
 ]
 
 #Banderas
-
-
-
-
 
 #Imágenes
 logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
