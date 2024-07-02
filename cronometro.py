@@ -83,12 +83,11 @@ def cargar_pantalla(pantalla, lista_textos, lista_imgs, fuente, color_texto, col
     blitear_imagenes(pantalla, lista_imgs)
     blitear_objetos_interactivos(pantalla, lista_botones)
     
-def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada,texto_cronometro):
+def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada):
     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
     lista_respuestas = crear_lista_respuestas(pregunta_cargada)
     respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
-    
     
     lista_textos_pantalla_juego = [(pregunta_cargada["Pregunta"], (25, 425), False),
                                     (lista_respuestas[0], (25, 550), True),
@@ -97,15 +96,23 @@ def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregun
                                     (lista_respuestas[3], (450, 650), True),
                                     (f"50-50", (150,55), True),
                                     (f"Publico", (275,55), True),
-                                    (f"Llamada", (440,55), True),
-                                    (texto_cronometro, (25, 40), False)]
-    
+                                    (f"Llamada", (440,55), True)]
+    # lista_textos_pantalla_juego = [(pregunta_cargada["Pregunta"], (25, 425), False),
+    #                                 (lista_respuestas[0], (25, 550), True),
+    #                                 (lista_respuestas[1], (450, 550), True),
+    #                                 (lista_respuestas[2], (25, 650), True),
+    #                                 (lista_respuestas[3], (450, 650), True),
+    #                                 (f"50-50", (150,55), True),
+    #                                 (f"Publico", (275,55), True),
+    #                                 (f"Llamada", (440,55), True),
+    #                                 (texto_cronometro, (25, 40), False)]
 
 
 
     flag_pregunta_mostrada = True
-    
-    return flag_pregunta_mostrada, respuesta_correcta, lista_textos_pantalla_juego
+    cargar_pantalla(ventana_principal, lista_textos_pantalla_juego, lista_imgs_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
+    dibujar_niveles_premios(ventana_principal, niveles_premios)
+    return flag_pregunta_mostrada, respuesta_correcta
 
 def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     if respuesta_seleccionada == respuesta_correcta:
@@ -115,32 +122,23 @@ def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     
     return retorno 
 
-def actualizar_cronometro(ventana_principal,contador_cronometro, texto_cronometro, flag_pantalla_game_over,flag_pregunta_mostrada,nivel,categoria,lista_preguntas,respuesta_correcta,flag_cronometro_activo):
-    if contador_cronometro > 0:
-        cargar_pantalla(ventana_principal, lista_textos_pantalla_juego, lista_imgs_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
-    else:
-        flag_pantalla_game_over = True
-        flag_cronometro_activo = True
-    
-    return flag_cronometro_activo, flag_pantalla_game_over
-
-
 def cargar_pantalla_game_over(texto, pantalla, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over):
     lista_textos_pantalla_game_over = [("Haz perdido!", (450, 300), False),
                                        ("Volver al menu principal", (270, 450), True),
                                        (texto, (320, 200), False)]
     cargar_pantalla(pantalla, lista_textos_pantalla_game_over, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
                 
-def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, contador_cronometro):
-    contador_cronometro = 5
-    m = 0
-    nivel = str(niveles_premios[m][0])
-    lista_elementos_interactivos.clear()
-    flag_pantalla_juego = False
-    flag_pantalla_principal = True
-    flag_pregunta_mostrada = False
-    flag_cronometro_activo = False
-    return m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, contador_cronometro                
+def resetear_juego(M, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_pantalla_categorias):
+    M = 0  # Reiniciar el nivel a cero
+    nivel = str(niveles_premios[M][0])  # Asegurar que el nivel sea el primero de la lista
+    lista_elementos_interactivos.clear()  # Limpiar los elementos interactivos del juego
+    flag_pantalla_principal = True  # Volver al menú principal
+    flag_pantalla_categorias = False  # Asegurar que no se quede en la pantalla de categorías
+    flag_pantalla_juego = False  # No mostrar la pantalla de juego al inicio
+    flag_pregunta_mostrada = False  # No mostrar la pregunta al inicio
+    flag_cronometro_activo = False  # No activar el cronómetro al inicio
+    flag_pantalla_game_over = False  # No mostrar la pantalla de game over al inicio
+    return M, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_pantalla_categorias
 
 def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios):
     y = 15
@@ -164,7 +162,7 @@ lista_elementos_interactivos_principal = []
 lista_elementos_interactivos_categorias = []
 lista_elementos_interactivos_juego = []
 lista_elementos_interactivos_game_over = []
-lista_textos_pantalla_juego = []
+
 lista_textos_pantalla_principal = [("JUGAR", (380, 515), True), 
                                    ("SALIR", (750, 515), True)]
 
@@ -186,103 +184,132 @@ lista_imgs_pantalla_juego = [(fondo_menu, POS_INICIAL_FONDO),
 
 lista_imgs_pantalla_game_over = [(fondo_menu, POS_INICIAL_FONDO)]
 
-# Variables de control
-CRONOMETRO = pygame.USEREVENT 
-pygame.time.set_timer(CRONOMETRO, 1000)
-contador_cronometro = 5
-texto_cronometro = str(contador_cronometro).zfill(2)
-
-respuesta_correcta = None
-flag_run = True
+# Variables del juego
+m = 0
+nivel = str(niveles_premios[m][0])
+respuesta_correcta = ""
+flag_pregunta_mostrada = False
+flag_respuesta_seleccionada = False
 flag_pantalla_principal = True
 flag_pantalla_categorias = False
 flag_pantalla_juego = False
-flag_pregunta_mostrada = False
-flag_cronometro_activo = False
 flag_pantalla_game_over = False
-m = 0
-nivel = str(niveles_premios[m][0])
+flag_cronometro_activo = False
+respuesta_seleccionada = ""
 
-while flag_run:
+# Cronómetro
+texto_cronometro = ""
+flag_cronometro_activo = False
+rect_cronometro = pygame.Rect(25, 40, 60, 50)  # Ajusta este rectángulo según sea necesario
+tiempo_inicial = 10
+# Reloj
+clock = pygame.time.Clock()
+start_ticks = 0
+# m = 0
+
+# Bucle principal
+running = True
+# Bucle principal
+running = True
+while running:
+    tiempo_transcurrido = pygame.time.get_ticks() - start_ticks
+    segundos_restantes = tiempo_inicial - int(tiempo_transcurrido / 1000)
+    # ventana_principal.fill(BLANCO)
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            flag_run = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = event.pos
-            if flag_pantalla_principal:
+            running = False
+
+        if flag_pantalla_principal:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos_mouse = pygame.mouse.get_pos()
                 for elemento in lista_elementos_interactivos_principal:
-                    if elemento[1].collidepoint(mouse_pos):
-                        if elemento[0] == "JUGAR":
+                    if elemento[1].collidepoint(pos_mouse):
+                        texto_boton = elemento[0]
+                        if texto_boton == "JUGAR":
                             flag_pantalla_principal = False
                             flag_pantalla_categorias = True
-                        else:
-                            flag_run = False
-                        break
-                    
-            elif flag_pantalla_categorias:
+                        elif texto_boton == "SALIR":
+                            running = False
+
+        elif flag_pantalla_categorias:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos_mouse = pygame.mouse.get_pos()
                 for elemento in lista_elementos_interactivos_categorias:
-                    if elemento[1].collidepoint(mouse_pos):
+                    if elemento[1].collidepoint(pos_mouse):
                         categoria_elegida = elemento[0]
-                        flag_pantalla_categorias = False
-                        flag_pantalla_juego = True
-                        flag_cronometro_activo = True
+                        print(categoria_elegida)
                         break
-                
-            elif flag_pantalla_juego:
-                respuesta_seleccionada = None  
-                for elemento in lista_elementos_interactivos_juego[:4]:
-                    if elemento[1].collidepoint(mouse_pos):
+            if categoria_elegida:
+                flag_pantalla_categorias = False
+                flag_pantalla_juego = True
+
+        elif flag_pantalla_juego:
+            if not flag_pregunta_mostrada:  # Solo carga la pantalla de juego si no se muestra una pregunta
+                flag_pregunta_mostrada, respuesta_correcta = cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada)
+                flag_cronometro_activo = True
+                start_ticks = pygame.time.get_ticks()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos_mouse = pygame.mouse.get_pos()
+                for elemento in lista_elementos_interactivos_juego:
+                    if elemento[1].collidepoint(pos_mouse):
                         respuesta_seleccionada = elemento[0]
-                        break
-        
-                if respuesta_seleccionada != None:
-                    if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
-                        flag_pregunta_mostrada = False
-                        m += 1
-                        nivel = str(niveles_premios[m][0])
-                        # contador_cronometro = 5
-                        lista_elementos_interactivos_juego.clear()
-                    else:
-                        flag_pantalla_game_over = True
-                        cargar_pantalla_game_over("Respuesta incorrecta", ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+                        flag_respuesta_seleccionada = True
+                        flag_cronometro_activo = False
 
-                       
-                if flag_pantalla_game_over:
-                    for elemento in lista_elementos_interactivos_game_over:
-                        if elemento[1].collidepoint(mouse_pos):
-                            m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, contador_cronometro = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, contador_cronometro)
-
-
-        elif event.type == CRONOMETRO and flag_cronometro_activo:
-            if contador_cronometro > 0:
-                contador_cronometro -= 1
-                texto_cronometro = str(contador_cronometro).zfill(2)
-            else:
-                flag_pantalla_game_over = True
-                flag_cronometro_activo = False
-                cargar_pantalla_game_over("Se acabó el tiempo", ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+        if flag_pantalla_game_over:
+            flag_pantalla_game_over = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos_mouse = pygame.mouse.get_pos()
+                for elemento in lista_elementos_interactivos_game_over:
+                    if elemento[1].collidepoint(pos_mouse):
+                        texto_boton = elemento[0]
+                        if texto_boton == "Volver al menu principal":
+                            m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_pantalla_categorias = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_pantalla_categorias)
+                            
             
-                
-                
-            
-            
+    # Pantallas
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_textos_pantalla_principal, lista_imgs_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
     elif flag_pantalla_categorias:
         cargar_pantalla(ventana_principal, lista_textos_pantalla_categorias, lista_imgs_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
-    elif flag_pantalla_juego and not flag_pregunta_mostrada:
-        flag_pregunta_mostrada, respuesta_correcta, lista_textos_pantalla_juego = cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada,texto_cronometro)
-        cargar_pantalla(ventana_principal, lista_textos_pantalla_juego, lista_imgs_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
-        dibujar_niveles_premios(ventana_principal, niveles_premios)
+    elif flag_pantalla_juego:
+        if flag_respuesta_seleccionada:
+            if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
+                flag_respuesta_seleccionada = False
+                m += 1
+                if m >= len(niveles_premios):
+                    texto_game_over = "¡Felicidades! Has ganado el juego."
+                    flag_pantalla_game_over = True
+                    cargar_pantalla_game_over(texto_game_over, ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+                else:
+                    nivel = str(niveles_premios[m][0])
+                    flag_pregunta_mostrada = False
+                    flag_cronometro_activo = True
+                    start_ticks = pygame.time.get_ticks()
+            else:
+                texto_game_over = f"Respuesta incorrecta"
+                flag_pantalla_game_over = True
+                cargar_pantalla_game_over(texto_game_over, ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
 
+        if flag_cronometro_activo:
+            
+            pygame.draw.rect(ventana_principal, VIOLETA, rect_cronometro)
+            texto_cronometro = str(segundos_restantes).zfill(2)
+            cronometro_renderizado = fuente.render(texto_cronometro, True, BLANCO)
+            ventana_principal.blit(cronometro_renderizado, (25, 40))
+        if segundos_restantes <= 0:
+            texto_game_over = f"¡Tiempo agotado! El juego ha terminado."
+            flag_pantalla_game_over = True
+            cargar_pantalla_game_over(texto_game_over, ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+            flag_pantalla_juego = False
+            flag_cronometro_activo = False
+    
     pygame.display.update()
-        
+
+    
+    clock.tick(60)
+
 pygame.quit()
-
-
-                
-
-
-                
-
 
