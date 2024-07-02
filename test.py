@@ -83,7 +83,7 @@ def cargar_pantalla(pantalla, lista_textos, lista_imgs, fuente, color_texto, col
     blitear_imagenes(pantalla, lista_imgs)
     blitear_objetos_interactivos(pantalla, lista_botones)
     
-def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada):
+def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada, texto_cronometro):
     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
     lista_respuestas = crear_lista_respuestas(pregunta_cargada)
@@ -96,10 +96,12 @@ def cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregun
                                     (lista_respuestas[3], (450, 650), True),
                                     (f"50-50", (150,55), True),
                                     (f"Publico", (275,55), True),
-                                    (f"Llamada", (440,55), True)]
+                                    (f"Llamada", (440,55), True),
+                                    (texto_cronometro, (25, 40), False)]
     
     flag_pregunta_mostrada = True
     cargar_pantalla(ventana_principal, lista_textos_pantalla_juego, lista_imgs_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
+    dibujar_niveles_premios(ventana_principal, niveles_premios)
     return flag_pregunta_mostrada, respuesta_correcta
 
 def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
@@ -126,6 +128,16 @@ def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, 
     flag_cronometro_activo = False
     return m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo                     
 
+def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios):
+    y = 15
+    for i in range(len(piramide_niveles_premios)):
+        nivel_premio = crear_texto_renderizado(piramide_niveles_premios[i][1], FUENTE_PIRAMIDE_PREMIOS,BLANCO)
+        rect_nivel_premio = crear_rect_texto(nivel_premio, (1100, y))
+        fondo_nivel_premio = crear_fondo_texto(rect_nivel_premio, VIOLETA)
+        ventana_principal.blit(fondo_nivel_premio, (1100, y))
+        ventana_principal.blit(nivel_premio, (1100, y))
+        y += 45
+        
 # Configuración de la pantalla
 ventana_principal = pygame.display.set_mode((DIMENSIONES_VENTANA))
 pygame.display.set_caption("Quien quiere ser millonario?")
@@ -231,13 +243,13 @@ while flag_run:
             if contador_cronometro <= 0:
                 flag_pantalla_game_over = True
                 cargar_pantalla_game_over("Se acabó el tiempo", ventana_principal, lista_imgs_pantalla_game_over, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
-                
+            
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_textos_pantalla_principal, lista_imgs_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
     elif flag_pantalla_categorias:
         cargar_pantalla(ventana_principal, lista_textos_pantalla_categorias, lista_imgs_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
     elif flag_pantalla_juego and not flag_pregunta_mostrada:
-        flag_pregunta_mostrada, respuesta_correcta = cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada)
+        flag_pregunta_mostrada, respuesta_correcta = cargar_pantalla_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada, texto_cronometro)
 
     pygame.display.update()
         
@@ -245,6 +257,7 @@ pygame.quit()
     
                 
                 
+
 
                 
 
