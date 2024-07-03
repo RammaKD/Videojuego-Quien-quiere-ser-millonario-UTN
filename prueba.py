@@ -2,6 +2,7 @@ import pygame
 from generales import *
 from configuraciones import *
 from elementos import *
+import random
 
 pygame.init()
 # Colores
@@ -67,20 +68,23 @@ def cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel, flag_pregu
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
     lista_respuestas = crear_lista_respuestas(pregunta_cargada)
     respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
+    pista = pregunta_cargada["Pista"]
     
+    lista_posiciones_respuestas = [(25, 550), (450, 550), (25, 650), (450, 650)]
     lista_textos_pantalla_juego = [(pregunta_cargada["Pregunta"], (25, 425), False),
-                                    (lista_respuestas[0], (25, 550), True),
-                                    (lista_respuestas[1], (450, 550), True),
-                                    (lista_respuestas[2], (25, 650), True),
-                                    (lista_respuestas[3], (450, 650), True),
-                                    (f"50-50", (150,55), True),
-                                    (f"Publico", (275,55), True),
-                                    (f"Llamada", (440,55), True)]
+                                    (lista_respuestas[0], lista_posiciones_respuestas[0], True),
+                                    (lista_respuestas[1], lista_posiciones_respuestas[1], True),
+                                    (lista_respuestas[2], lista_posiciones_respuestas[2], True),
+                                    (lista_respuestas[3], lista_posiciones_respuestas[3], True),
+                                    ("50-50", (150,55), True),
+                                    ("Publico", (275,55), True),
+                                    ("Llamada", (440,55), True)]
+    
     lista_elementos_pantalla_juego = lista_imgs_pantalla_juego + lista_textos_pantalla_juego
     flag_pregunta_mostrada = True
     cargar_pantalla(ventana_principal, lista_elementos_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
     
-    return flag_pregunta_mostrada, respuesta_correcta, lista_textos_pantalla_juego
+    return flag_pregunta_mostrada, respuesta_correcta, pista, lista_textos_pantalla_juego, lista_respuestas, lista_posiciones_respuestas
 
 def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     if respuesta_seleccionada == respuesta_correcta:
@@ -90,7 +94,7 @@ def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     
     return retorno 
 
-def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas,  flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint):
+def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas,  flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint,  flag_comodin_pista, flag_comodin_publico):
     m = 0
     nivel = str(niveles_premios[m][0])
     lista_elementos_interactivos.clear()
@@ -103,7 +107,9 @@ def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, 
     flag_botones_respuestas = True
     flag_pantalla_checkpoint = False
     flag_botones_pantalla_checkpoint = False
-    return m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint                     
+    flag_comodin_pista = True
+    flag_comodin_publico = True
+    return m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint, flag_comodin_pista, flag_comodin_publico                     
 
 def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios):
     y = 25
@@ -116,7 +122,57 @@ def actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronomet
     texto_cronometro = str(contador_cronometro).zfill(2)
     superficie_cronometro = crear_texto_renderizado(texto_cronometro, fuente, color_texto, color_fondo)
     ventana_principal.blit(superficie_cronometro, (25, 40)) 
-      
+
+def mostrar_pista(ventana_principal, pista, fuente, color_texto, color_fondo):
+    superficie_pista = crear_texto_renderizado(pista, fuente, color_texto, color_fondo)
+    ventana_principal.blit(superficie_pista, (25, 325))
+
+def generar_porcentajes(lista_respuestas, respuesta_correcta):
+    respuestas_incorrectas = []
+    porcentaje_correcta = 0
+    
+    for respuesta in lista_respuestas:
+        if respuesta == respuesta_correcta:
+            porcentaje_correcta = random.randint(50, 100)
+        else:
+            respuestas_incorrectas.append(respuesta)
+    
+    porcentaje_restante = 100 - porcentaje_correcta
+    porcentajes = {respuesta_correcta: porcentaje_correcta}
+
+    # Asignar porcentajes aleatorios a las respuestas incorrectas
+    total_asignado = 0
+    for i in range(len(respuestas_incorrectas)):
+        if i == len(respuestas_incorrectas) - 1:
+            porcentajes[respuestas_incorrectas[i]] = porcentaje_restante - total_asignado
+        else:
+            porcentaje = random.randint(0, porcentaje_restante - total_asignado)
+            porcentajes[respuestas_incorrectas[i]] = porcentaje
+            total_asignado += porcentaje
+    
+    # Convertir el diccionario a una lista de porcentajes en el mismo orden que lista_respuestas
+    lista_porcentajes = []
+    for respuesta in lista_respuestas:
+        lista_porcentajes.append(porcentajes[respuesta])
+    
+    return lista_porcentajes
+
+def blitear_porcentajes(screen, porcentajes, lista_respuestas, posiciones):
+    # Recorre cada respuesta y su correspondiente porcentaje
+    for i in range(len(lista_respuestas)):
+        respuesta = lista_respuestas[i]
+        porcentaje = porcentajes[i]
+        texto = f"{respuesta}: {porcentaje}%"
+        
+        # Renderiza el texto
+        text_surface = FUENTE_PANTALLA_JUEGO.render(texto, True, BLANCO, VIOLETA)
+        
+        # Obtiene la posición correspondiente
+        posicion = posiciones[i]
+        
+        # Blitea el texto en la pantalla
+        screen.blit(text_surface, posicion) 
+
 # Configuración de la pantalla
 ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
 pygame.display.set_caption("Quien quiere ser millonario?")
@@ -128,6 +184,7 @@ lista_elementos_interactivos_juego = []
 lista_elementos_interactivos_game_over = []
 lista_elementos_interactivos_checkpoint = []
 lista_elementos_interactivos_score = []
+lista_elementos_interactivos_victoria = []
 
 lista_textos_pantalla_principal = [("JUGAR", (380, 515), True), 
                                    ("SALIR", (750, 515), True)]
@@ -151,6 +208,10 @@ lista_textos_pantalla_game_over_tiempo_finalizado = [("Has perdido!", (450, 300)
 
 lista_textos_pantalla_score = [("Introduzca su nombre", (300, 300), False)]
 
+lista_textos_pantalla_victoria = [("Felicidades!", (300, 300), False),
+                                  ("Ha ganado el millón!", (300, 450), False),
+                                  ("Retirar premio", (300, 600), True)]
+
 lista_imgs_pantalla_principal = [(fondo_menu, POS_INICIAL_FONDO, False),                    
                                  (logo, (450, 75), False)]
 
@@ -164,6 +225,7 @@ lista_imgs_pantalla_game_over = [(fondo_menu, POS_INICIAL_FONDO, False)]
 
 lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
 lista_elementos_pantalla_categorias = lista_imgs_pantalla_categorias + lista_textos_pantalla_categorias
+lista_elementos_pantalla_victoria = lista_imgs_pantalla_game_over + lista_textos_pantalla_victoria
 
 # Variables de control
 CRONOMETRO = pygame.USEREVENT + 1
@@ -185,6 +247,11 @@ flag_botones_pantalla_checkpoint = False
 flag_botones_respuestas = True
 flag_pantalla_guardar_score = False
 flag_botones_pantalla_guardar_score = False
+flag_pantalla_victoria = False
+flag_botones_pantalla_victoria = False
+flag_comodin_pista = True
+flag_comodin_publico = True
+flag_comodin_50_50 = True
 m = 0
 nivel = str(niveles_premios[m][0])
 
@@ -227,7 +294,7 @@ while flag_run:
                         nivel = str(niveles_premios[m][0])
                         contador_cronometro = 10
                         lista_elementos_interactivos_juego.clear()
-                        if nivel == "3" or nivel == "11":
+                        if nivel == "8" or nivel == "18":
                             flag_pantalla_juego = False
                             flag_cronometro_activo = False
                             flag_botones_respuestas = False
@@ -238,12 +305,24 @@ while flag_run:
                             lista_textos_pantalla_checkpoint.append(mensaje_dinero_a_retirar)
                             lista_elementos_pantalla_checkpoint = lista_imgs_pantalla_game_over + lista_textos_pantalla_checkpoint
                             cargar_pantalla(ventana_principal, lista_elementos_pantalla_checkpoint, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_checkpoint)
+                        elif nivel == "3":
+                            flag_pantalla_juego = False
+                            flag_cronometro_activo = False
+                            flag_botones_respuestas = False
+                            flag_pantalla_categorias = False
+                            flag_pantalla_victoria = True
+                            flag_botones_pantalla_victoria = True
+                            cargar_pantalla(ventana_principal, lista_elementos_pantalla_victoria, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_victoria)
+                            
                     else:
                         contador_cronometro = 10
                         flag_cronometro_activo = False
                         flag_pantalla_game_over = True
                         flag_boton_pantalla_game_over = True
                         flag_botones_respuestas = False
+                        flag_comodin_pista = False
+                        flag_comodin_publico = False
+                        flag_comodin_50_50 = False
                         mensaje_error = "Respuesta incorrecta"
                         lista_textos_pantalla_game_over_incorrecta.append((mensaje_error, (320, 200), False))
                         lista_elementos_pantalla_game_over_incorrecta = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_incorrecta
@@ -253,7 +332,7 @@ while flag_run:
             elif flag_pantalla_game_over and flag_boton_pantalla_game_over:
                 for elemento in lista_elementos_interactivos_game_over:
                     if elemento[1].collidepoint(mouse_pos):
-                        m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint)
+                        m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint, flag_comodin_pista, flag_comodin_publico = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint,  flag_comodin_pista, flag_comodin_publico)
             
             elif flag_pantalla_checkpoint and flag_botones_pantalla_checkpoint:
                 for elemento in lista_elementos_interactivos_checkpoint:
@@ -268,7 +347,28 @@ while flag_run:
                             flag_pregunta_mostrada = False
                             flag_botones_pantalla_checkpoint = False
             
+            elif flag_pantalla_victoria and flag_botones_pantalla_victoria:
+                for elemento in lista_elementos_interactivos_victoria:
+                    if elemento[1].collidepoint(mouse_pos):
+                        if elemento[0] == "Retirar premio":
+                            flag_pantalla_guardar_score = True
+                            flag_pregunta_mostrada = False
             
+                            
+            for elemento in lista_elementos_interactivos_juego[4:7]:
+                if elemento[1].collidepoint(mouse_pos):
+                    if elemento[0] == "Llamada" and flag_comodin_pista:
+                        flag_comodin_pista = False
+                        mostrar_pista(ventana_principal, pista, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA)
+                        break
+                    elif elemento[0] == "Publico" and flag_comodin_publico:
+                        flag_comodin_publico = False
+                        lista_porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
+                        blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, lista_posiciones_respuestas)    
+                    elif elemento[0] == "50-50" and flag_comodin_50_50:
+                        pass
+        
+        
         elif event.type == pygame.KEYDOWN:
             if flag_pantalla_guardar_score and flag_botones_pantalla_guardar_score:
                 if event.key == pygame.K_BACKSPACE:
@@ -281,12 +381,6 @@ while flag_run:
                     rect_temp = texto_surface_temp.get_rect()
                     if rect_temp.width <= input_box_premio.width:
                         texto_input_box += event.unicode
-
-                    
-                    
-
-    
-
 
         #m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint)
         
@@ -301,6 +395,9 @@ while flag_run:
                 flag_pantalla_game_over = True
                 flag_boton_pantalla_game_over = True
                 flag_botones_respuestas = False
+                flag_comodin_pista = False
+                flag_comodin_publico = False
+                flag_comodin_50_50 = False
                 mensaje_error = "Se le acabó el tiempo"
                 lista_textos_pantalla_game_over_tiempo_finalizado.append((mensaje_error, (320, 200), False))
                 lista_elementos_pantalla_game_over_tiempo_finalizado = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_tiempo_finalizado
@@ -311,7 +408,7 @@ while flag_run:
     elif flag_pantalla_categorias:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
     elif flag_pantalla_juego and not flag_pregunta_mostrada:
-        flag_pregunta_mostrada, respuesta_correcta, lista_textos_pantalla_juego = cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada, lista_imgs_pantalla_juego)
+        flag_pregunta_mostrada, respuesta_correcta, pista, lista_textos_pantalla_juego, lista_respuestas, lista_posiciones_respuestas = cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada, lista_imgs_pantalla_juego)
         actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)
         dibujar_niveles_premios(ventana_principal, niveles_premios)
     elif flag_pantalla_guardar_score:
@@ -330,7 +427,11 @@ while flag_run:
         
 pygame.quit()
            
-               
+
+
+
+
+    
 
 
 
