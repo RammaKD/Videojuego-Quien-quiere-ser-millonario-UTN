@@ -90,19 +90,6 @@ def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     
     return retorno 
 
-def cargar_pantalla_game_over(texto, pantalla, fuente, color_texto, color_fondo, lista_elementos_interactivos_game_over):
-    lista_textos_pantalla_game_over = [("Has perdido!", (450, 300), False),
-                                       ("Volver al menu principal", (270, 450), True),
-                                       (texto, (320, 200), False)]
-    cargar_pantalla(pantalla, lista_textos_pantalla_game_over, fuente, color_texto, color_fondo, lista_elementos_interactivos_game_over)
-
-def cargar_pantalla_checkpoint(pantalla, dinero_a_retirar, fuente, color_texto, color_fondo, lista_elementos_interactivos_checkpoint):
-    lista_textos_pantalla_checkpoint = [("Quiere seguir jugando?", (450, 300), False),
-                                       (f"O retirarse con: {dinero_a_retirar}", (450, 350), False),
-                                       ("Seguir jugando", (100, 450), True),
-                                       ("Retirarse", (400, 450), True)]
-    cargar_pantalla(pantalla, lista_textos_pantalla_checkpoint, fuente, color_texto, color_fondo, lista_elementos_interactivos_checkpoint)
-                
 def resetear_juego(m, nivel, lista_elementos_interactivos, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas,  flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint):
     m = 0
     nivel = str(niveles_premios[m][0])
@@ -140,6 +127,7 @@ lista_elementos_interactivos_categorias = []
 lista_elementos_interactivos_juego = []
 lista_elementos_interactivos_game_over = []
 lista_elementos_interactivos_checkpoint = []
+lista_elementos_interactivos_score = []
 
 lista_textos_pantalla_principal = [("JUGAR", (380, 515), True), 
                                    ("SALIR", (750, 515), True)]
@@ -151,21 +139,31 @@ lista_textos_pantalla_categorias = [("Eliga una categoria", (450, 365), False),
                                     ("Entretenimiento", (275, 600), True),
                                     ("Geografía", (715, 600), True)]
 
+lista_textos_pantalla_checkpoint = [("Quiere seguir jugando?", (450, 300), False),
+                                    ("Seguir jugando", (100, 450), True),
+                                    ("Retirarse", (400, 450), True)]
+
+lista_textos_pantalla_game_over_incorrecta = [("Has perdido!", (450, 300), False),
+                                              ("Volver al menu principal", (270, 450), True)]
+
+lista_textos_pantalla_game_over_tiempo_finalizado = [("Has perdido!", (450, 300), False),
+                                                     ("Volver al menu principal", (270, 450), True)]
+
+lista_textos_pantalla_score = [("Introduzca su nombre", (300, 300), False)]
+
 lista_imgs_pantalla_principal = [(fondo_menu, POS_INICIAL_FONDO, False),                    
                                  (logo, (450, 75), False)]
 
 lista_imgs_pantalla_categorias = [(fondo_menu, POS_INICIAL_FONDO, False),                    
-                                  (logo, (450, 0)), False]
+                                  (logo, (450, 0), False)]
 
 lista_imgs_pantalla_juego = [(fondo_menu, POS_INICIAL_FONDO, False),                    
                              (presentador, POS_INCIAL_PRESENTADOR, False)]
 
 lista_imgs_pantalla_game_over = [(fondo_menu, POS_INICIAL_FONDO, False)]
 
-
 lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
 lista_elementos_pantalla_categorias = lista_imgs_pantalla_categorias + lista_textos_pantalla_categorias
-
 
 # Variables de control
 CRONOMETRO = pygame.USEREVENT + 1
@@ -173,6 +171,7 @@ pygame.time.set_timer(CRONOMETRO, 1000)
 contador_cronometro = 10
 texto_cronometro = str(contador_cronometro)
 
+texto_input_box = ""
 flag_run = True
 flag_pantalla_principal = True
 flag_pantalla_categorias = False
@@ -184,6 +183,8 @@ flag_pantalla_checkpoint = False
 flag_boton_pantalla_game_over = False
 flag_botones_pantalla_checkpoint = False
 flag_botones_respuestas = True
+flag_pantalla_guardar_score = False
+flag_botones_pantalla_guardar_score = False
 m = 0
 nivel = str(niveles_premios[m][0])
 
@@ -226,42 +227,71 @@ while flag_run:
                         nivel = str(niveles_premios[m][0])
                         contador_cronometro = 10
                         lista_elementos_interactivos_juego.clear()
-                        if nivel == "3" or nivel == "7":
+                        if nivel == "3" or nivel == "11":
                             flag_pantalla_juego = False
                             flag_cronometro_activo = False
                             flag_botones_respuestas = False
                             flag_pantalla_checkpoint = True
                             flag_botones_pantalla_checkpoint = True
                             dinero_a_retirar = niveles_premios[m - 1][1]
-                            cargar_pantalla_checkpoint(ventana_principal, dinero_a_retirar, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_checkpoint)
+                            mensaje_dinero_a_retirar = (f"O retirarse con: {dinero_a_retirar}", (450, 350), False)
+                            lista_textos_pantalla_checkpoint.append(mensaje_dinero_a_retirar)
+                            lista_elementos_pantalla_checkpoint = lista_imgs_pantalla_game_over + lista_textos_pantalla_checkpoint
+                            cargar_pantalla(ventana_principal, lista_elementos_pantalla_checkpoint, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_checkpoint)
                     else:
                         contador_cronometro = 10
                         flag_cronometro_activo = False
                         flag_pantalla_game_over = True
                         flag_boton_pantalla_game_over = True
                         flag_botones_respuestas = False
-                        cargar_pantalla_game_over("Respuesta incorrecta", ventana_principal, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
-
-            if flag_pantalla_game_over and flag_boton_pantalla_game_over:
+                        mensaje_error = "Respuesta incorrecta"
+                        lista_textos_pantalla_game_over_incorrecta.append((mensaje_error, (320, 200), False))
+                        lista_elementos_pantalla_game_over_incorrecta = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_incorrecta
+                        cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_incorrecta, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+            
+            
+            elif flag_pantalla_game_over and flag_boton_pantalla_game_over:
                 for elemento in lista_elementos_interactivos_game_over:
                     if elemento[1].collidepoint(mouse_pos):
                         m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint)
             
-            if flag_pantalla_checkpoint and flag_botones_pantalla_checkpoint:
+            elif flag_pantalla_checkpoint and flag_botones_pantalla_checkpoint:
                 for elemento in lista_elementos_interactivos_checkpoint:
                     if elemento[1].collidepoint(mouse_pos):
                         if elemento[0] == "Retirarse":
-                            m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint)
+                            flag_pantalla_guardar_score = True
+                            flag_pregunta_mostrada = False
                         else:
                             flag_pantalla_juego = True
                             flag_botones_respuestas = True
-                            flag_pregunta_mostrada = False
                             flag_cronometro_activo = True
+                            flag_pregunta_mostrada = False
                             flag_botones_pantalla_checkpoint = False
+            
+            
+        elif event.type == pygame.KEYDOWN:
+            if flag_pantalla_guardar_score and flag_botones_pantalla_guardar_score:
+                if event.key == pygame.K_BACKSPACE:
+                    texto_input_box = texto_input_box[:-1]
+                elif event.key == pygame.K_ESCAPE:
+                    texto_input_box = ""
+                else:
+                    texto_temp = texto_input_box + event.unicode
+                    texto_surface_temp = FUENTE_PANTALLA_GAME_OVER.render(texto_temp, True, BLANCO)
+                    rect_temp = texto_surface_temp.get_rect()
+                    if rect_temp.width <= input_box_premio.width:
+                        texto_input_box += event.unicode
+
+                    
+                    
+
+    
 
 
+        #m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint = resetear_juego(m, nivel, lista_elementos_interactivos_juego, flag_pantalla_juego, flag_pantalla_principal, flag_pregunta_mostrada, flag_cronometro_activo, flag_pantalla_game_over, flag_boton_pantalla_game_over, flag_botones_respuestas, flag_pantalla_checkpoint, flag_botones_pantalla_checkpoint)
+        
+        
         elif event.type == CRONOMETRO and flag_cronometro_activo:
-            cargar_pantalla(ventana_principal, lista_textos_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
             actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)
             dibujar_niveles_premios(ventana_principal, niveles_premios)
             contador_cronometro -= 1
@@ -271,23 +301,36 @@ while flag_run:
                 flag_pantalla_game_over = True
                 flag_boton_pantalla_game_over = True
                 flag_botones_respuestas = False
-                cargar_pantalla_game_over("Se le acabó el tiempo", ventana_principal, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
-            
-            
+                mensaje_error = "Se le acabó el tiempo"
+                lista_textos_pantalla_game_over_tiempo_finalizado.append((mensaje_error, (320, 200), False))
+                lista_elementos_pantalla_game_over_tiempo_finalizado = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_tiempo_finalizado
+                cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_tiempo_finalizado, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+    
     if flag_pantalla_principal:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
     elif flag_pantalla_categorias:
-        cargar_pantalla(ventana_principal, lista_textos_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
+        cargar_pantalla(ventana_principal, lista_elementos_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
     elif flag_pantalla_juego and not flag_pregunta_mostrada:
         flag_pregunta_mostrada, respuesta_correcta, lista_textos_pantalla_juego = cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel, flag_pregunta_mostrada, lista_imgs_pantalla_juego)
         actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)
         dibujar_niveles_premios(ventana_principal, niveles_premios)
-
-        
+    elif flag_pantalla_guardar_score:
+        flag_botones_respuestas = False
+        flag_boton_pantalla_game_over = False
+        flag_botones_pantalla_checkpoint = False
+        flag_botones_pantalla_guardar_score = True
+        lista_elementos_pantalla_score = lista_imgs_pantalla_game_over + lista_textos_pantalla_score
+        cargar_pantalla(ventana_principal, lista_elementos_pantalla_score, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_score)
+        input_box_premio = pygame.Rect(250, 450, 750, 65)
+        texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
+        ventana_principal.blit(texto_surface, (input_box_premio.x, input_box_premio.y))
+        pygame.draw.rect(ventana_principal, BLANCO, input_box_premio, 2)
     
     pygame.display.update()
         
 pygame.quit()
+           
+               
 
 
 
