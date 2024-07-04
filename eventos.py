@@ -10,8 +10,8 @@ def manejar_evento_quit(evento, flags_variables):
     if evento.type == pygame.QUIT:
         flags_variables["flag_run"] = False
 
-def manejar_colision_pantalla_principal(mouse_pos, flags_variables, lista_elementos_interactivos_principal):
-    for elemento in lista_elementos_interactivos_principal:
+def manejar_colision_pantalla_principal(mouse_pos, flags_variables, dict_elementos: dict):
+    for elemento in dict_elementos["interactivos"]:
         if elemento[1].collidepoint(mouse_pos):
             if elemento[0] == "JUGAR":
                 flags_variables["flag_pantalla_principal"] = False
@@ -20,9 +20,9 @@ def manejar_colision_pantalla_principal(mouse_pos, flags_variables, lista_elemen
                 flags_variables["flag_run"] = False
             break
 
-def manejar_colision_pantalla_categorias(mouse_pos, flags_variables, lista_elementos_interactivos_categorias):
+def manejar_colision_pantalla_categorias(mouse_pos, flags_variables, dict_elementos):
     categoria_elegida = None
-    for elemento in lista_elementos_interactivos_categorias:
+    for elemento in dict_elementos["interactivos"]:
         if elemento[1].collidepoint(mouse_pos):
             categoria_elegida = elemento[0]
             flags_variables["flag_pantalla_categorias"] = False
@@ -32,41 +32,41 @@ def manejar_colision_pantalla_categorias(mouse_pos, flags_variables, lista_eleme
     
     return categoria_elegida
 
-def manejar_colision_respuestas_pantalla_juego(mouse_pos, lista_elementos_interactivos_juego):
+def manejar_colision_respuestas_pantalla_juego(mouse_pos, dict_elementos):
     respuesta_seleccionada = None
-    for elemento in lista_elementos_interactivos_juego[:4]:
+    for elemento in dict_elementos["interactivos"][:4]:
         if elemento[1].collidepoint(mouse_pos):
             respuesta_seleccionada = elemento[0]
     
     return respuesta_seleccionada
 
-def manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventana_principal, lista_textos_pantalla_juego, lista_elementos_interactivos_juego, lista_imgs_pantalla_juego, lista_respuestas, respuesta_correcta, pista, fuente, color_texto, color_fondo):
-    for elemento in lista_elementos_interactivos_juego[4:7]:
+def manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventana_principal,dict_elementos,dict_pregunta):
+    for elemento in dict_elementos["interactivos"][4:7]:
         if elemento[1].collidepoint(mouse_pos):
             if elemento[0] == "Llamada" and flags_variables["flag_comodin_pista"]:
                 flags_variables["flag_comodin_pista"] = False
-                mostrar_pista(ventana_principal, pista, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA)
+                mostrar_pista(ventana_principal, dict_pregunta["pista"], dict_elementos["fuente"][0], dict_elementos["fuente"][1], dict_elementos["fuente"][2])
             elif elemento[0] == "Publico" and flags_variables["flag_comodin_publico"]:
                 flags_variables["flag_comodin_publico"] = False
-                lista_porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
+                lista_porcentajes = generar_porcentajes(dict_pregunta["preguntas"], dict_pregunta["respuesta_correcta"])
                 blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, fuente, color_texto, color_fondo)    
             elif elemento[0] == "50-50" and flags_variables["flag_comodin_50_50"]:
-                lista_elementos_interactivos_juego.clear()
-                lista_textos_pantalla_juego = aplicar_comodin_50_50(lista_textos_pantalla_juego, lista_respuestas, respuesta_correcta)
-                lista_elementos_pantalla_juego = lista_imgs_pantalla_juego + lista_textos_pantalla_juego 
-                cargar_pantalla(ventana_principal, lista_elementos_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
+                dict_elementos["interactivos"].clear()
+                dict_elementos["textos"] = aplicar_comodin_50_50(dict_elementos["textos"], dict_pregunta["pregunta"], dict_pregunta["respuesta_correcta"])
+                 
+                cargar_pantalla(ventana_principal, dict_elementos)
                 
                 flags_variables["flag_comodin_50_50"] = False
 
-def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, respuesta_seleccionada, respuesta_correcta, niveles_premios, ventana_principal, lista_elementos_interactivos_juego, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria, lista_textos_pantalla_game_over_incorrecta, lista_elementos_interactivos_game_over):
+def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, dict_pregunta,nivel_premio, ventana_principal, dict_elementos_pantalla_juego, dict_elementos_pantalla_checkpoint, dict_elementos_pantalla_game_over, respuesta_seleccionada):
     if respuesta_seleccionada != None:
-        if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
+        if corroborar_respuesta(respuesta_seleccionada, dict_pregunta["respuesta_correcta"]):
             m += 1
             nivel = str(niveles_premios[m][0])
             
             flags_variables["flag_pregunta_mostrada"] = False
             contador_cronometro = 30
-            lista_elementos_interactivos_juego.clear()
+            dict_elementos_pantalla_juego["interactivos"].clear()
             corroborar_checkpoint(m, nivel, flags_variables, niveles_premios, ventana_principal, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria)
         else:
             contador_cronometro = 30

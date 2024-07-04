@@ -1,34 +1,35 @@
-import pygame
-import sys
-from elementos import *
+dict_elementos_pantalla_principal ={
+        "imagenes":[("fondo_men", (450, 75), False),                    
+                    ("logo", (450, 75), False)],
+        
+        "textos" : [["pregunta", (25, 425), False],
+                    ["respuesta_A", (25, 550), True],
+                    ["respuesta_B",(450, 550), True],
+                    ["respuesta_C", (25, 650), True],
+                    ["respuesta_D", (450, 650), True],
+                    ("50-50", (150,55), True),
+                    ("Publico", (275,55), True),
+                    ("Llamada", (440,55), True)],
 
-pygame.init()
-ANCHO = 800
-ALTO = 600
-BLANCO = (255, 255, 255)
-NEGRO = (0, 0, 0)
+        "interactivos" : []
+    }
 
-ventana_principal = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption("Flecha Movible")
 
-flecha_img = pygame.Surface((50, 50))
-flecha_img.fill(BLANCO)  # Aquí deberías cargar tu imagen real de la flecha
 
-blitear_flecha = lambda nivel: ventana_principal.blit(flecha_img, (100, ALTO - 50 - nivel * 30))
+print(dict_elementos_pantalla_principal["textos"][0][0])
+        
 
-sep = 70
-nivel = 15
-while True:
-    ventana_principal.fill(NEGRO)  # Limpiar la pantalla
-
-    # Eventos
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-    # Dibujar la flecha según el nivel actual
-    blitear_flecha(nivel)
-
-    # Actualizar pantalla
-    pygame.display.flip()
+    # for elementos in clave:
+    #     print(elementos)
+    #if clave != "interactivos":
+        #for elemento in clave:
+         #   if type(elemento[0]) == str: 
+                #     surface = elemento[clave][0]
+                #     texto = str(surface)
+                # else:
+                #     texto = elemento[0]
+                #     surface = crear_texto_renderizado(texto, fuente, color_texto, color_fondo)
+                # posicion = elemento[1]
+                # interactivo = elemento[2]
+                # rect = surface.get_rect()
+                # rect.topleft = posicion

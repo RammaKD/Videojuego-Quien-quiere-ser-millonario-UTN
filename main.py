@@ -19,15 +19,16 @@ while flags_variables["flag_run"]:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos
             if flags_variables["flag_pantalla_principal"]:
-                manejar_colision_pantalla_principal(mouse_pos, flags_variables, lista_elementos_interactivos_principal)
+                manejar_colision_pantalla_principal(mouse_pos, flags_variables, dict_elementos_pantalla_principal)
             elif flags_variables["flag_pantalla_categorias"]:
-                categoria_elegida = manejar_colision_pantalla_categorias(mouse_pos, flags_variables, lista_elementos_interactivos_categorias)
+                categoria_elegida = manejar_colision_pantalla_categorias(mouse_pos, flags_variables, dict_elementos_pantalla_categorias)
             elif flags_variables["flag_pantalla_juego"] and flags_variables["flag_botones_respuestas"]:
-                respuesta_seleccionada = manejar_colision_respuestas_pantalla_juego(mouse_pos, lista_elementos_interactivos_juego)
-                manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventana_principal, lista_textos_pantalla_juego, lista_elementos_interactivos_juego, lista_imgs_pantalla_juego, lista_respuestas, respuesta_correcta, pista, FUENTE_COMODINES, BLANCO, VIOLETA)
+                respuesta_seleccionada = manejar_colision_respuestas_pantalla_juego(mouse_pos, dict_elementos_pantalla_juego)
+                print(respuesta_seleccionada)
+                manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventana_principal, dict_elementos_pantalla_juego, dict_pregunta_cargada)
                 
                 # blitear_flecha(nivel)
-                nivel, m, contador_cronometro = manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, respuesta_seleccionada, respuesta_correcta, niveles_premios, ventana_principal, lista_elementos_interactivos_juego, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria, lista_textos_pantalla_game_over_incorrecta, lista_elementos_interactivos_game_over)
+                nivel, m, contador_cronometro = manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro,dict_pregunta_cargada, niveles_premios, ventana_principal, dict_elementos_pantalla_juego, dict_elementos_pantalla_checkpoint, dict_elementos_pantalla_game_over, respuesta_seleccionada)
             elif flags_variables["flag_pantalla_game_over"] and flags_variables["flag_boton_pantalla_game_over"]:
                 flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos_juego = manejar_colision_pantalla_pantalla_game_over(mouse_pos, lista_elementos_interactivos_game_over, flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos_juego)
             elif flags_variables["flag_pantalla_checkpoint"] and flags_variables["flag_botones_pantalla_checkpoint"]:
@@ -46,13 +47,15 @@ while flags_variables["flag_run"]:
             contador_cronometro = manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, BLANCO, VIOLETA, FUENTE_CRONOMETRO)
     
     if flags_variables["flag_pantalla_principal"]:
-        cargar_pantalla(ventana_principal, lista_elementos_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
+        cargar_pantalla(ventana_principal, dict_elementos_pantalla_principal)
     
     elif flags_variables["flag_pantalla_categorias"]:
-        cargar_pantalla(ventana_principal, lista_elementos_pantalla_categorias, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_categorias)
+        cargar_pantalla(ventana_principal, dict_elementos_pantalla_categorias)
     
     elif flags_variables["flag_pantalla_juego"] and not flags_variables["flag_pregunta_mostrada"]:
-        respuesta_correcta, pista, lista_textos_pantalla_juego, lista_respuestas, lista_posiciones_respuestas = cargar_elementos_juego(ventana_principal, lista_preguntas, categoria_elegida, nivel, lista_imgs_pantalla_juego, lista_elementos_interactivos_juego)
+        dict_pregunta_cargada = cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel)
+        dict_elementos_pantalla_juego = modificar_dict_pantalla_juego(dict_elementos_pantalla_juego, dict_pregunta_cargada)
+        cargar_pantalla(ventana_principal, dict_elementos_pantalla_juego)
         flags_variables["flag_pregunta_mostrada"] = True
         blitear_flecha(nivel)
         actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)

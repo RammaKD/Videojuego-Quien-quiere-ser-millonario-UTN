@@ -23,49 +23,7 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     
     return lista_preguntas
 
-def crear_diccionario_botones(lista_botones, texto, surface, posicion, rect):
-    """
-    Crea y añade un diccionario con propiedades de botón a una lista.
-
-    Retorna el diccionario creado con las propiedades del botón.
-    """
-    try:
-        elemento = {
-            "texto": texto,
-            "superficie": surface,
-            "rectangulo": rect,
-            "posicion": posicion
-        }
-        lista_botones.append(elemento)
-    except:
-        elemento = False
-    
-    return elemento
         
-def crear_propiedades_botones(lista_textos, fuente, color_texto, color_fondo, lista_elementos_interactivos):
-    """
-    Crea propiedades para botones usando texto renderizado o superficies.
-    Añade botones interactivos a una lista dada.
-
-    Retorna una lista de diccionarios con propiedades de botones.
-    """
-    lista_botones = []
-    for elemento in lista_textos:
-        if type(elemento[0]) == pygame.Surface: 
-            surface = elemento[0]
-            texto = str(surface)
-        else:
-            texto = elemento[0]
-            surface = crear_texto_renderizado(texto, fuente, color_texto, color_fondo)
-        posicion = elemento[1]
-        interactivo = elemento[2]
-        rect = surface.get_rect()
-        rect.topleft = posicion
-        if interactivo:
-            lista_elementos_interactivos.append((texto, rect))
-        crear_diccionario_botones(lista_botones, texto, surface, posicion, rect)
-
-    return lista_botones
 
 def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel):
     """
@@ -87,12 +45,59 @@ def cargar_pregunta_aleatoriamente(lista_preguntas):
     pregunta_aleatoria = lista_preguntas[indice_random]
     return pregunta_aleatoria
 
-def cargar_pantalla(ventana_principal, lista_elementos, fuente, color_texto, color_fondo, lista_elementos_interactivos):
+def cargar_pantalla(ventana_principal, dict_elementos):
     """
     Carga y muestra elementos interactivos en una ventana principal, usando una fuente y colores específicos.
     """
-    lista_botones = crear_propiedades_botones(lista_elementos, fuente, color_texto, color_fondo, lista_elementos_interactivos)
+    lista_botones = crear_propiedades_botones(dict_elementos)
     blitear_elementos(ventana_principal, lista_botones)
+
+def crear_propiedades_botones(dict_elementos):
+    """
+    Crea propiedades para botones usando texto renderizado o superficies.
+    Añade botones interactivos a una lista dada.
+
+    Retorna una lista de diccionarios con propiedades de botones.
+    """
+    lista_botones = []
+    for clave,valor in dict_elementos.items():
+        if clave != "interactivos" and clave != "fuente":
+            for elemento in valor:
+                if type(elemento[0]) == pygame.Surface: 
+                    surface = elemento[0]
+                    texto = str(surface)
+                else:
+                    texto = elemento[0]
+                    surface = crear_texto_renderizado(texto, dict_elementos["fuente"][0], dict_elementos["fuente"][1], dict_elementos["fuente"][2])
+                posicion = elemento[1]
+                interactivo = elemento[2]
+                rect = surface.get_rect()
+                rect.topleft = posicion
+                if interactivo:
+                    dict_elementos["interactivos"].append((texto, rect))
+                crear_diccionario_botones(lista_botones, texto, surface, posicion, rect)
+
+    return lista_botones
+
+def crear_diccionario_botones(lista_botones, texto, surface, posicion, rect):
+    """
+    Crea y añade un diccionario con propiedades de botón a una lista.
+
+    Retorna el diccionario creado con las propiedades del botón.
+    """
+    try:
+        elemento = {
+            "texto": texto,
+            "superficie": surface,
+            "rectangulo": rect,
+            "posicion": posicion
+        }
+        lista_botones.append(elemento)
+    except:
+        elemento = False
+    
+    return elemento
+
 
 def generar_porcentajes(lista_respuestas, respuesta_correcta):
     """
@@ -184,7 +189,7 @@ def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     
     return retorno
 
-def cargar_elementos_juego(ventana, lista_preguntas, categoria_elegida, nivel, lista_imgs_pantalla_juego, lista_elementos_interactivos_juego):
+def cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel):
     """
     Carga y muestra los elementos del juego en la pantalla. Filtra las preguntas según 
     la categoría y nivel, selecciona una pregunta aleatoria y prepara las respuestas 
@@ -194,26 +199,26 @@ def cargar_elementos_juego(ventana, lista_preguntas, categoria_elegida, nivel, l
     Retorna la respuesta correcta, pista, lista de textos en pantalla, lista de respuestas y 
     sus posiciones.
     """
+    dict_pregunta_tocada ={}
     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
-    lista_respuestas = crear_lista_respuestas(pregunta_cargada)
-    respuesta_correcta = pregunta_cargada["Respuesta_correcta"]
-    pista = pregunta_cargada["Pista"]
+    dict_pregunta_tocada["pregunta"] = pregunta_cargada["Pregunta"]
+    dict_pregunta_tocada["respuestas"] = crear_lista_respuestas(pregunta_cargada)
+    dict_pregunta_tocada["respuesta_correcta"] = pregunta_cargada["Respuesta_correcta"]
+    dict_pregunta_tocada["pista"] = pregunta_cargada["Pista"]
+
+    return dict_pregunta_tocada
+
+def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
     
-    lista_posiciones_respuestas = [(25, 550), (450, 550), (25, 650), (450, 650)]
-    lista_textos_pantalla_juego = [(pregunta_cargada["Pregunta"], (25, 425), False),
-                                   [lista_respuestas[0], lista_posiciones_respuestas[0], True],
-                                   [lista_respuestas[1], lista_posiciones_respuestas[1], True],
-                                   [lista_respuestas[2], lista_posiciones_respuestas[2], True],
-                                   [lista_respuestas[3], lista_posiciones_respuestas[3], True],
-                                   ("50-50", (150,55), True),
-                                   ("Publico", (275,55), True),
-                                   ("Llamada", (440,55), True)]
-    
-    lista_elementos_pantalla_juego = lista_imgs_pantalla_juego + lista_textos_pantalla_juego
-    cargar_pantalla(ventana, lista_elementos_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
-    
-    return respuesta_correcta, pista, lista_textos_pantalla_juego, lista_respuestas, lista_posiciones_respuestas
+    dict_elementos["textos"][0][0] = dict_pregunta["pregunta"]
+    dict_elementos["textos"][1][0] = dict_pregunta["respuestas"][0]
+    dict_elementos["textos"][2][0] = dict_pregunta["respuestas"][1]
+    dict_elementos["textos"][3][0] = dict_pregunta["respuestas"][2]
+    dict_elementos["textos"][4][0] = dict_pregunta["respuestas"][3]
+
+    return dict_elementos
+   
 
 def resetear_juego(flags_variables,m, nivel,niveles_premios,lista_elementos_interactivos):
     """
