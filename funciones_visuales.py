@@ -1,82 +1,51 @@
 import pygame
+from configuraciones import *
 
 def cargar_imagen(path, dimensiones):
     imagen = pygame.image.load(path)
     imagen = pygame.transform.scale(imagen, dimensiones)
     return imagen
 
-def crear_fuente(fuente, tamaño):
-    fuente = pygame.font.SysFont(fuente, tamaño)
-    return fuente
-
-def cargar_pantalla(ventana_principal, list_diccionarios):
-
-    exito = True
-    try:
-        
-        for elemento in elementos:
-            imagen = elemento["superficie"]
-            coordenadas = elemento["posicion"]
-            ventana_principal.blit(imagen, coordenadas)
-    except:
-        exito = False
-    
-    return exito
-
-def crear_texto_renderizado(texto, fuente, color):
-    texto_renderizado = fuente.render(texto, True, color)
+def crear_texto_renderizado(texto, fuente, color, color_fondo):
+    texto_renderizado = fuente.render(texto, True, color, color_fondo)
     return texto_renderizado
 
-def crear_fondo_texto(rect_texto, color_fondo):
-    fondo_surface = pygame.Surface((rect_texto.width, rect_texto.height))
-    fondo_surface.fill(color_fondo)
-    return fondo_surface
+def blitear_porcentajes(ventana, porcentajes, lista_respuestas, fuente, color_texto, color_fondo):
+    y = 125
+    for i in range(len(lista_respuestas)):
+        respuesta = lista_respuestas[i]
+        porcentaje = porcentajes[i]
+        texto = f"{respuesta}: {porcentaje}%"
+        superficie_texto = crear_texto_renderizado(texto, fuente, color_texto, color_fondo)
+        ventana.blit(superficie_texto, (25, y))
+        y += 50
 
-def crear_rect_texto(texto_renderizado, posicion):
-    rect_texto = texto_renderizado.get_rect()
-    rect_texto.topleft = posicion
-    return rect_texto
+def mostrar_pista(ventana_principal, pista, fuente, color_texto, color_fondo):
+    superficie_pista = crear_texto_renderizado(pista, fuente, color_texto, color_fondo)
+    ventana_principal.blit(superficie_pista, (25, 325))
 
-def dibujar_piramide_premios(ventana, niveles_premios, ANCHO_VENTANA, color_fuente, color_fondo):
-    fuente_premios = pygame.font.SysFont("sinsum", 50)
-    x_base = ANCHO_VENTANA - 200 
-    y_base = 30
-    espacio_entre_premios = 40
-    
-    for i in range(len(niveles_premios)):
-        premio = niveles_premios[i][1]
-        texto_premio = crear_texto_renderizado(premio, fuente_premios, color_fuente)
-        rect_texto_premio = texto_premio.get_rect(left=x_base, top=y_base)
-        fondo_premio = crear_fondo_texto(rect_texto_premio, color_fondo)
-        ventana.blit(fondo_premio, rect_texto_premio)
-        ventana.blit(texto_premio, rect_texto_premio.topleft)
-        y_base += espacio_entre_premios
+def actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, fuente, color_texto, color_fondo):
+    texto_cronometro = str(contador_cronometro).zfill(2)
+    superficie_cronometro = crear_texto_renderizado(texto_cronometro, fuente, color_texto, color_fondo)
+    ventana_principal.blit(superficie_cronometro, (25, 40))  
 
-def usar_comodin_publico(pantalla, porcentajes, respuestas, fuente, color_texto, color_fondo):
-    x = 150
-    y = 150
-    ancho_celda = 300
-    alto_celda = 50
-    
-    texto_encabezado = fuente.render("Resp.", False, color_texto)
-    texto_porcentaje_encabezado = fuente.render("%", False, color_texto)
-    
-    pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
-    pantalla.blit(texto_encabezado, (x + 10, y + 10))
-    pantalla.blit(texto_porcentaje_encabezado, (x + 180, y + 10))
-    y += alto_celda 
-    
-    for i in range(len(respuestas)):
-        pygame.draw.rect(pantalla, color_fondo, (x, y, ancho_celda, alto_celda))
-        texto_respuesta = fuente.render(respuestas[i], True, color_texto)
-        texto_porcentaje = fuente.render(f"{porcentajes[i]}%", True, color_texto)
-        pantalla.blit(texto_respuesta, (x + 10, y + 10))
-        pantalla.blit(texto_porcentaje, (x + 180, y + 10))  
-        y += alto_celda  
+def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios, fuente, color_texto, color_fondo):
+    y = 25
+    for i in range(len(piramide_niveles_premios) -1, -1, -1):
+        nivel_premio = crear_texto_renderizado(piramide_niveles_premios[i][1], fuente, color_texto, color_fondo)
+        ventana_principal.blit(nivel_premio, (1100, y))
+        y += 40
 
-
-
-
+def blitear_elementos(ventana_principal, lista_botones):
+    exito = True
+    try:
+        for elemento in lista_botones:
+            superficie = elemento["superficie"]
+            posicion = elemento["posicion"]
+            ventana_principal.blit(superficie, posicion)
+    except:
+        exito = False
+    return exito
 
 
 

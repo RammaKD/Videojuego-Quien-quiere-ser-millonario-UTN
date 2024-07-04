@@ -15,6 +15,29 @@ def leer_preguntas_csv(ruta_archivo_csv):
     
     return lista_datos_csv
 
+def cargar_billetera_json(ruta_archivo_json):
+    try:
+        with open(ruta_archivo_json, 'r') as file:
+            billetera = json.load(file)
+        return billetera
+    except FileNotFoundError:
+        return {"billetera": []}
+    except Exception as e:
+        print(f"Error al cargar el archivo JSON: {e}")
+        return {"billetera": []}
+
+def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
+    exito = True
+    try:
+        datos = cargar_billetera_json(ruta_archivo_json)
+        datos["billetera"].append(puntuacion_actualizada)
+        with open(ruta_archivo_json, "w") as archivo:
+            json.dump(datos, archivo, indent=2)
+    except:
+        exito = False
+        
+    return exito
+
 def obtener_paths(ruta_archivo_json):
     with open(ruta_archivo_json, "r", encoding="utf-8") as archivo:
         data = json.load(archivo)
@@ -25,26 +48,34 @@ def obtener_paths(ruta_archivo_json):
     
     return diccionario_paths
 
-def cargar_billetera_json(ruta_archivo_json):
-    billetera = True
-    try:
-        with open(ruta_archivo_json, 'r') as file:
-            billetera = json.load(file)["billetera"]
-    except:
-        billetera = False
-    
-    return billetera
 
-def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
-    exito = True
-    try:
-        with open(ruta_archivo_json, "w") as archivo:
-            nueva_puntuacion = {"billetera" : puntuacion_actualizada}
-            json.dump(nueva_puntuacion, archivo, indent=2)
-    except:
-        exito = False
-    
-    return exito
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

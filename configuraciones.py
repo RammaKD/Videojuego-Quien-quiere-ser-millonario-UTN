@@ -17,20 +17,21 @@ ANCHO_VENTANA = 1280
 ALTO_VENTANA = 720
 DIMENSIONES_VENTANA = (ANCHO_VENTANA, ALTO_VENTANA)
 POS_INICIAL_FONDO = (0,0)
-POS_INCIAL_PRESENTADOR = (375, 500)
+POS_INICIAL_PRESENTADOR = (650, 250)
 POS_RESP_A = (25, 550)
 POS_RESP_B = (450, 550) 
 POS_RESP_C = (25, 650)
 POS_RESP_D = (450, 650)
-POS_PREG_CORTE_1 = (25, 425)
-POS_PREG_CORTE_2 = (25, 475)
 
 # Fuentes
-FUENTE_PRINCIPAL = crear_fuente("sinsum", 70)
-FUENTE_PANTALLA_JUEGO = crear_fuente("sinsum", 35)
-FUENTE_CRONOMETRO = crear_fuente("sinsum", 75)
-FUENTE_COMODINES = crear_fuente("sinsum", 60)
-FUENTE_PANTALLA_GAME_OVER = crear_fuente("sinsum", 90)
-FUENTE_PIRAMIDE_PREMIOS = crear_fuente("sinsum", 50)
+FUENTE_PRINCIPAL = pygame.font.SysFont("sinsum", 75)
+FUENTE_PANTALLA_JUEGO =  pygame.font.SysFont("sinsum", 35)
+FUENTE_CRONOMETRO =  pygame.font.SysFont("sinsum", 75)
+FUENTE_COMODINES =  pygame.font.SysFont("sinsum", 60)
+FUENTE_PANTALLA_GAME_OVER =  pygame.font.SysFont("sinsum", 90)
+FUENTE_PIRAMIDE_PREMIOS =  pygame.font.SysFont("sinsum", 50)
+
+#Evento propio
+CRONOMETRO = pygame.USEREVENT
 
 
