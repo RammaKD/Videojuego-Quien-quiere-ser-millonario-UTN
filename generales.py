@@ -1,4 +1,3 @@
-
 import random
 import pygame
 from funciones_visuales import *
@@ -155,7 +154,7 @@ def cargar_elementos_juego(ventana, lista_preguntas, categoria_elegida, nivel, l
 
 def resetear_juego(flags_variables,m, nivel,niveles_premios,lista_elementos_interactivos):
     m = 0
-    nivel = str(niveles_premios[0][0])
+    nivel = str(niveles_premios[m][0])
     lista_elementos_interactivos.clear()
     flags_variables["flag_pantalla_juego"] = False
     flags_variables["flag_pantalla_principal"] = True

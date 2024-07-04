@@ -3,6 +3,8 @@ from configuraciones import *
 from funciones_visuales import *
 from funciones_archivos import *
 
+pygame.init()
+
 lista_preguntas = []
 lista_elementos_interactivos_principal = []
 lista_elementos_interactivos_categorias = []
@@ -12,12 +14,14 @@ lista_elementos_interactivos_checkpoint = []
 lista_elementos_interactivos_score = []
 lista_elementos_interactivos_victoria = []
 diccionario_puntaje = {}
+
 diccionario_paths = obtener_paths("archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
 crear_diccionario_preguntas(lista_datos_csv, lista_preguntas)
 logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
 fondo_menu = cargar_imagen(diccionario_paths["path_fondo_menu"], DIMENSIONES_VENTANA)
-presentador = cargar_imagen(diccionario_paths["path_presentador"], POS_INICIAL_PRESENTADOR)
+presentador = cargar_imagen(diccionario_paths["path_presentador"], (450, 600))
+flecha = cargar_imagen(diccionario_paths["path_flecha"], (100, 50))
 
 niveles_premios = [
     [1, "$100"],
@@ -35,6 +39,7 @@ niveles_premios = [
     [13, "$250000"],
     [14, "$500000"],
     [15, "$1000000"],
+    [16, ""]
 ]
 
 flags_variables = {
@@ -57,11 +62,12 @@ flags_variables = {
     "flag_comodin_publico": True,
     "flag_comodin_50_50": True,
 }
-
 texto_input_box = ""
+texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
+input_box_premio = texto_surface.get_rect()
 m = 0
 nivel = str(niveles_premios[m][0])
-contador_cronometro = 10
+contador_cronometro = 30
 texto_cronometro = str(contador_cronometro)
 
 lista_textos_pantalla_principal = [("JUGAR", (380, 515), True), 
@@ -74,9 +80,9 @@ lista_textos_pantalla_categorias = [("Eliga una categoria", (450, 365), False),
                                     ("Entretenimiento", (275, 600), True),
                                     ("Geografía", (715, 600), True)]
 
-lista_textos_pantalla_checkpoint = [("Quiere seguir jugando?", (450, 300), False),
-                                    ("Seguir jugando", (100, 450), True),
-                                    ("Retirarse", (400, 450), True)]
+lista_textos_pantalla_checkpoint = [("Quiere seguir jugando?", (250, 200), False),
+                                    ("Seguir jugando", (350, 450), True),
+                                    ("Retirarse", (450, 550), True)]
 
 lista_textos_pantalla_game_over_incorrecta = [("Has perdido!", (450, 300), False),
                                               ("Volver al menu principal", (270, 450), True)]
@@ -106,6 +112,8 @@ lista_posiciones_porcentajes = [(450, 100), (450, 130), (450, 160), (450, 190)]
 lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
 lista_elementos_pantalla_categorias = lista_imgs_pantalla_categorias + lista_textos_pantalla_categorias
 lista_elementos_pantalla_victoria = lista_imgs_pantalla_game_over + lista_textos_pantalla_victoria
+lista_elementos_pantalla_score = lista_imgs_pantalla_game_over + lista_textos_pantalla_score
+
 
 
 
