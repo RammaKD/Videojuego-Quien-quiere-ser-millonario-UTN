@@ -153,11 +153,7 @@ def manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_
             
     return texto_input_box, texto_surface, input_box_premio, m, nivel  
 
-def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, ventana_principal):
-    input_box_premio = pygame.Rect(250, 450, 750, 65)
-    texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
-    ventana_principal.blit(texto_surface, (input_box_premio.x, input_box_premio.y))
-    pygame.draw.rect(ventana_principal, BLANCO, input_box_premio, 2)
+
 
 def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, color_texto, color_fondo, fuente):
     if contador_cronometro < 11:
@@ -213,8 +209,8 @@ def manejar_evento_borrar_score_pantalla(event,flags_variables,lista_textos_pant
                     ("Pantalla puntajes[tab]", (370, 600), False)
                 ]
                 lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
-                # if flag:
+                
                 cargar_pantalla(ventana_principal, lista_elementos_pantalla_principal, fuente, color_texto, color_fondo, lista_elementos_interactivos_principal)       
-                    # flag = False
+                    
 
     return flags_variables, lista_elementos_pantalla_principal, lista_imgs_pantalla_principal,lista_textos_pantalla_principal

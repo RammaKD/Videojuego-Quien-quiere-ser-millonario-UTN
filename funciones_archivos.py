@@ -1,6 +1,15 @@
 import json
 
 def leer_preguntas_csv(ruta_archivo_csv):
+    """
+    Lee un archivo CSV desde la ruta especificada y retorna una lista de datos estructurada.
+    
+    Parámetros:
+    ruta_archivo_csv (str): Ruta del archivo CSV a leer.
+    
+    Retorna:
+    list: Lista de datos del archivo CSV, con el encabezado y los valores de las preguntas.
+    """
     lista_datos_csv = []
     with open(ruta_archivo_csv, "r", encoding="utf-8") as archivo:
         lineas = archivo.readlines()
@@ -16,6 +25,15 @@ def leer_preguntas_csv(ruta_archivo_csv):
     return lista_datos_csv
 
 def cargar_billetera_json(ruta_archivo_json):
+    """
+    Carga datos de una billetera desde un archivo JSON especificado.
+
+    Si el archivo no existe, retorna una billetera vacía.
+    Si hay algún error durante la carga, imprime un mensaje de error y retorna una billetera vacía.
+
+    Retorna:
+    dict: Datos de la billetera cargados desde el archivo JSON o una billetera vacía si hay problemas.
+    """
     try:
         with open(ruta_archivo_json, 'r') as file:
             billetera = json.load(file)
@@ -27,6 +45,16 @@ def cargar_billetera_json(ruta_archivo_json):
         return {"billetera": []}
 
 def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
+    """
+    Actualiza un archivo JSON con una nueva puntuación actualizada en la billetera.
+
+    Parámetros:
+    ruta_archivo_json (str): Ruta del archivo JSON a actualizar.
+    puntuacion_actualizada (dict): Nueva puntuación a agregar a la billetera.
+
+    Retorna:
+    bool: True si la actualización fue exitosa, False si hubo algún error.
+    """
     exito = True
     try:
         datos = cargar_billetera_json(ruta_archivo_json)
@@ -39,6 +67,15 @@ def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
     return exito
 
 def obtener_paths(ruta_archivo_json):
+    """
+    Lee un archivo JSON desde la ruta especificada y retorna un diccionario con los paths obtenidos.
+
+    Parámetros:
+    ruta_archivo_json (str): Ruta del archivo JSON a leer.
+
+    Retorna:
+    dict: Diccionario con las rutas obtenidas desde el archivo JSON.
+    """
     with open(ruta_archivo_json, "r", encoding="utf-8") as archivo:
         data = json.load(archivo)
     diccionario_paths = {}
@@ -47,35 +84,5 @@ def obtener_paths(ruta_archivo_json):
         diccionario_paths[clave] = valor
     
     return diccionario_paths
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

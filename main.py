@@ -12,7 +12,7 @@ pygame.time.set_timer(CRONOMETRO, 1000)
 
 blitear_flecha = lambda nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 60 - int(nivel) * 40))
 
-flag = True
+
 while flags_variables["flag_run"]:
     for event in pygame.event.get():
         manejar_evento_quit(event, flags_variables)
