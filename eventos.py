@@ -4,6 +4,8 @@ from generales import *
 from funciones_archivos import *
 from elementos import *
 
+
+
 def manejar_evento_quit(evento, flags_variables):
     if evento.type == pygame.QUIT:
         flags_variables["flag_run"] = False
@@ -51,8 +53,9 @@ def manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventan
             elif elemento[0] == "50-50" and flags_variables["flag_comodin_50_50"]:
                 lista_elementos_interactivos_juego.clear()
                 lista_textos_pantalla_juego = aplicar_comodin_50_50(lista_textos_pantalla_juego, lista_respuestas, respuesta_correcta)
-                lista_elementos_pantalla_juego = lista_imgs_pantalla_juego + lista_textos_pantalla_juego
+                lista_elementos_pantalla_juego = lista_imgs_pantalla_juego + lista_textos_pantalla_juego 
                 cargar_pantalla(ventana_principal, lista_elementos_pantalla_juego, FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA, lista_elementos_interactivos_juego)
+                
                 flags_variables["flag_comodin_50_50"] = False
 
 def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, respuesta_seleccionada, respuesta_correcta, niveles_premios, ventana_principal, lista_elementos_interactivos_juego, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria, lista_textos_pantalla_game_over_incorrecta, lista_elementos_interactivos_game_over):
@@ -60,8 +63,7 @@ def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometr
         if corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
             m += 1
             nivel = str(niveles_premios[m][0])
-            print(f"Indice: {m}")
-            print(f"nivel: {nivel}")
+            
             flags_variables["flag_pregunta_mostrada"] = False
             contador_cronometro = 30
             lista_elementos_interactivos_juego.clear()
@@ -178,3 +180,41 @@ def manejar_evento_cronometro(ventana_principal, flags_variables, contador_crono
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_tiempo_finalizado, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
     
     return contador_cronometro
+
+def manejar_evento_mostrar_score(event, flags_variables,diccionario_paths,ventana_principal,lista_elementos_pantalla_principal,lista_imgs_pantalla_principal,fuente, color_texto, color_fondo, lista_textos_pantalla_principal):
+    if event.key == pygame.K_TAB and flags_variables["flag_pantalla_principal"]:
+                if flags_variables["flag_scores_mostrados"]:
+                    flags_variables["flag_scores_mostrados"] = False
+                    scores = cargar_billetera_json(diccionario_paths["path_billetera"])
+                    puntajes = scores["billetera"]
+                    if len(puntajes) > 0:
+                        y = 50
+                        for puntaje in puntajes:
+                            texto_score = puntaje
+                            posicion = (25,y)
+                            inter_actividad = False
+                            elemento_comp = (texto_score,posicion,inter_actividad)
+                            lista_textos_pantalla_principal.append(elemento_comp)
+                            y +=50
+                        lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
+                        cargar_pantalla(ventana_principal,lista_elementos_pantalla_principal,fuente, color_texto , color_fondo ,lista_elementos_interactivos_principal)
+                else:
+                    flags_variables["flag_scores_mostrados"] = True
+    
+    return flags_variables,lista_elementos_pantalla_principal,lista_imgs_pantalla_principal,lista_textos_pantalla_principal
+
+def manejar_evento_borrar_score_pantalla(event,flags_variables,lista_textos_pantalla_principal, ventana_principal,lista_elementos_pantalla_principal,fuente, color_texto, color_fondo,lista_elementos_interactivos_principal):
+    if event.key == pygame.K_DELETE: 
+                flags_variables["flag_pantalla_principal"] = True
+                flags_variables["flag_scores_mostrados"] = False
+                lista_textos_pantalla_principal = [
+                    ("JUGAR", (380, 515), True), 
+                    ("SALIR", (750, 515), True),
+                    ("Pantalla puntajes[tab]", (370, 600), False)
+                ]
+                lista_elementos_pantalla_principal = lista_imgs_pantalla_principal + lista_textos_pantalla_principal
+                # if flag:
+                cargar_pantalla(ventana_principal, lista_elementos_pantalla_principal, fuente, color_texto, color_fondo, lista_elementos_interactivos_principal)       
+                    # flag = False
+
+    return flags_variables, lista_elementos_pantalla_principal, lista_imgs_pantalla_principal,lista_textos_pantalla_principal

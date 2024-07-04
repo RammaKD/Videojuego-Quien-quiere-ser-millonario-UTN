@@ -104,19 +104,20 @@ def aplicar_comodin_50_50(lista_textos_pantalla_juego, lista_respuestas, respues
 
 def elegir_respuestas_incorrectas_random(lista_respuestas, respuesta_correcta):
     lista_incorrectas = []
+    
     contador = 0
     while contador < 2:
         indice_random = random.randint(0, len(lista_respuestas) - 1)
         respuesta_elegida = lista_respuestas[indice_random]
         
-        es_correcta = respuesta_elegida == respuesta_correcta
+        
         es_duplicada = False
         for incorrecta in lista_incorrectas:
             if incorrecta == respuesta_elegida:
                 es_duplicada = True
                 break
         
-        if not es_correcta and not es_duplicada:
+        if respuesta_elegida != respuesta_correcta and not es_duplicada:
             lista_incorrectas.append(respuesta_elegida)
             contador += 1
 
@@ -169,7 +170,7 @@ def resetear_juego(flags_variables,m, nivel,niveles_premios,lista_elementos_inte
     flags_variables["flag_comodin_publico"] = True
     flags_variables["flag_pantalla_guardar_score"] = False
     flags_variables["flag_botones_pantalla_guardar_score"] = False
-    
+    flags_variables["flag_comodin_50_50"] = True
     return flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos
 
 

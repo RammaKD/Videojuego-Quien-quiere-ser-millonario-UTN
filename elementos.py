@@ -61,6 +61,7 @@ flags_variables = {
     "flag_comodin_pista": True,
     "flag_comodin_publico": True,
     "flag_comodin_50_50": True,
+    "flag_scores_mostrados" : True
 }
 texto_input_box = ""
 texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
@@ -71,7 +72,8 @@ contador_cronometro = 30
 texto_cronometro = str(contador_cronometro)
 
 lista_textos_pantalla_principal = [("JUGAR", (380, 515), True), 
-                                   ("SALIR", (750, 515), True)]
+                                   ("SALIR", (750, 515), True),
+                                   ("Pantalla puntajes[tab]",(370,600),False)]
 
 lista_textos_pantalla_categorias = [("Eliga una categoria", (450, 365), False),
                                     ("Historia", (275, 500), True),

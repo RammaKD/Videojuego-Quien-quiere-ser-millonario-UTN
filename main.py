@@ -9,9 +9,10 @@ ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
 pygame.display.set_caption("Quien quiere ser millonario?")
 pygame.display.set_icon(logo)
 pygame.time.set_timer(CRONOMETRO, 1000)
+
 blitear_flecha = lambda nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 60 - int(nivel) * 40))
 
-
+flag = True
 while flags_variables["flag_run"]:
     for event in pygame.event.get():
         manejar_evento_quit(event, flags_variables)
@@ -24,6 +25,8 @@ while flags_variables["flag_run"]:
             elif flags_variables["flag_pantalla_juego"] and flags_variables["flag_botones_respuestas"]:
                 respuesta_seleccionada = manejar_colision_respuestas_pantalla_juego(mouse_pos, lista_elementos_interactivos_juego)
                 manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventana_principal, lista_textos_pantalla_juego, lista_elementos_interactivos_juego, lista_imgs_pantalla_juego, lista_respuestas, respuesta_correcta, pista, FUENTE_COMODINES, BLANCO, VIOLETA)
+                
+                # blitear_flecha(nivel)
                 nivel, m, contador_cronometro = manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, respuesta_seleccionada, respuesta_correcta, niveles_premios, ventana_principal, lista_elementos_interactivos_juego, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria, lista_textos_pantalla_game_over_incorrecta, lista_elementos_interactivos_game_over)
             elif flags_variables["flag_pantalla_game_over"] and flags_variables["flag_boton_pantalla_game_over"]:
                 flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos_juego = manejar_colision_pantalla_pantalla_game_over(mouse_pos, lista_elementos_interactivos_game_over, flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos_juego)
@@ -35,7 +38,10 @@ while flags_variables["flag_run"]:
         elif event.type == pygame.KEYDOWN:
             if flags_variables["flag_pantalla_guardar_score"] and flags_variables["flag_botones_pantalla_guardar_score"]:
                 texto_input_box, texto_surface, input_box_premio, m, nivel = manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_box_premio,  m, nivel,niveles_premios, lista_elementos_interactivos_juego)
-                
+            flags_variables,lista_elementos_pantalla_principal,lista_imgs_pantalla_principal,lista_textos_pantalla_principal = manejar_evento_mostrar_score(event,flags_variables, diccionario_paths, ventana_principal, lista_elementos_pantalla_principal, lista_imgs_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_textos_pantalla_principal)
+            
+            flags_variables, lista_elementos_pantalla_principal, lista_imgs_pantalla_principal,lista_textos_pantalla_principal = manejar_evento_borrar_score_pantalla(event,flags_variables,lista_textos_pantalla_principal,ventana_principal, lista_elementos_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
+        
         elif event.type == CRONOMETRO and flags_variables["flag_cronometro_activo"]:
             contador_cronometro = manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, BLANCO, VIOLETA, FUENTE_CRONOMETRO)
     
