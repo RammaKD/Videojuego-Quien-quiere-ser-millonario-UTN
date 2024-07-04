@@ -27,7 +27,9 @@ def mostrar_pista(ventana_principal, pista, fuente, color_texto, color_fondo):
 def actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, fuente, color_texto, color_fondo):
     texto_cronometro = str(contador_cronometro).zfill(2)
     superficie_cronometro = crear_texto_renderizado(texto_cronometro, fuente, color_texto, color_fondo)
-    ventana_principal.blit(superficie_cronometro, (25, 40))  
+    ventana_principal.fill(color_fondo, (25, 40, superficie_cronometro.get_width()+3, superficie_cronometro.get_height()))
+    ventana_principal.blit(superficie_cronometro, (25, 40))
+    
 
 def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios, fuente, color_texto, color_fondo):
     y = 25
@@ -46,6 +48,5 @@ def blitear_elementos(ventana_principal, lista_botones):
     except:
         exito = False
     return exito
-
 
 

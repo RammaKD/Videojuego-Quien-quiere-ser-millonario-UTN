@@ -9,8 +9,8 @@ ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
 pygame.display.set_caption("Quien quiere ser millonario?")
 pygame.display.set_icon(logo)
 pygame.time.set_timer(CRONOMETRO, 1000)
+blitear_flecha = lambda nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 60 - int(nivel) * 40))
 
-blitear_flecha = lambda nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 110 - int(nivel) * 40))
 
 while flags_variables["flag_run"]:
     for event in pygame.event.get():
@@ -37,7 +37,7 @@ while flags_variables["flag_run"]:
                 texto_input_box, texto_surface, input_box_premio, m, nivel = manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_box_premio,  m, nivel,niveles_premios, lista_elementos_interactivos_juego)
                 
         elif event.type == CRONOMETRO and flags_variables["flag_cronometro_activo"]:
-            contador_cronometro = manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios)
+            contador_cronometro = manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, BLANCO, VIOLETA, FUENTE_CRONOMETRO)
     
     if flags_variables["flag_pantalla_principal"]:
         cargar_pantalla(ventana_principal, lista_elementos_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
@@ -47,8 +47,8 @@ while flags_variables["flag_run"]:
     
     elif flags_variables["flag_pantalla_juego"] and not flags_variables["flag_pregunta_mostrada"]:
         respuesta_correcta, pista, lista_textos_pantalla_juego, lista_respuestas, lista_posiciones_respuestas = cargar_elementos_juego(ventana_principal, lista_preguntas, categoria_elegida, nivel, lista_imgs_pantalla_juego, lista_elementos_interactivos_juego)
-        blitear_flecha(nivel)
         flags_variables["flag_pregunta_mostrada"] = True
+        blitear_flecha(nivel)
         actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)
         dibujar_niveles_premios(ventana_principal, niveles_premios, FUENTE_PIRAMIDE_PREMIOS, BLANCO, VIOLETA)
     elif flags_variables["flag_pantalla_guardar_score"]:

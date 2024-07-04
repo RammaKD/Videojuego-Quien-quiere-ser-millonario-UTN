@@ -67,7 +67,7 @@ def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometr
             lista_elementos_interactivos_juego.clear()
             corroborar_checkpoint(m, nivel, flags_variables, niveles_premios, ventana_principal, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria)
         else:
-            contador_cronometro = 10
+            contador_cronometro = 30
             flags_variables["flag_cronometro_activo"] = False
             flags_variables["flag_pantalla_game_over"] = True
             flags_variables["flag_boton_pantalla_game_over"] = True
@@ -139,6 +139,8 @@ def manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_
         if event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
             if len(texto_input_box) > 0:
                 nombre = texto_input_box
+                if m == 15:
+                    m -=1
                 score = niveles_premios[m][1]
                 nueva_puntuacion = f"{nombre}: {score}"
                 actualizar_billetera_json(diccionario_paths["path_billetera"], nueva_puntuacion)
@@ -147,7 +149,7 @@ def manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_
         else:    
             texto_input_box += event.unicode
             
-    return texto_input_box, texto_surface, input_box_premio, m, nivel 
+    return texto_input_box, texto_surface, input_box_premio, m, nivel  
 
 def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, ventana_principal):
     input_box_premio = pygame.Rect(250, 450, 750, 65)
@@ -155,8 +157,10 @@ def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, venta
     ventana_principal.blit(texto_surface, (input_box_premio.x, input_box_premio.y))
     pygame.draw.rect(ventana_principal, BLANCO, input_box_premio, 2)
 
-def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios):
-    actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, FUENTE_CRONOMETRO, BLANCO, VIOLETA)
+def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, color_texto, color_fondo, fuente):
+    if contador_cronometro < 11:
+        color_texto = ROJO
+    actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, fuente, color_texto, color_fondo)
     dibujar_niveles_premios(ventana_principal, niveles_premios, FUENTE_PIRAMIDE_PREMIOS, BLANCO, VIOLETA)
     contador_cronometro -= 1
     if contador_cronometro < 0:
