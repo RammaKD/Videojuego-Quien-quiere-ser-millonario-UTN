@@ -18,20 +18,25 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     for valores in lista_datos[1]:
         pregunta = {}
         for i in range(len(lista_datos[0])):
-            pregunta[lista_datos[0][i]] = valores[i]
+            if lista_datos[0][i] == "Nivel":
+                pregunta[lista_datos[0][i]] = int(valores[i])
+            
+            else:
+                pregunta[lista_datos[0][i]] = valores[i]
+
         lista_preguntas.append(pregunta)
     
     return lista_preguntas
 
         
 
-def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel):
+def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, contador_nivel):
     """
     Filtra y retorna una lista de preguntas posibles según la categoría y nivel especificados.
     """
     lista_preguntas_posibles = []
     for pregunta in lista_preguntas:
-        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == nivel:
+        if pregunta["Categoría"] == categoria_elegida and pregunta["Nivel"] == contador_nivel+1 :
            lista_preguntas_posibles.append(pregunta)
 
     return lista_preguntas_posibles
@@ -131,7 +136,7 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     
     return lista_porcentajes
 
-def aplicar_comodin_50_50(lista_textos_pantalla_juego, lista_respuestas, respuesta_correcta):
+def aplicar_comodin_50_50(lista_textos_pantalla_juego, respuesta_correcta, lista_respuestas):
     """
     Aplica el comodín 50:50 eliminando dos respuestas incorrectas de la pantalla de juego.
     Retorna la lista actualizada de elementos de texto en pantalla.
@@ -189,7 +194,7 @@ def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
     
     return retorno
 
-def cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel):
+def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     """
     Carga y muestra los elementos del juego en la pantalla. Filtra las preguntas según 
     la categoría y nivel, selecciona una pregunta aleatoria y prepara las respuestas 
@@ -200,7 +205,7 @@ def cargar_elementos_juego(lista_preguntas, categoria_elegida, nivel):
     sus posiciones.
     """
     dict_pregunta_tocada ={}
-    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, nivel)
+    lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, contador_nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
     dict_pregunta_tocada["pregunta"] = pregunta_cargada["Pregunta"]
     dict_pregunta_tocada["respuestas"] = crear_lista_respuestas(pregunta_cargada)

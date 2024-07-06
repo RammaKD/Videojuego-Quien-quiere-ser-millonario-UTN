@@ -16,36 +16,44 @@ logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
 fondo_menu = cargar_imagen(diccionario_paths["path_fondo_menu"], DIMENSIONES_VENTANA)
 presentador = cargar_imagen(diccionario_paths["path_presentador"], (450, 600))
 flecha = cargar_imagen(diccionario_paths["path_flecha"], (100, 50))
-niveles_premios = [
-    [1, "$100"],
-    [2, "$200"],
-    [3, "$300"],
-    [4, "$500"],
-    [5, "$1000"],
-    [6, "$2000"],
-    [7, "$4000"],
-    [8, "$8000"],
-    [9, "$16000"],
-    [10, "$32000"],
-    [11, "$64000"],
-    [12, "$125000"],
-    [13, "$250000"],
-    [14, "$500000"],
-    [15, "$1000000"],
-    [16, ""]
-]
+
 
 texto_input_box = ""
 texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
 input_box_premio = texto_surface.get_rect()
-contador_cronometro = 30
-texto_cronometro = str(contador_cronometro)
 
 
+contador_nivel = 0
+dict_cronometro = {
+        "contador" : 30,
+        
+        "fuente" : [FUENTE_CRONOMETRO,BLANCO,VIOLETA]
+        
+}
 
 
-m = 0
-nivel = str(niveles_premios[m][0])
+dict_niveles_premios ={
+        "piramide" : [
+                        [1, "$100"],
+                        [2, "$200"],
+                        [3, "$300"],
+                        [4, "$500"],
+                        [5, "$1000"],
+                        [6, "$2000"],
+                        [7, "$4000"],
+                        [8, "$8000"],
+                        [9, "$16000"],
+                        [10, "$32000"],
+                        [11, "$64000"],
+                        [12, "$125000"],
+                        [13, "$250000"],
+                        [14, "$500000"],
+                        [15, "$1000000"],
+                        [16, ""]],
+        
+        "fuente" :[FUENTE_PIRAMIDE_PREMIOS,BLANCO,VIOLETA] 
+}
+
 
 dict_prop_texto = {"fuente_principal" : FUENTE_PRINCIPAL,
                 "fuente_pantalla_juego": FUENTE_PANTALLA_JUEGO,
@@ -109,62 +117,53 @@ dict_elementos_pantalla_categorias ={
 
         "interactivos" : []
     }
-    
-dict_elementos_pantalla_victoria = {
+dict_general_pantallas_secundarias ={   
+        "dict_elementos_pantalla_victoria" : {
+                
+                "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
+
+                "textos" :[ ("Felicidades!", (300, 300), False),
+                        ("Ha ganado el millón!", (300, 450), False),
+                        ("Retirar premio", (300, 600), True)],
+                
+                "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
+                
+                "interactivos": []
+        },
+
+        "dict_elementos_pantalla_game_over" : {
+                "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
+
+                "textos" : [("Has perdido!", (450, 300), False),
+                        ("Volver al menu principal", (270, 450), True)],
+                
+                "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
+
+                "interactivos": [],
+        },
+      
         
-        "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
+        "dict_elementos_pantalla_checkpoint" :{
+                "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
 
-        "textos" :[ ("Felicidades!", (300, 300), False),
-                    ("Ha ganado el millón!", (300, 450), False),
-                    ("Retirar premio", (300, 600), True)],
-        
-        "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
-        
-        "interactivos": []
-    }
+                "textos" :[("Quiere seguir jugando?", (250, 200), False),
+                                                ("Seguir jugando", (350, 450), True),
+                                                ("Retirarse", (450, 550), True)],
 
-dict_elementos_pantalla_game_over = {
-        "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
+                "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
 
-        "textos" : [("Has perdido!", (450, 300), False),
-                    ("Volver al menu principal", (270, 450), True)],
-        
-        "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
+                "interactivos": []
+},
 
-        "interactivos": [],
-}
-dict_elementos_pantalla_tiempo_finalizado: {
-        "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
+        "dict_elementos_pantalla_score" : {
+                "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
 
-        "textos" : [("Has perdido!", (450, 300), False),
-                    ("Volver al menu principal", (270, 450), True)],
+                "textos" : [("Introduzca su nombre", (300, 300), False)],
 
-        "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
+                "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
 
-        "interactivos": []
-}       
-        
-dict_elementos_pantalla_checkpoint ={
-        "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
-
-        "textos" :[("Quiere seguir jugando?", (250, 200), False),
-                                            ("Seguir jugando", (350, 450), True),
-                                            ("Retirarse", (450, 550), True)],
-
-        "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
-
-        "interactivos": []
-}
-
-dict_elementos_pantalla_score ={
-        "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
-
-        "textos" : [("Introduzca su nombre", (300, 300), False)],
-
-        "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
-
-        "interactivos" : []
-}
+                "interactivos" : []
+}}
 
 dict_elementos_pantalla_juego = {
         "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False),                    

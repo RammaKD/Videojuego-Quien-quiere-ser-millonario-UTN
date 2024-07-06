@@ -52,13 +52,13 @@ def manejar_colision_comodines_pantalla_juego(mouse_pos, flags_variables, ventan
                 blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, fuente, color_texto, color_fondo)    
             elif elemento[0] == "50-50" and flags_variables["flag_comodin_50_50"]:
                 dict_elementos["interactivos"].clear()
-                dict_elementos["textos"] = aplicar_comodin_50_50(dict_elementos["textos"], dict_pregunta["pregunta"], dict_pregunta["respuesta_correcta"])
+                dict_elementos["textos"] = aplicar_comodin_50_50(dict_elementos["textos"], dict_pregunta["respuestas"], dict_pregunta["respuesta_correcta"])
                  
                 cargar_pantalla(ventana_principal, dict_elementos)
                 
                 flags_variables["flag_comodin_50_50"] = False
 
-def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, dict_pregunta,nivel_premio, ventana_principal, dict_elementos_pantalla_juego, dict_elementos_pantalla_checkpoint, dict_elementos_pantalla_game_over, respuesta_seleccionada):
+def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometro, dict_pregunta,niveles_premios, ventana_principal, dict_elementos_pantalla_juego, dict_general_pantallas_secundarias):
     if respuesta_seleccionada != None:
         if corroborar_respuesta(respuesta_seleccionada, dict_pregunta["respuesta_correcta"]):
             m += 1
@@ -67,7 +67,7 @@ def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometr
             flags_variables["flag_pregunta_mostrada"] = False
             contador_cronometro = 30
             dict_elementos_pantalla_juego["interactivos"].clear()
-            corroborar_checkpoint(m, nivel, flags_variables, niveles_premios, ventana_principal, lista_textos_pantalla_checkpoint, lista_imgs_pantalla_game_over, lista_elementos_interactivos_checkpoint, lista_elementos_pantalla_victoria, lista_elementos_interactivos_victoria)
+            corroborar_checkpoint(m, nivel, flags_variables, niveles_premios, ventana_principal, dict_elementos_pantalla_checkpoint, dict_elementos_pantalla_game_over, dict_elementos_pantalla_victoria)
         else:
             contador_cronometro = 30
             flags_variables["flag_cronometro_activo"] = False
@@ -78,9 +78,9 @@ def manejar_respuesta_seleccionada(flags_variables, m, nivel, contador_cronometr
             flags_variables["flag_comodin_publico"] = False
             flags_variables["flag_comodin_50_50"] = False
             mensaje_error = "Respuesta incorrecta"
-            lista_textos_pantalla_game_over_incorrecta.append((mensaje_error, (320, 200), False))
-            lista_elementos_pantalla_game_over_incorrecta = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_incorrecta
-            cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_incorrecta, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+            dict_elementos_pantalla_game_over["textos"].append((mensaje_error,(320,200), False))
+           
+            cargar_pantalla(ventana_principal, dict_elementos_pantalla_game_over)
     
     return nivel, m, contador_cronometro
 
@@ -155,10 +155,10 @@ def manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_
 
 
 
-def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, texto_cronometro, niveles_premios, color_texto, color_fondo, fuente):
+def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, dict_niveles_premios, dict_cronometro):
     if contador_cronometro < 11:
-        color_texto = ROJO
-    actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, fuente, color_texto, color_fondo)
+        dict_cronometro[fuente][1] = ROJO
+    actualizar_cronometro(ventana_principal, contador_cronometro, dict_cronometro)
     dibujar_niveles_premios(ventana_principal, niveles_premios, FUENTE_PIRAMIDE_PREMIOS, BLANCO, VIOLETA)
     contador_cronometro -= 1
     if contador_cronometro < 0:

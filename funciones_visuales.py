@@ -49,7 +49,7 @@ def mostrar_pista(ventana_principal, pista, fuente, color_texto, color_fondo):
     superficie_pista = crear_texto_renderizado(pista, fuente, color_texto, color_fondo)
     ventana_principal.blit(superficie_pista, (25, 325))
 
-def actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronometro, fuente, color_texto, color_fondo):
+def actualizar_cronometro(ventana_principal, dict_cronometro):
     """
     Actualiza y muestra el contador de cronómetro en la ventana principal.
 
@@ -58,12 +58,15 @@ def actualizar_cronometro(ventana_principal, contador_cronometro, texto_cronomet
     contador_cronometro (int): Valor actual del cronómetro.
     texto_cronometro (str): Texto formateado del cronómetro.
     """
-    texto_cronometro = str(contador_cronometro).zfill(2)
+    texto_cronometro = str(dict_cronometro["contador"]).zfill(2)
+    fuente = dict_cronometro["fuente"][0]
+    color_texto = dict_cronometro["fuente"][1]
+    color_fondo = dict_cronometro["fuente"][2]
     superficie_cronometro = crear_texto_renderizado(texto_cronometro, fuente, color_texto, color_fondo)
     ventana_principal.blit(superficie_cronometro, (25, 40))
     
 
-def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios, fuente, color_texto, color_fondo):
+def dibujar_niveles_premios(ventana_principal, dict_niveles_premios):
     """
     Dibuja niveles de premios en una pirámide invertida en la ventana.
 
@@ -72,8 +75,11 @@ def dibujar_niveles_premios(ventana_principal, piramide_niveles_premios, fuente,
     piramide_niveles_premios (list): Lista de niveles de premios en forma de pirámide invertida.
     """
     y = 25
+    fuente = dict_niveles_premios["fuente"][0]
+    color_texto = dict_niveles_premios["fuente"][1]
+    color_fondo = dict_niveles_premios["fuente"][2]
     for i in range(len(piramide_niveles_premios) -1, -1, -1):
-        nivel_premio = crear_texto_renderizado(piramide_niveles_premios[i][1], fuente, color_texto, color_fondo)
+        nivel_premio = crear_texto_renderizado(dict_niveles_premios["piramide"][i][1], fuente, color_texto, color_fondo)
         ventana_principal.blit(nivel_premio, (1100, y))
         y += 40
 
