@@ -155,27 +155,29 @@ def manejar_evento_guardar_score(event, flags_variables, texto_input_box, input_
 
 
 
-def manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, dict_niveles_premios, dict_cronometro):
-    if contador_cronometro < 11:
-        dict_cronometro[fuente][1] = ROJO
-    actualizar_cronometro(ventana_principal, contador_cronometro, dict_cronometro)
-    dibujar_niveles_premios(ventana_principal, niveles_premios, FUENTE_PIRAMIDE_PREMIOS, BLANCO, VIOLETA)
-    contador_cronometro -= 1
-    if contador_cronometro < 0:
-        contador_cronometro = 30
-        flags_variables["flag_cronometro_activo"] = False
-        flags_variables["flag_pantalla_game_over"] = True
-        flags_variables["flag_boton_pantalla_game_over"] = True
-        flags_variables["flag_botones_respuestas"] = False
-        flags_variables["flag_comodin_pista"] = False
-        flags_variables["flag_comodin_publico"] = False
-        flags_variables["flag_comodin_50_50"] = False
-        mensaje_error = "Se le acabó el tiempo"
-        lista_textos_pantalla_game_over_tiempo_finalizado.append((mensaje_error, (320, 200), False))
-        lista_elementos_pantalla_game_over_tiempo_finalizado = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_tiempo_finalizado
-        cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_tiempo_finalizado, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
     
-    return contador_cronometro
+    
+
+
+
+
+# flags_variables["flag_cronometro_activo"] = False
+# flags_variables["flag_pantalla_game_over"] = True
+# flags_variables["flag_boton_pantalla_game_over"] = True
+# flags_variables["flag_botones_respuestas"] = False
+# flags_variables["flag_comodin_pista"] = False
+# flags_variables["flag_comodin_publico"] = False
+# flags_variables["flag_comodin_50_50"] = False
+        
+        
+        
+        
+# mensaje_error = "Se le acabó el tiempo"
+# lista_textos_pantalla_game_over_tiempo_finalizado.append((mensaje_error, (320, 200), False))
+# lista_elementos_pantalla_game_over_tiempo_finalizado = lista_imgs_pantalla_game_over + lista_textos_pantalla_game_over_tiempo_finalizado
+# cargar_pantalla(ventana_principal, lista_elementos_pantalla_game_over_tiempo_finalizado, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA, lista_elementos_interactivos_game_over)
+
+    
 
 def manejar_evento_mostrar_score(event, flags_variables,diccionario_paths,ventana_principal,lista_elementos_pantalla_principal,lista_imgs_pantalla_principal,fuente, color_texto, color_fondo, lista_textos_pantalla_principal):
     if event.key == pygame.K_TAB and flags_variables["flag_pantalla_principal"]:

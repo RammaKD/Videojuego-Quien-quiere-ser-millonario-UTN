@@ -24,10 +24,11 @@ input_box_premio = texto_surface.get_rect()
 
 
 contador_nivel = 0
+
 dict_cronometro = {
         "contador" : 30,
         
-        "fuente" : [FUENTE_CRONOMETRO,BLANCO,VIOLETA]
+        "fuente" : [FUENTE_CRONOMETRO, BLANCO, VIOLETA, ROJO]
         
 }
 
@@ -135,7 +136,7 @@ dict_general_pantallas_secundarias ={
                 "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False)],
 
                 "textos" : [("Has perdido!", (450, 300), False),
-                        ("Volver al menu principal", (270, 450), True)],
+                            ("Volver al menu principal", (270, 450), True)],
                 
                 "fuente" :[FUENTE_PANTALLA_GAME_OVER,BLANCO,VIOLETA],
 
@@ -167,7 +168,7 @@ dict_general_pantallas_secundarias ={
 
 dict_elementos_pantalla_juego = {
         "imagenes" : [(fondo_menu, POS_INICIAL_FONDO, False),                    
-                    (presentador, POS_INICIAL_PRESENTADOR, False)],
+                      (presentador, POS_INICIAL_PRESENTADOR, False)],
 
         "textos" : [["pregunta", (25, 425), False],
                     ["respuesta_A", (25, 550), True],
@@ -178,7 +179,7 @@ dict_elementos_pantalla_juego = {
                     ("Publico", (275,55), True),
                     ("Llamada", (440,55), True)],
 
-        "fuente" :[ FUENTE_PANTALLA_JUEGO,BLANCO,VIOLETA],
+        "fuente" : [FUENTE_PANTALLA_JUEGO, BLANCO, VIOLETA],
         
 
         "interactivos" : []

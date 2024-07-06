@@ -58,12 +58,22 @@ def actualizar_cronometro(ventana_principal, dict_cronometro):
     contador_cronometro (int): Valor actual del cronómetro.
     texto_cronometro (str): Texto formateado del cronómetro.
     """
-    texto_cronometro = str(dict_cronometro["contador"]).zfill(2)
+    retorno = True
     fuente = dict_cronometro["fuente"][0]
     color_texto = dict_cronometro["fuente"][1]
     color_fondo = dict_cronometro["fuente"][2]
+    
+    if dict_cronometro["contador"] < 10 and dict_cronometro["contador"] > 0:
+        color_texto = dict_cronometro["fuente"][3]
+    elif dict_cronometro["contador"] <= 0:
+        retorno = False
+    
+    texto_cronometro = str(dict_cronometro["contador"]).zfill(2)
     superficie_cronometro = crear_texto_renderizado(texto_cronometro, fuente, color_texto, color_fondo)
     ventana_principal.blit(superficie_cronometro, (25, 40))
+    dict_cronometro["contador"] -= 1
+    
+    return retorno
     
 
 def dibujar_niveles_premios(ventana_principal, dict_niveles_premios):
@@ -78,7 +88,7 @@ def dibujar_niveles_premios(ventana_principal, dict_niveles_premios):
     fuente = dict_niveles_premios["fuente"][0]
     color_texto = dict_niveles_premios["fuente"][1]
     color_fondo = dict_niveles_premios["fuente"][2]
-    for i in range(len(piramide_niveles_premios) -1, -1, -1):
+    for i in range(len(dict_niveles_premios["piramide"]) -1, -1, -1):
         nivel_premio = crear_texto_renderizado(dict_niveles_premios["piramide"][i][1], fuente, color_texto, color_fondo)
         ventana_principal.blit(nivel_premio, (1100, y))
         y += 40

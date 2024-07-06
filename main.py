@@ -44,7 +44,20 @@ while flags_variables["flag_run"]:
             flags_variables, lista_elementos_pantalla_principal, lista_imgs_pantalla_principal,lista_textos_pantalla_principal = manejar_evento_borrar_score_pantalla(event,flags_variables,lista_textos_pantalla_principal,ventana_principal, lista_elementos_pantalla_principal, FUENTE_PRINCIPAL, BLANCO, VIOLETA, lista_elementos_interactivos_principal)
         
         elif event.type == CRONOMETRO and flags_variables["flag_cronometro_activo"]:
-            contador_cronometro = manejar_evento_cronometro(ventana_principal, flags_variables, contador_cronometro, dict_niveles_premios, dict_cronometro)
+            retrono = actualizar_cronometro(ventana_principal, dict_cronometro)
+            print(retrono)
+            if not retrono:
+                flags_variables["flag_cronometro_activo"] = False
+                flags_variables["flag_pantalla_game_over"] = True
+                flags_variables["flag_boton_pantalla_game_over"] = True
+                flags_variables["flag_botones_respuestas"] = False
+                flags_variables["flag_comodin_pista"] = False
+                flags_variables["flag_comodin_publico"] = False
+                flags_variables["flag_comodin_50_50"] = False
+                mensaje_error = "Se le acabó el tiempo"
+                dict_general_pantallas_secundarias["dict_elementos_pantalla_game_over"]["textos"].append((mensaje_error, (320, 200), False))
+                cargar_pantalla(ventana_principal, dict_general_pantallas_secundarias["dict_elementos_pantalla_game_over"])
+                
     
     if flags_variables["flag_pantalla_principal"]:
         cargar_pantalla(ventana_principal, dict_elementos_pantalla_principal)
@@ -56,10 +69,10 @@ while flags_variables["flag_run"]:
         dict_pregunta_cargada = cargar_elementos_juego(lista_preguntas, categoria_elegida,contador_nivel)
         dict_elementos_pantalla_juego = modificar_dict_pantalla_juego(dict_elementos_pantalla_juego, dict_pregunta_cargada)
         cargar_pantalla(ventana_principal, dict_elementos_pantalla_juego)
+        dibujar_niveles_premios(ventana_principal, dict_niveles_premios)
+        actualizar_cronometro(ventana_principal, dict_cronometro)
         flags_variables["flag_pregunta_mostrada"] = True
         blitear_flecha(contador_nivel)
-        actualizar_cronometro(ventana_principal, dict_cronometro)
-        dibujar_niveles_premios(ventana_principal, dict_niveles_premios, FUENTE_PIRAMIDE_PREMIOS, BLANCO, VIOLETA)
     elif flags_variables["flag_pantalla_guardar_score"]:
         flags_variables["flag_botones_respuestas"] = False
         flags_variables["flag_boton_pantalla_game_over"] = False
