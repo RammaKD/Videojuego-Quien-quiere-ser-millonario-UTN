@@ -75,7 +75,6 @@ def actualizar_cronometro(ventana_principal, dict_cronometro):
     
     return retorno
     
-
 def dibujar_niveles_premios(ventana_principal, dict_niveles_premios):
     """
     Dibuja niveles de premios en una pirámide invertida en la ventana.
@@ -112,7 +111,6 @@ def blitear_elementos(ventana_principal, lista_botones):
     
     return exito
 
-
 def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, ventana_principal):
     """
     Renderiza y dibuja un cuadro de texto en la pantalla principal. 
@@ -123,5 +121,4 @@ def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, venta
     texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
     ventana_principal.blit(texto_surface, (input_box_premio.x, input_box_premio.y))
     pygame.draw.rect(ventana_principal, BLANCO, input_box_premio, 2)
-
 

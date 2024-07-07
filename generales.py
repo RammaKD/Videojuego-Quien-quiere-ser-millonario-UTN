@@ -28,8 +28,6 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
     
     return lista_preguntas
 
-        
-
 def cargar_posibles_preguntas(lista_preguntas, categoria_elegida, contador_nivel):
     """
     Filtra y retorna una lista de preguntas posibles según la categoría y nivel especificados.
@@ -106,7 +104,6 @@ def crear_diccionario_botones(lista_botones, texto, surface, posicion, rect):
     
     return elemento
 
-
 def generar_porcentajes(lista_respuestas, respuesta_correcta):
     """
     Genera porcentajes aleatorios de popularidad para cada respuesta, asegurando que 
@@ -139,7 +136,7 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     
     return lista_porcentajes
 
-def aplicar_comodin_50_50(lista_textos_pantalla_juego, respuesta_correcta, lista_respuestas):
+def aplicar_comodin_50_50(lista_textos_pantalla_juego,  lista_respuestas, respuesta_correcta):
     """
     Aplica el comodín 50:50 eliminando dos respuestas incorrectas de la pantalla de juego.
     Retorna la lista actualizada de elementos de texto en pantalla.
@@ -185,18 +182,6 @@ def elegir_respuestas_incorrectas_random(lista_respuestas, respuesta_correcta):
 
     return lista_incorrectas
 
-# def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
-#     """
-#     Verifica si la respuesta seleccionada es correcta. 
-#     Retorna la respuesta seleccionada si es correcta, de lo contrario, retorna False.
-#     """
-#     if respuesta_seleccionada == respuesta_correcta:
-#         retorno = respuesta_seleccionada
-#     else:
-#         retorno = False
-    
-#     return retorno
-
 def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     """
     Carga y muestra los elementos del juego en la pantalla. Filtra las preguntas según 
@@ -207,7 +192,7 @@ def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     Retorna la respuesta correcta, pista, lista de textos en pantalla, lista de respuestas y 
     sus posiciones.
     """
-    dict_pregunta_tocada ={}
+    dict_pregunta_tocada = {}
     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, contador_nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
     dict_pregunta_tocada["pregunta"] = pregunta_cargada["Pregunta"]
@@ -218,7 +203,6 @@ def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     return dict_pregunta_tocada
 
 def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
-    
     dict_elementos["textos"][0][0] = dict_pregunta["pregunta"]
     dict_elementos["textos"][1][0] = dict_pregunta["respuestas"][0]
     dict_elementos["textos"][2][0] = dict_pregunta["respuestas"][1]
@@ -227,7 +211,6 @@ def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
 
     return dict_elementos
    
-
 def resetear_juego(flags_variables, dict_elementos, contador_nivel):
     """
     Restaura el estado inicial del juego, reseteando el contador, nivel, 
@@ -254,9 +237,6 @@ def resetear_juego(flags_variables, dict_elementos, contador_nivel):
 
     return contador_nivel
 
-
-
-
 def desactivar_pantalla_juego(flags_variables):
     flags_variables["pantalla_juego"] = False
     flags_variables["cronometro_activo"] = False
@@ -267,7 +247,6 @@ def desactivar_pantalla_juego(flags_variables):
 
     return flags_variables
     
-    
 def habilitar_game_over(flags_variables, dict_general_pantallas_secundarias, msj_error):
     flags_variables["pantalla_game_over"] = True
     flags_variables["boton_pantalla_game_over"] = True
@@ -275,7 +254,6 @@ def habilitar_game_over(flags_variables, dict_general_pantallas_secundarias, msj
     dict_general_pantallas_secundarias["game_over"]["textos"][2][0] = msj_error
     
     return dict_general_pantallas_secundarias
-    
     
 def colision_lado_derecho(rect1, rect2):
     # Verificar si el borde derecho de rect2 colisiona con el borde derecho de rect1
