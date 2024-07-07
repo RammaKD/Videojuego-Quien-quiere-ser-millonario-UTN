@@ -57,6 +57,8 @@ def cargar_pantalla(ventana_principal, dict_elementos):
     lista_botones = crear_propiedades_botones(dict_elementos)
     blitear_elementos(ventana_principal, lista_botones)
 
+    return lista_botones
+
 def crear_propiedades_botones(dict_elementos):
     """
     Crea propiedades para botones usando texto renderizado o superficies.
@@ -79,6 +81,7 @@ def crear_propiedades_botones(dict_elementos):
                 rect = surface.get_rect()
                 rect.topleft = posicion
                 if interactivo:
+                    
                     dict_elementos["interactivos"].append((texto, rect))
                 crear_diccionario_botones(lista_botones, texto, surface, posicion, rect)
 
@@ -182,17 +185,17 @@ def elegir_respuestas_incorrectas_random(lista_respuestas, respuesta_correcta):
 
     return lista_incorrectas
 
-def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
-    """
-    Verifica si la respuesta seleccionada es correcta. 
-    Retorna la respuesta seleccionada si es correcta, de lo contrario, retorna False.
-    """
-    if respuesta_seleccionada == respuesta_correcta:
-        retorno = respuesta_seleccionada
-    else:
-        retorno = False
+# def corroborar_respuesta(respuesta_seleccionada, respuesta_correcta):
+#     """
+#     Verifica si la respuesta seleccionada es correcta. 
+#     Retorna la respuesta seleccionada si es correcta, de lo contrario, retorna False.
+#     """
+#     if respuesta_seleccionada == respuesta_correcta:
+#         retorno = respuesta_seleccionada
+#     else:
+#         retorno = False
     
-    return retorno
+#     return retorno
 
 def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     """
@@ -225,36 +228,58 @@ def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
     return dict_elementos
    
 
-def resetear_juego(flags_variables,m, nivel,niveles_premios,lista_elementos_interactivos):
+def resetear_juego(flags_variables, dict_elementos, contador_nivel):
     """
     Restaura el estado inicial del juego, reseteando el contador, nivel, 
     lista de elementos interactivos y todas las banderas del juego a sus 
     valores iniciales.
     """
-    m = 0
-    nivel = str(niveles_premios[m][0])
-    lista_elementos_interactivos.clear()
-    flags_variables["flag_pantalla_juego"] = False
-    flags_variables["flag_pantalla_principal"] = True
-    flags_variables["flag_pregunta_mostrada"] = False
-    flags_variables["flag_cronometro_activo"] = False
-    flags_variables["flag_pantalla_game_over"] = False
-    flags_variables["flag_boton_pantalla_game_over"] = False
-    flags_variables["flag_botones_respuestas"] = True
-    flags_variables["flag_pantalla_checkpoint"] = False
-    flags_variables["flag_botones_pantalla_checkpoint"] = False
-    flags_variables["flag_comodin_pista"] = True
-    flags_variables["flag_comodin_publico"] = True
-    flags_variables["flag_pantalla_guardar_score"] = False
-    flags_variables["flag_botones_pantalla_guardar_score"] = False
-    flags_variables["flag_comodin_50_50"] = True
-    return flags_variables, m, nivel, niveles_premios, lista_elementos_interactivos
+    contador_nivel = 0
+    
+    dict_elementos["interactivos"].clear()
+    flags_variables["pantalla_juego"] = False
+    flags_variables["pantalla_principal"] = True
+    flags_variables["pregunta_mostrada"] = False
+    flags_variables["cronometro_activo"] = False
+    flags_variables["pantalla_game_over"] = False
+    flags_variables["boton_pantalla_game_over"] = False
+    flags_variables["botones_respuestas"] = True
+    flags_variables["pantalla_checkpoint"] = False
+    flags_variables["botones_pantalla_checkpoint"] = False
+    flags_variables["comodin_pista"] = True
+    flags_variables["comodin_publico"] = True
+    flags_variables["pantalla_guardar_score"] = False
+    flags_variables["botones_pantalla_guardar_score"] = False
+    flags_variables["comodin_50_50"] = True
+
+    return contador_nivel
 
 
 
 
+def desactivar_pantalla_juego(flags_variables):
+    flags_variables["pantalla_juego"] = False
+    flags_variables["cronometro_activo"] = False
+    flags_variables["botones_respuestas"] = False
+    flags_variables["comodin_pista"] = False
+    flags_variables["comodin_publico"] = False
+    flags_variables["comodin_50_50"] = False
 
-
+    return flags_variables
+    
+    
+def habilitar_game_over(flags_variables, dict_general_pantallas_secundarias, msj_error):
+    flags_variables["pantalla_game_over"] = True
+    flags_variables["boton_pantalla_game_over"] = True
+    desactivar_pantalla_juego(flags_variables)
+    dict_general_pantallas_secundarias["game_over"]["textos"][2][0] = msj_error
+    
+    return dict_general_pantallas_secundarias
+    
+    
+def colision_lado_derecho(rect1, rect2):
+    # Verificar si el borde derecho de rect2 colisiona con el borde derecho de rect1
+    return rect2.right >= rect1.right and rect1.top < rect2.bottom and rect1.bottom > rect2.top
 
 
 
