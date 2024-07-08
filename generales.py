@@ -107,6 +107,7 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     la respuesta correcta tenga un porcentaje entre 50 y 100. Retorna una lista con 
     los porcentajes correspondientes a cada respuesta.
     """
+    
     respuestas_incorrectas = []
     porcentaje_correcta = 0
     
@@ -133,11 +134,12 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     
     return lista_porcentajes
 
-def aplicar_comodin_50_50(lista_textos_pantalla_juego,  lista_respuestas, respuesta_correcta):
+def aplicar_comodin_50_50(lista_textos_pantalla_juego, lista_respuestas, respuesta_correcta):
     """
     Aplica el comodín 50:50 eliminando dos respuestas incorrectas de la pantalla de juego.
     Retorna la lista actualizada de elementos de texto en pantalla.
     """
+    
     lista_incorrectas = elegir_respuestas_incorrectas_random(lista_respuestas, respuesta_correcta)
     for i in range(1, 5):  
         for respuesta_incorrecta in lista_incorrectas:

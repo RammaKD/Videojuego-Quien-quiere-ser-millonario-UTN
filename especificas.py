@@ -1,7 +1,7 @@
 from generales import *
 
 #Funciones modificar y resetear
-def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
+def modificar_dict_pantalla_juego(elementos_pantalla, estado_juego):
     """
     Modifica los textos de los elementos de la pantalla de juego con una nueva pregunta y respuestas.
 
@@ -9,6 +9,8 @@ def modificar_dict_pantalla_juego(dict_elementos, dict_pregunta):
     las opciones de respuesta proporcionadas en dict_pregunta.
 
     """
+    dict_elementos = elementos_pantalla["dict_elementos_pantalla_juego"]
+    dict_pregunta = estado_juego["dict_pregunta_cargada"]
     dict_elementos["textos"][0][0] = dict_pregunta["pregunta"]
     dict_elementos["textos"][1][0] = dict_pregunta["respuestas"][0]
     dict_elementos["textos"][2][0] = dict_pregunta["respuestas"][1]
@@ -51,9 +53,12 @@ def cargar_comodin_en_pantalla(ventana_principal, flags_variables, estado_juego,
     gráfica para reflejar el uso de dicho comodín. Esto puede incluir mostrar una pista, 
     mostrar porcentajes de votación del público, o eliminar dos respuestas incorrectas
     """
+    lista_respuestas = estado_juego["dict_pregunta_cargada"]["respuestas"]
+    respuesta_correcta = estado_juego["dict_pregunta_cargada"]["respuesta_correcta"]
     fuente =  elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][0]
     color_texto = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][1]
     color_fondo = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][2]
+    dict_elementos_pantalla_juego = elementos_pantalla["dict_elementos_pantalla_juego"]
     
     if estado_juego["comodin_elegido"] == "Llamada" and flags_variables["comodin_pista"]:
         flags_variables["comodin_pista"] = False
@@ -61,14 +66,14 @@ def cargar_comodin_en_pantalla(ventana_principal, flags_variables, estado_juego,
     
     elif estado_juego["comodin_elegido"] == "Publico" and flags_variables["comodin_publico"]:
         flags_variables["comodin_publico"] = False
-        lista_porcentajes = generar_porcentajes(estado_juego["dict_pregunta_cargada"]["respuestas"], estado_juego["dict_pregunta_cargada"]["respuesta_correcta"])
-        blitear_porcentajes(ventana_principal, lista_porcentajes, estado_juego["dict_pregunta_cargada"]["respuestas"], fuente, color_texto, color_fondo)    
+        lista_porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
+        blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, fuente, color_texto, color_fondo)    
     
     elif estado_juego["comodin_elegido"] == "50-50" and flags_variables["comodin_50_50"]:
         flags_variables["comodin_50_50"] = False
-        elementos_pantalla["dict_elementos_pantalla_juego"]["interactivos"].clear()
-        elementos_pantalla["dict_elementos_pantalla_juego"]["textos"] = aplicar_comodin_50_50(elementos_pantalla["dict_elementos_pantalla_juego"]["textos"],estado_juego["dict_pregunta_cargada"]["respuestas"], estado_juego["dict_pregunta_cargada"]["respuesta_correcta"])
-        cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
+        dict_elementos_pantalla_juego["interactivos"].clear()
+        dict_elementos_pantalla_juego["textos"] = aplicar_comodin_50_50(dict_elementos_pantalla_juego["textos"],lista_respuestas, respuesta_correcta)
+        cargar_pantalla(ventana_principal, dict_elementos_pantalla_juego)
         dibujar_niveles_premios(ventana_principal, dict_niveles_premios)
         blitear_flecha(estado_juego["contador_nivel"])
 
@@ -188,8 +193,8 @@ def actualizar_pantalla(estado_juego, elementos_pantalla, ventana_principal):
     elif flags_variables["pantalla_categorias"]:
         cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_categorias"])
     elif flags_variables["pantalla_juego"] and not flags_variables["pregunta_mostrada"]:
-        estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego["lista_preguntas"], estado_juego["categoria_elegida"], estado_juego["contador_nivel"])
-        elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla["dict_elementos_pantalla_juego"], estado_juego["dict_pregunta_cargada"])
+        estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
+        elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)
         cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
         dibujar_niveles_premios(ventana_principal, estado_juego["dict_niveles_premios"])
         actualizar_cronometro(ventana_principal, estado_juego["dict_cronometro"])
@@ -252,7 +257,7 @@ def habilitar_pantalla_guardar_score(flags_variables):
     Habilita la pantalla de guardar puntuación.
     Este método configura las banderas necesarias para mostrar la pantalla de guardar puntuación,
     desactivando los botones de respuestas, el botón de pantalla de game over y los botones de pantalla de checkpoint."""
-    flags_variables = estado_juego["flags_variables"]
+    
     flags_variables["botones_respuestas"] = False
     flags_variables["boton_pantalla_game_over"] = False
     flags_variables["botones_pantalla_checkpoint"] = False
@@ -270,7 +275,7 @@ def desactivar_pantalla_juego(flags_variables):
 
     return flags_variables
 
-def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
+def cargar_elementos_juego(estado_juego):
     """
     Carga y muestra los elementos del juego en la pantalla. Filtra las preguntas según 
     la categoría y nivel, selecciona una pregunta aleatoria y prepara las respuestas 
@@ -280,6 +285,10 @@ def cargar_elementos_juego(lista_preguntas, categoria_elegida, contador_nivel):
     Retorna la respuesta correcta, pista, lista de textos en pantalla, lista de respuestas y 
     sus posiciones.
     """
+    dict_pregunta_tocada = estado_juego["dict_pregunta_cargada"]
+    lista_preguntas = estado_juego["lista_preguntas"]
+    categoria_elegida = estado_juego["categoria_elegida"]
+    contador_nivel = estado_juego["contador_nivel"]
     dict_pregunta_tocada = {}
     lista_posibles_preguntas = cargar_posibles_preguntas(lista_preguntas, categoria_elegida, contador_nivel)
     pregunta_cargada = cargar_pregunta_aleatoriamente(lista_posibles_preguntas)
