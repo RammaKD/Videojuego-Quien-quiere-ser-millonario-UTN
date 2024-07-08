@@ -4,9 +4,9 @@ from configuraciones import *
 from elementos import *
 from eventos import *
 from funciones_visuales import *
+from especificas import *
 
 pygame.init()
-
 
 while estado_juego["flags_variables"]["run"]:
     crear_diccionario_preguntas(lista_datos_csv, estado_juego["lista_preguntas"])

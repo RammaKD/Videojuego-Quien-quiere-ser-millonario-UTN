@@ -4,6 +4,7 @@ from generales import *
 from funciones_archivos import *
 from elementos import *
 from colisiones import *
+from especificas import *
 
 def manejar_evento_quit(evento, flags_variables):
     """Si el evento es pygame.QUIT, establece flags_variables["run"] a False.

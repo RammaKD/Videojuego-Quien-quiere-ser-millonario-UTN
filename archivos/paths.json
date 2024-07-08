@@ -2,7 +2,7 @@
     "paths" : {
         "path_preguntas" : "archivos\\preguntas.csv",
         "path_billetera" : "archivos\\billetera.json",
-        "path_fondo_menu" : "imgs\\fondo_menu_juego.jpg",
+        "path_fondo_menu" : "imgs\\fondo_menu.jpg",
         "path_logo" : "imgs\\logo.png",
         "path_presentador" : "imgs\\messi.png",
         "path_flecha" : "imgs\\flecha.png",
