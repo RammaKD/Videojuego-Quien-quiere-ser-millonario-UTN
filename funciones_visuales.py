@@ -1,6 +1,7 @@
 import pygame
 from configuraciones import *
 
+
 def cargar_imagen(path, dimensiones):
     """
     Carga una imagen desde el path especificado y la escala a las dimensiones dadas.
@@ -111,14 +112,16 @@ def blitear_elementos(ventana_principal, lista_botones):
     
     return exito
 
-def blitear_texto_nombre(texto_input_box, texto_surface, input_box_premio, ventana_principal):
+def dibujar_input_box(botones, ventana_principal, color):
     """
-    Renderiza y dibuja un cuadro de texto en la pantalla principal. 
-    El texto se muestra dentro de un rectángulo ubicado en una posición específica.
-    También se dibuja un borde blanco alrededor del rectángulo.
+    Este método dibuja un rectángulo con borde en la posición especificada
+    para representar un cuadro de entrada de texto en la interfaz gráfica.
     """
-    input_box_premio = pygame.Rect(250, 450, 750, 65)
-    texto_surface = crear_texto_renderizado(texto_input_box, FUENTE_PANTALLA_GAME_OVER, BLANCO, VIOLETA)
-    ventana_principal.blit(texto_surface, (input_box_premio.x, input_box_premio.y))
-    pygame.draw.rect(ventana_principal, BLANCO, input_box_premio, 2)
+    texto = botones[2]["rectangulo"]
+    pygame.draw.rect(ventana_principal, color, (texto.x, texto.y, 450, 65), 3)
+    
+    
 
+
+
+        

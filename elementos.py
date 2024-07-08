@@ -1,24 +1,27 @@
-from generales import *
 from configuraciones import *
 from funciones_visuales import *
 from funciones_archivos import *
 
+
 pygame.init()
-lista_preguntas = []
-diccionario_puntaje = {}
+
 diccionario_paths = obtener_paths("archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
-crear_diccionario_preguntas(lista_datos_csv, lista_preguntas)
 fondo_menu = cargar_imagen(diccionario_paths["path_fondo_menu"], DIMENSIONES_VENTANA)
 logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
 presentador = cargar_imagen(diccionario_paths["path_presentador"], (450, 600))
 flecha = cargar_imagen(diccionario_paths["path_flecha"], (100, 50))
-contador_nivel = 0
-
 ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
+
+musica = pygame.mixer.Sound(diccionario_paths["path_musica"])
+musica.set_volume(0.3)
+musica.play(loops=-1)
+
+
 pygame.display.set_caption("Quien quiere ser millonario?")
 pygame.display.set_icon(logo)
 pygame.time.set_timer(CRONOMETRO, 1000)
+
 
 dict_cronometro = {
         "contador" : 30,
@@ -26,6 +29,7 @@ dict_cronometro = {
 }
 
 dict_niveles_premios = {
+        "contador_nivel" : 0,
         "piramide" : [[1, "$100"],
                       [2, "$200"],
                       [3, "$300"],
@@ -43,17 +47,6 @@ dict_niveles_premios = {
                       [15, "$1000000"],
                       [16, ""]],
         "fuente" :[FUENTE_PIRAMIDE_PREMIOS,BLANCO,VIOLETA] 
-}
-
-dict_prop_texto = {
-    "fuente_principal" : FUENTE_PRINCIPAL,
-    "fuente_pantalla_juego": FUENTE_PANTALLA_JUEGO,
-    "fuente_cronometro" : FUENTE_CRONOMETRO,
-    "fuente_comodines" : FUENTE_COMODINES,
-    "fuente_pantalla_game_over":FUENTE_PANTALLA_GAME_OVER,
-    "fuente_piramide_premios" :FUENTE_PIRAMIDE_PREMIOS,
-    "color_texto" : BLANCO,
-    "color_fondo" : VIOLETA
 }
 
 flags_variables = {
@@ -75,8 +68,7 @@ flags_variables = {
     "comodin_pista": True,
     "comodin_publico": True,
     "comodin_50_50": True,
-    "scores_mostrados" : False,
-    "colision_rects" : False
+    "scores_mostrados" : False
 }
 
 dict_elementos_pantalla_principal = {
@@ -177,7 +169,25 @@ dict_elementos_pantalla_juego = {
         "interactivos" : []
 }
 
+estado_juego = {
+    "lista_preguntas": [],
+    "flags_variables": flags_variables,
+    "contador_nivel": dict_niveles_premios["contador_nivel"],
+    "dict_cronometro": dict_cronometro,
+    "dict_niveles_premios": dict_niveles_premios,
+    "dict_general_pantallas_secundarias": dict_general_pantallas_secundarias,
+    "dict_pregunta_cargada": None,
+    "categoria_elegida": None,
+    "respuesta_seleccionada" : None,
+    "comodin_elegido" : None
+}
 
+elementos_pantalla = {
+    "dict_elementos_pantalla_principal": dict_elementos_pantalla_principal,
+    "dict_elementos_pantalla_categorias": dict_elementos_pantalla_categorias,
+    "dict_elementos_pantalla_juego": dict_elementos_pantalla_juego,
+    "dict_general_pantallas_secundarias": dict_general_pantallas_secundarias
+}
 
 
 

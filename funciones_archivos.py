@@ -34,15 +34,14 @@ def cargar_billetera_json(ruta_archivo_json):
     Retorna:
     dict: Datos de la billetera cargados desde el archivo JSON o una billetera vacía si hay problemas.
     """
+    exito = True
     try:
         with open(ruta_archivo_json, 'r') as file:
             billetera = json.load(file)
         return billetera
-    except FileNotFoundError:
-        return {"billetera": []}
-    except Exception as e:
-        print(f"Error al cargar el archivo JSON: {e}")
-        return {"billetera": []}
+    except:
+        exito = False
+    return exito
 
 def actualizar_billetera_json(ruta_archivo_json, puntuacion_actualizada):
     """
