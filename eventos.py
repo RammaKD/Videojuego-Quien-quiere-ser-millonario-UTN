@@ -49,7 +49,6 @@ def manejar_evento_mouse(estado_juego, mouse_pos, elementos_pantalla):
         if estado_juego["flags_variables"][estado]:
             eventos[estado](estado_juego, mouse_pos, elementos_pantalla)
             
-
 def manejar_evento_teclado(event, estado_juego, elementos_pantalla, diccionario_paths):
     """
     Maneja eventos de teclado según el estado actual del juego y elementos visuales.
@@ -175,7 +174,6 @@ def manejar_evento_pantalla_game_over(estado_juego, mouse_pos, elementos_pantall
         if manejar_colision_pantalla_game_over(mouse_pos, dict_general_pantallas_secundarias):
             estado_juego["contador_nivel"] = resetear_juego(estado_juego, elementos_pantalla)
         
-
 def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantalla):
     dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
     if estado_juego["flags_variables"]["botones_pantalla_checkpoint"]:
@@ -183,7 +181,6 @@ def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantal
         if boton_seleccionado != None:
             manejar_boton_pantalla_checkpoint(boton_seleccionado, estado_juego["flags_variables"])
         
-
 def manejar_evento_pantalla_victoria(estado_juego, mouse_pos, elementos_pantalla):
     dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
     if estado_juego["flags_variables"]["botones_pantalla_victoria"]:

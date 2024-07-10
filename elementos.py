@@ -65,9 +65,9 @@ flags_variables = {
     "botones_pantalla_guardar_score": False,
     "pantalla_victoria": False,
     "botones_pantalla_victoria": False,
-    "comodin_pista": True,
-    "comodin_publico": True,
-    "comodin_50_50": True,
+    "Llamada": True,
+    "Publico": True,
+    "50_50": True,
     "scores_mostrados" : False
 }
 
@@ -160,7 +160,7 @@ dict_elementos_pantalla_juego = {
                     ["respuesta_B",(450, 550), True],
                     ["respuesta_C", (25, 650), True],
                     ["respuesta_D", (450, 650), True],
-                    ("50-50", (150,55), True),
+                    ("50_50", (150,55), True),
                     ("Publico", (275,55), True),
                     ("Llamada", (440,55), True)],
 
@@ -168,9 +168,6 @@ dict_elementos_pantalla_juego = {
         
         "interactivos" : []
 }
-
-
-
 
 estado_juego = {
     "lista_preguntas": [],

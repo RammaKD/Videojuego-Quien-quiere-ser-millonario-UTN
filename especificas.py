@@ -37,15 +37,15 @@ def resetear_juego(estado_juego, elementos_pantalla):
     estado_juego["flags_variables"]["botones_respuestas"] = True
     estado_juego["flags_variables"]["pantalla_checkpoint"] = False
     estado_juego["flags_variables"]["botones_pantalla_checkpoint"] = False
-    estado_juego["flags_variables"]["comodin_pista"] = True
-    estado_juego["flags_variables"]["comodin_publico"] = True
+    estado_juego["flags_variables"]["Llamada"] = True
+    estado_juego["flags_variables"]["Publico"] = True
     estado_juego["flags_variables"]["pantalla_guardar_score"] = False
     estado_juego["flags_variables"]["botones_pantalla_guardar_score"] = False
-    estado_juego["flags_variables"]["comodin_50_50"] = True
+    estado_juego["flags_variables"]["50_50"] = True
 
     return estado_juego["contador_nivel"]
 
-def cargar_comodin_en_pantalla(ventana_principal, flags_variables, estado_juego, elementos_pantalla):
+def cargar_comodin_en_pantalla(ventana_principal, estado_juego, elementos_pantalla):
     """
     Esta funcion se encarga de verificar qué comodín ha sido seleccionado por el jugador y 
     de mostrar el efecto correspondiente en la pantalla. Los comodines disponibles son:
@@ -53,29 +53,50 @@ def cargar_comodin_en_pantalla(ventana_principal, flags_variables, estado_juego,
     gráfica para reflejar el uso de dicho comodín. Esto puede incluir mostrar una pista, 
     mostrar porcentajes de votación del público, o eliminar dos respuestas incorrectas
     """
-    lista_respuestas = estado_juego["dict_pregunta_cargada"]["respuestas"]
-    respuesta_correcta = estado_juego["dict_pregunta_cargada"]["respuesta_correcta"]
+    comodines_en_pantalla = {
+        "Llamada" : cargar_llamada,
+        "Publico" : cargar_publico,
+        "50_50" : cargar_50_50
+    }
+    
+    for comodin in comodines_en_pantalla:
+        if estado_juego["comodin_elegido"] == comodin and flags_variables[comodin]:
+            comodines_en_pantalla[comodin](ventana_principal, estado_juego, elementos_pantalla)
+
+def cargar_llamada(ventana_principal, estado_juego, elementos_pantalla):
+    flags_variables = estado_juego["flags_variables"]
+    flags_variables["Llamada"] = False
     fuente =  elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][0]
     color_texto = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][1]
     color_fondo = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][2]
+    mostrar_pista(ventana_principal, estado_juego["dict_pregunta_cargada"]["pista"], 
+                  fuente, color_texto , color_fondo)
+
+def cargar_publico(ventana_principal, estado_juego, elementos_pantalla):
+    flags_variables = estado_juego["flags_variables"]
+    flags_variables["Publico"] = False
+    fuente =  elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][0]
+    color_texto = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][1]
+    color_fondo = elementos_pantalla["dict_elementos_pantalla_juego"]["fuente"][2]
+    lista_respuestas = estado_juego["dict_pregunta_cargada"]["respuestas"]
+    respuesta_correcta = estado_juego["dict_pregunta_cargada"]["respuesta_correcta"]
+    lista_porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
+    blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, 
+                        fuente, color_texto, color_fondo)
+
+def cargar_50_50(ventana_principal, estado_juego, elementos_pantalla):
+    flags_variables = estado_juego["flags_variables"]
+    flags_variables["50_50"] = False
+    dict_niveles_premios = estado_juego["dict_niveles_premios"]
+    lista_respuestas = estado_juego["dict_pregunta_cargada"]["respuestas"]
+    respuesta_correcta = estado_juego["dict_pregunta_cargada"]["respuesta_correcta"]
     dict_elementos_pantalla_juego = elementos_pantalla["dict_elementos_pantalla_juego"]
-    
-    if estado_juego["comodin_elegido"] == "Llamada" and flags_variables["comodin_pista"]:
-        flags_variables["comodin_pista"] = False
-        mostrar_pista(ventana_principal, estado_juego["dict_pregunta_cargada"]["pista"], fuente, color_texto , color_fondo)
-    
-    elif estado_juego["comodin_elegido"] == "Publico" and flags_variables["comodin_publico"]:
-        flags_variables["comodin_publico"] = False
-        lista_porcentajes = generar_porcentajes(lista_respuestas, respuesta_correcta)
-        blitear_porcentajes(ventana_principal, lista_porcentajes, lista_respuestas, fuente, color_texto, color_fondo)    
-    
-    elif estado_juego["comodin_elegido"] == "50-50" and flags_variables["comodin_50_50"]:
-        flags_variables["comodin_50_50"] = False
-        dict_elementos_pantalla_juego["interactivos"].clear()
-        dict_elementos_pantalla_juego["textos"] = aplicar_comodin_50_50(dict_elementos_pantalla_juego["textos"],lista_respuestas, respuesta_correcta)
-        cargar_pantalla(ventana_principal, dict_elementos_pantalla_juego)
-        dibujar_niveles_premios(ventana_principal, dict_niveles_premios)
-        blitear_flecha(estado_juego["contador_nivel"])
+    dict_elementos_pantalla_juego["interactivos"].clear()
+    dict_elementos_pantalla_juego["textos"] = aplicar_comodin_50_50(dict_elementos_pantalla_juego["textos"], 
+                                                                    lista_respuestas, respuesta_correcta)
+    cargar_pantalla(ventana_principal, dict_elementos_pantalla_juego)
+    dibujar_niveles_premios(ventana_principal, dict_niveles_premios)
+    blitear_flecha(estado_juego["contador_nivel"])
 
 #Funciones manejar
 def manejar_respuesta_seleccionada(estado_juego, elementos_pantalla):
@@ -91,7 +112,7 @@ def manejar_respuesta_seleccionada(estado_juego, elementos_pantalla):
         estado_juego["dict_cronometro"]["contador"] = 30
         estado_juego["flags_variables"]["pregunta_mostrada"] = False
         elementos_pantalla["dict_elementos_pantalla_juego"]["interactivos"].clear()
-        retorno = estado_juego["contador_nivel"]
+        retorno = estado_juego["respuesta_seleccionada"]
         
     return retorno
 
@@ -132,7 +153,7 @@ def manejar_boton_pantalla_victoria(boton, flags_variables):
         flags_variables["botones_pantalla_guardar_score"] = True
         flags_variables["pregunta_mostrada"] = False
 
-def manejar_pantalla_guardar_score(elementos_pantalla):
+def manejar_pantalla_guardar_score(elementos_pantalla, ventana_principal):
     """
     Maneja la acción a realizar cuando se selecciona un botón en la pantalla de victoria.
     Si el botón seleccionado es "Retirar premio", activa la pantalla para guardar el score, 
@@ -195,33 +216,29 @@ def actualizar_pantalla(estado_juego, elementos_pantalla, ventana_principal):
         "pantalla_guardar_score" : actualizar_pantalla_guardar_score
     }
 
-
     for estado in actualizacion_pantallas:
-        if estado_juego["flags_variables"][estado]:
-            actualizacion_pantallas[estado](ventana_principal,estado_juego, elementos_pantalla)
+        if flags_variables[estado]:
+            actualizacion_pantallas[estado](ventana_principal, elementos_pantalla, estado_juego)
 
-
-
-
-def actualizar_pantalla_principal(ventana_principal,estado_juego, elementos_pantalla):
+def actualizar_pantalla_principal(ventana_principal, elementos_pantalla, estado_juego):
     cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_principal"])
 
-def actualizar_pantalla_categorias(ventana_principal,estado_juego, elementos_pantalla):
+def actualizar_pantalla_categorias(ventana_principal, elementos_pantalla, estado_juego):
     cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_categorias"])
     
-def actualizar_pantalla_juego(ventana_principal,estado_juego, elementos_pantalla):
-        if not estado_juego["flags_variables"]["pregunta_mostrada"]:
-            estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
-            elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)
-            cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
-            dibujar_niveles_premios(ventana_principal, estado_juego["dict_niveles_premios"])
-            actualizar_cronometro(ventana_principal, estado_juego["dict_cronometro"])
-            flags_variables["pregunta_mostrada"] = True
-            blitear_flecha(estado_juego["contador_nivel"])
+def actualizar_pantalla_juego(ventana_principal, elementos_pantalla, estado_juego):
+    if not estado_juego["flags_variables"]["pregunta_mostrada"]:
+        estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
+        elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)
+        cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
+        dibujar_niveles_premios(ventana_principal, estado_juego["dict_niveles_premios"])
+        actualizar_cronometro(ventana_principal, estado_juego["dict_cronometro"])
+        flags_variables["pregunta_mostrada"] = True
+        blitear_flecha(estado_juego["contador_nivel"])
 
-def  actualizar_pantalla_guardar_score(ventana_principal,estado_juego, elementos_pantalla):
-    flags_variables = habilitar_pantalla_guardar_score(flags_variables)
-    manejar_pantalla_guardar_score(elementos_pantalla)
+def actualizar_pantalla_guardar_score(ventana_principal, elementos_pantalla, estado_juego):
+    estado_juego["flags_variables"] = habilitar_pantalla_guardar_score(estado_juego["flags_variables"])
+    manejar_pantalla_guardar_score(elementos_pantalla, ventana_principal)
 
 def administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables):
     """
@@ -235,17 +252,17 @@ def administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, vent
     estado_juego["comodin_elegido"] = manejar_colision_comodines_pantalla_juego(mouse_pos, elementos_pantalla)
     
     if estado_juego["comodin_elegido"] != None:
-        cargar_comodin_en_pantalla(ventana_principal, flags_variables, estado_juego, elementos_pantalla)
+        cargar_comodin_en_pantalla(ventana_principal, estado_juego, elementos_pantalla)
     elif estado_juego["respuesta_seleccionada"] != None:
-        estado_juego["contador_nivel"] = manejar_respuesta_seleccionada(estado_juego, elementos_pantalla)
+        estado_juego["respuesta_seleccionada"] = manejar_respuesta_seleccionada(estado_juego, elementos_pantalla)
         corroborar = corroborar_checkpoint_y_victoria(estado_juego, flags_variables, elementos_pantalla)
         if corroborar:
             flags_variables["pantalla_checkpoint"] = True
             flags_variables["botones_pantalla_checkpoint"] = True
             cargar_pantalla(ventana_principal, dict_general_pantallas_secundarias["checkpoint"])
         elif corroborar == False:
-                cargar_pantalla(ventana_principal, dict_general_pantallas_secundarias["victoria"])
-        if not estado_juego["contador_nivel"]:
+            cargar_pantalla(ventana_principal, dict_general_pantallas_secundarias["victoria"])
+        if not estado_juego["respuesta_seleccionada"]:
             msj_error = "Respuesta incorrecta"
             dict_general_pantallas_secundarias = habilitar_game_over(flags_variables, elementos_pantalla, msj_error)
             cargar_pantalla(ventana_principal, dict_general_pantallas_secundarias["game_over"])
@@ -253,7 +270,8 @@ def administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, vent
     return estado_juego
 
 def habilitar_game_over(flag_variables, elementos_pantalla, msj_error):
-    """Habilita la pantalla de game over con un mensaje de error específico."""
+    """Habilita la pantalla de game over con un mensaje de error específico.
+    """
     flag_variables["pantalla_game_over"] = True
     flag_variables["boton_pantalla_game_over"] = True
     desactivar_pantalla_juego(flag_variables)
@@ -266,7 +284,6 @@ def habilitar_pantalla_juego(flags_variables):
     Habilita la pantalla de juego.
     Este método configura las banderas necesarias para mostrar la pantalla de juego,
     desactivando la pantalla de categorías y activando el cronómetro."""
-
     flags_variables["pantalla_categorias"] = False
     flags_variables["pantalla_juego"] = True
     flags_variables["cronometro_activo"] = True

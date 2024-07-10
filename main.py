@@ -6,7 +6,6 @@ from eventos import *
 from funciones_visuales import *
 from especificas import *
 
-
 pygame.init()
 
 while estado_juego["flags_variables"]["run"]:

@@ -107,30 +107,24 @@ def generar_porcentajes(lista_respuestas, respuesta_correcta):
     la respuesta correcta tenga un porcentaje entre 50 y 100. Retorna una lista con 
     los porcentajes correspondientes a cada respuesta.
     """
-    
-    respuestas_incorrectas = []
-    porcentaje_correcta = 0
-    
-    for respuesta in lista_respuestas:
-        if respuesta == respuesta_correcta:
-            porcentaje_correcta = random.randint(50, 100)
-        else:
-            respuestas_incorrectas.append(respuesta)
-    
+    lista_porcentajes = [0] * len(lista_respuestas)
+    porcentaje_correcta = random.randint(50, 100)
     porcentaje_restante = 100 - porcentaje_correcta
-    porcentajes = {respuesta_correcta: porcentaje_correcta}
-    total_asignado = 0
-    for i in range(len(respuestas_incorrectas)):
-        if i == len(respuestas_incorrectas) - 1:
-            porcentajes[respuestas_incorrectas[i]] = porcentaje_restante - total_asignado
-        else:
-            porcentaje = random.randint(0, porcentaje_restante - total_asignado)
-            porcentajes[respuestas_incorrectas[i]] = porcentaje
-            total_asignado += porcentaje
     
-    lista_porcentajes = []
-    for respuesta in lista_respuestas:
-        lista_porcentajes.append(porcentajes[respuesta])
+    indice_correcta = lista_respuestas.index(respuesta_correcta)
+    lista_porcentajes[indice_correcta] = porcentaje_correcta
+    
+    respuestas_incorrectas = len(lista_respuestas) - 1
+    total_asignado = 0
+    for i in range(len(lista_respuestas)):
+        if i != indice_correcta:
+            if respuestas_incorrectas == 1:
+                lista_porcentajes[i] = porcentaje_restante - total_asignado
+            else:
+                porcentaje = random.randint(0, porcentaje_restante - total_asignado)
+                lista_porcentajes[i] = porcentaje
+                total_asignado += porcentaje
+            respuestas_incorrectas -= 1
     
     return lista_porcentajes
 
