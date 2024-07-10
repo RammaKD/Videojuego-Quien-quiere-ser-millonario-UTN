@@ -169,6 +169,9 @@ dict_elementos_pantalla_juego = {
         "interactivos" : []
 }
 
+
+
+
 estado_juego = {
     "lista_preguntas": [],
     "flags_variables": flags_variables,

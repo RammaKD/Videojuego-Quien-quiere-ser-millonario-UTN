@@ -31,42 +31,24 @@ def manejar_eventos(estado_juego, elementos_pantalla):
 
 def manejar_evento_mouse(estado_juego, mouse_pos, elementos_pantalla):
     """
-    Maneja eventos de clic del mouse en función de la pantalla actual y los elementos visibles del juego.
+    Maneja eventos de clic del mouse según el estado actual del juego y los elementos de pantalla.
 
-    Esta funcion determina la acción a realizar según la posición del mouse y el estado del juego,
-    interactuando con elementos como botones y opciones de pantalla.
+    Esta función itera a través de un diccionario de eventos, donde cada clave representa un estado del juego
+    y su valor es una función correspondiente para manejar eventos de clic del mouse en ese estado específico.
     """
-    flags_variables = estado_juego["flags_variables"]
-    dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
-    dict_elementos_pantalla_principal = elementos_pantalla["dict_elementos_pantalla_principal"]
-    dict_elementos_pantalla_categorias = elementos_pantalla["dict_elementos_pantalla_categorias"]
+    eventos = {
+        "pantalla_principal": manejar_evento_pantalla_principal,
+        "pantalla_categorias": manejar_evento_pantalla_categorias,
+        "pantalla_juego": manejar_evento_pantalla_juego,
+        "pantalla_game_over": manejar_evento_pantalla_game_over,
+        "pantalla_checkpoint": manejar_evento_pantalla_checkpoint,
+        "pantalla_victoria": manejar_evento_pantalla_victoria,
+    }
     
-    if flags_variables["pantalla_principal"]:
-        boton_seleccionado = manejar_colision_pantalla_principal(mouse_pos, dict_elementos_pantalla_principal)
-        if boton_seleccionado != None:
-            manejar_boton_pantalla_principal(boton_seleccionado, flags_variables)
-    
-    elif flags_variables["pantalla_categorias"]:
-        estado_juego["categoria_elegida"] = manejar_colision_pantalla_categorias(mouse_pos, dict_elementos_pantalla_categorias)
-        if estado_juego["categoria_elegida"] != None:
-            habilitar_pantalla_juego(flags_variables)
-    
-    elif flags_variables["pantalla_juego"] and flags_variables["botones_respuestas"]:
-        estado_juego = administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables)
-    
-    elif flags_variables["pantalla_game_over"] and flags_variables["boton_pantalla_game_over"]:
-        if manejar_colision_pantalla_game_over(mouse_pos, dict_general_pantallas_secundarias):
-            estado_juego["contador_nivel"] = resetear_juego(estado_juego, elementos_pantalla)
-    
-    elif flags_variables["pantalla_checkpoint"] and flags_variables["botones_pantalla_checkpoint"]:
-        boton_seleccionado = manejar_colision_pantalla_checkpoint(mouse_pos, dict_general_pantallas_secundarias)
-        if boton_seleccionado != None:
-            manejar_boton_pantalla_checkpoint(boton_seleccionado, flags_variables)
-    
-    elif flags_variables["pantalla_victoria"] and flags_variables["botones_pantalla_victoria"]:
-        boton_seleccionado = manejar_colision_pantalla_victoria(mouse_pos, dict_general_pantallas_secundarias)
-        if boton_seleccionado != None:
-            manejar_boton_pantalla_victoria(boton_seleccionado, flags_variables)
+    for estado in eventos:
+        if estado_juego["flags_variables"][estado]:
+            eventos[estado](estado_juego, mouse_pos, elementos_pantalla)
+            
 
 def manejar_evento_teclado(event, estado_juego, elementos_pantalla, diccionario_paths):
     """
@@ -164,4 +146,48 @@ def manejar_evento_mostrar_score(event, flags_variables, diccionario_paths, elem
             ]
     
     return flags_variables
+
+
+
+
+
+#comentar
                           
+def manejar_evento_pantalla_principal(estado_juego, mouse_pos, elementos_pantalla):
+    dict_elementos_pantalla_principal = elementos_pantalla["dict_elementos_pantalla_principal"]
+    boton_seleccionado = manejar_colision_pantalla_principal(mouse_pos, dict_elementos_pantalla_principal)
+    if boton_seleccionado != None:
+        manejar_boton_pantalla_principal(boton_seleccionado, estado_juego["flags_variables"])
+
+def manejar_evento_pantalla_categorias(estado_juego, mouse_pos, elementos_pantalla):
+    dict_elementos_pantalla_categorias = elementos_pantalla["dict_elementos_pantalla_categorias"]
+    estado_juego["categoria_elegida"] = manejar_colision_pantalla_categorias(mouse_pos, dict_elementos_pantalla_categorias)
+    if estado_juego["categoria_elegida"] != None:
+        habilitar_pantalla_juego(estado_juego["flags_variables"])                    
+
+def manejar_evento_pantalla_juego(estado_juego, mouse_pos, elementos_pantalla):
+    if estado_juego["flags_variables"]["botones_respuestas"]:
+        estado_juego = administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables)
+
+def manejar_evento_pantalla_game_over(estado_juego, mouse_pos, elementos_pantalla):
+    dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
+    if estado_juego["flags_variables"]["boton_pantalla_game_over"]:
+        if manejar_colision_pantalla_game_over(mouse_pos, dict_general_pantallas_secundarias):
+            estado_juego["contador_nivel"] = resetear_juego(estado_juego, elementos_pantalla)
+        
+
+def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantalla):
+    dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
+    if estado_juego["flags_variables"]["botones_pantalla_checkpoint"]:
+        boton_seleccionado = manejar_colision_pantalla_checkpoint(mouse_pos, dict_general_pantallas_secundarias)
+        if boton_seleccionado != None:
+            manejar_boton_pantalla_checkpoint(boton_seleccionado, estado_juego["flags_variables"])
+        
+
+def manejar_evento_pantalla_victoria(estado_juego, mouse_pos, elementos_pantalla):
+    dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
+    if estado_juego["flags_variables"]["botones_pantalla_victoria"]:
+        boton_seleccionado = manejar_colision_pantalla_victoria(mouse_pos, dict_general_pantallas_secundarias)
+        if boton_seleccionado != None:
+            manejar_boton_pantalla_victoria(boton_seleccionado, estado_juego["flags_variables"])
+        

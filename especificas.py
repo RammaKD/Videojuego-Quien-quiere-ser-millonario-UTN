@@ -187,22 +187,41 @@ def actualizar_pantalla(estado_juego, elementos_pantalla, ventana_principal):
     - Pantalla de guardar score
     """
     flags_variables = estado_juego["flags_variables"]
+
+    actualizacion_pantallas = {
+        "pantalla_principal": actualizar_pantalla_principal,
+        "pantalla_categorias" : actualizar_pantalla_categorias,
+        "pantalla_juego" : actualizar_pantalla_juego,
+        "pantalla_guardar_score" : actualizar_pantalla_guardar_score
+    }
+
+
+    for estado in actualizacion_pantallas:
+        if estado_juego["flags_variables"][estado]:
+            actualizacion_pantallas[estado](ventana_principal,estado_juego, elementos_pantalla)
+
+
+
+
+def actualizar_pantalla_principal(ventana_principal,estado_juego, elementos_pantalla):
+    cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_principal"])
+
+def actualizar_pantalla_categorias(ventana_principal,estado_juego, elementos_pantalla):
+    cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_categorias"])
     
-    if flags_variables["pantalla_principal"]:
-        cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_principal"])
-    elif flags_variables["pantalla_categorias"]:
-        cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_categorias"])
-    elif flags_variables["pantalla_juego"] and not flags_variables["pregunta_mostrada"]:
-        estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
-        elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)
-        cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
-        dibujar_niveles_premios(ventana_principal, estado_juego["dict_niveles_premios"])
-        actualizar_cronometro(ventana_principal, estado_juego["dict_cronometro"])
-        flags_variables["pregunta_mostrada"] = True
-        blitear_flecha(estado_juego["contador_nivel"])
-    elif flags_variables["pantalla_guardar_score"]:
-        flags_variables = habilitar_pantalla_guardar_score(flags_variables)
-        manejar_pantalla_guardar_score(elementos_pantalla)
+def actualizar_pantalla_juego(ventana_principal,estado_juego, elementos_pantalla):
+        if not estado_juego["flags_variables"]["pregunta_mostrada"]:
+            estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
+            elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)
+            cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_juego"])
+            dibujar_niveles_premios(ventana_principal, estado_juego["dict_niveles_premios"])
+            actualizar_cronometro(ventana_principal, estado_juego["dict_cronometro"])
+            flags_variables["pregunta_mostrada"] = True
+            blitear_flecha(estado_juego["contador_nivel"])
+
+def  actualizar_pantalla_guardar_score(ventana_principal,estado_juego, elementos_pantalla):
+    flags_variables = habilitar_pantalla_guardar_score(flags_variables)
+    manejar_pantalla_guardar_score(elementos_pantalla)
 
 def administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables):
     """
