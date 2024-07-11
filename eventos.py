@@ -147,34 +147,69 @@ def manejar_evento_mostrar_score(event, flags_variables, diccionario_paths, elem
     return flags_variables
 
 
-
-
-
-#comentar
-                          
 def manejar_evento_pantalla_principal(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Maneja la selección de botones en la pantalla principal y actualiza el estado del juego.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla principal.
+    """
     dict_elementos_pantalla_principal = elementos_pantalla["dict_elementos_pantalla_principal"]
     boton_seleccionado = manejar_colision_pantalla_principal(mouse_pos, dict_elementos_pantalla_principal)
     if boton_seleccionado != None:
         manejar_boton_pantalla_principal(boton_seleccionado, estado_juego["flags_variables"])
 
 def manejar_evento_pantalla_categorias(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Maneja la selección de categorías y habilita la pantalla del juego si se elige una categoría.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla de categorías.
+    """
     dict_elementos_pantalla_categorias = elementos_pantalla["dict_elementos_pantalla_categorias"]
     estado_juego["categoria_elegida"] = manejar_colision_pantalla_categorias(mouse_pos, dict_elementos_pantalla_categorias)
     if estado_juego["categoria_elegida"] != None:
         habilitar_pantalla_juego(estado_juego["flags_variables"])                    
 
 def manejar_evento_pantalla_juego(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Administra los eventos en la pantalla del juego si los botones de respuesta están habilitados.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla del juego.
+    """
     if estado_juego["flags_variables"]["botones_respuestas"]:
         estado_juego = administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables)
 
 def manejar_evento_pantalla_game_over(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Resetea el juego y el contador de nivel si se presiona el botón de 'game over'.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla de 'game over'.
+    """
     dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
     if estado_juego["flags_variables"]["boton_pantalla_game_over"]:
         if manejar_colision_pantalla_game_over(mouse_pos, dict_general_pantallas_secundarias):
             estado_juego["contador_nivel"] = resetear_juego(estado_juego, elementos_pantalla)
         
 def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Maneja la selección de botones en la pantalla de checkpoint y actualiza el estado del juego.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla de checkpoint.
+    """
     dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
     if estado_juego["flags_variables"]["botones_pantalla_checkpoint"]:
         boton_seleccionado = manejar_colision_pantalla_checkpoint(mouse_pos, dict_general_pantallas_secundarias)
@@ -182,9 +217,18 @@ def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantal
             manejar_boton_pantalla_checkpoint(boton_seleccionado, estado_juego["flags_variables"])
         
 def manejar_evento_pantalla_victoria(estado_juego, mouse_pos, elementos_pantalla):
+    """
+    Maneja la selección de botones en la pantalla de victoria y actualiza el estado del juego.
+    
+    Parámetros:
+    - estado_juego: Diccionario con el estado actual del juego.
+    - mouse_pos: Tupla con la posición actual del ratón.
+    - elementos_pantalla: Diccionario con los elementos de la pantalla de victoria.
+    """
     dict_general_pantallas_secundarias = elementos_pantalla["dict_general_pantallas_secundarias"]
     if estado_juego["flags_variables"]["botones_pantalla_victoria"]:
         boton_seleccionado = manejar_colision_pantalla_victoria(mouse_pos, dict_general_pantallas_secundarias)
         if boton_seleccionado != None:
             manejar_boton_pantalla_victoria(boton_seleccionado, estado_juego["flags_variables"])
+
         

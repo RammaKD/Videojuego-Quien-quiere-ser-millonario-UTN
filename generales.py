@@ -24,7 +24,6 @@ def crear_diccionario_preguntas(lista_datos, lista_preguntas):
         for i in range(len(lista_datos[0])):
             if lista_datos[0][i] == "Nivel":
                 pregunta[lista_datos[0][i]] = int(valores[i])
-            
             else:
                 pregunta[lista_datos[0][i]] = valores[i]
 
