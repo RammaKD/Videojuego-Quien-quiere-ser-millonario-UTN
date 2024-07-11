@@ -1,10 +1,11 @@
 import random
 import pygame
 from funciones_visuales import *
-from elementos import *
 from colisiones import *
+from elementos import *
 
 
+blitear_flecha = lambda contador_nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 60 - (contador_nivel + 1) * 40))
 #Funciones preguntas
 def crear_lista_respuestas(pregunta):
     """
@@ -172,7 +173,7 @@ def elegir_respuestas_incorrectas_random(lista_respuestas, respuesta_correcta):
 
     return lista_incorrectas
 
-blitear_flecha = lambda contador_nivel: ventana_principal.blit(flecha, (995, ALTO_VENTANA - 60 - (contador_nivel + 1) * 40))
+
 
 
 

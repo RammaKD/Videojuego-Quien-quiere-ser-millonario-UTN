@@ -1,12 +1,15 @@
 from configuraciones import *
 from funciones_visuales import *
 from funciones_archivos import *
-
+# from generales import *
 
 pygame.init()
 
+lista_preguntas = []
 diccionario_paths = obtener_paths("archivos\\paths.json")
 lista_datos_csv = leer_preguntas_csv(diccionario_paths["path_preguntas"])
+diccionario_paths = obtener_paths("archivos\\paths.json")
+
 fondo_menu = cargar_imagen(diccionario_paths["path_fondo_menu"], DIMENSIONES_VENTANA)
 logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
 presentador = cargar_imagen(diccionario_paths["path_presentador"], (450, 600))
@@ -16,7 +19,6 @@ ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
 musica = pygame.mixer.Sound(diccionario_paths["path_musica"])
 musica.set_volume(0.3)
 musica.play(loops=-1)
-
 
 pygame.display.set_caption("Quien quiere ser millonario?")
 pygame.display.set_icon(logo)
@@ -170,7 +172,7 @@ dict_elementos_pantalla_juego = {
 }
 
 estado_juego = {
-    "lista_preguntas": [],
+    "lista_preguntas": lista_preguntas,
     "flags_variables": flags_variables,
     "contador_nivel": dict_niveles_premios["contador_nivel"],
     "dict_cronometro": dict_cronometro,

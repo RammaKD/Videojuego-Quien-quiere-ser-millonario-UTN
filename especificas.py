@@ -53,6 +53,7 @@ def cargar_comodin_en_pantalla(ventana_principal, estado_juego, elementos_pantal
     gráfica para reflejar el uso de dicho comodín. Esto puede incluir mostrar una pista, 
     mostrar porcentajes de votación del público, o eliminar dos respuestas incorrectas
     """
+    flags_variables = estado_juego["flags_variables"]
     comodines_en_pantalla = {
         "Llamada" : cargar_llamada,
         "Publico" : cargar_publico,
@@ -227,6 +228,7 @@ def actualizar_pantalla_categorias(ventana_principal, elementos_pantalla, estado
     cargar_pantalla(ventana_principal, elementos_pantalla["dict_elementos_pantalla_categorias"])
     
 def actualizar_pantalla_juego(ventana_principal, elementos_pantalla, estado_juego):
+    flags_variables = estado_juego["flags_variables"] 
     if not estado_juego["flags_variables"]["pregunta_mostrada"]:
         estado_juego["dict_pregunta_cargada"] = cargar_elementos_juego(estado_juego)
         elementos_pantalla["dict_elementos_pantalla_juego"] = modificar_dict_pantalla_juego(elementos_pantalla, estado_juego)

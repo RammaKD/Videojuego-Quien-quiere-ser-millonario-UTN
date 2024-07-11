@@ -1,5 +1,8 @@
 # Quien quiere ser millonario?
 
+# Link del repo: https://github.com/RammaKD/Quien-quiere-ser-millonario_Barrios-Alfonzo_Azaldegui-Brizuela
+# Link gameplay: https://youtu.be/3plTY-4HkaY
+
 ### Géneros
 - Historia
 - Deporte
