@@ -25,6 +25,7 @@ def manejar_eventos(estado_juego, elementos_pantalla):
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = event.pos
             manejar_evento_mouse(estado_juego, mouse_pos, elementos_pantalla)
+            
         elif event.type == pygame.KEYDOWN:
             manejar_evento_teclado(event, estado_juego, elementos_pantalla, diccionario_paths)
         elif event.type == CRONOMETRO and estado_juego["flags_variables"]["cronometro_activo"]:
@@ -171,6 +172,8 @@ def manejar_evento_pantalla_categorias(estado_juego, mouse_pos, elementos_pantal
     - mouse_pos: Tupla con la posición actual del ratón.
     - elementos_pantalla: Diccionario con los elementos de la pantalla de categorías.
     """
+  
+    
     dict_elementos_pantalla_categorias = elementos_pantalla["dict_elementos_pantalla_categorias"]
     estado_juego["categoria_elegida"] = manejar_colision_pantalla_categorias(mouse_pos, dict_elementos_pantalla_categorias)
     if estado_juego["categoria_elegida"] != None:
@@ -186,6 +189,7 @@ def manejar_evento_pantalla_juego(estado_juego, mouse_pos, elementos_pantalla):
     - elementos_pantalla: Diccionario con los elementos de la pantalla del juego.
     """
     if estado_juego["flags_variables"]["botones_respuestas"]:
+        
         estado_juego = administrar_pantalla_juego(mouse_pos, estado_juego, elementos_pantalla, ventana_principal, flags_variables)
 
 def manejar_evento_pantalla_game_over(estado_juego, mouse_pos, elementos_pantalla):
@@ -201,6 +205,7 @@ def manejar_evento_pantalla_game_over(estado_juego, mouse_pos, elementos_pantall
     if estado_juego["flags_variables"]["boton_pantalla_game_over"]:
         if manejar_colision_pantalla_game_over(mouse_pos, dict_general_pantallas_secundarias):
             estado_juego["contador_nivel"] = resetear_juego(estado_juego, elementos_pantalla)
+            
         
 def manejar_evento_pantalla_checkpoint(estado_juego, mouse_pos, elementos_pantalla):
     """

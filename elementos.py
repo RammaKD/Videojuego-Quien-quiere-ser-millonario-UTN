@@ -12,7 +12,7 @@ diccionario_paths = obtener_paths("archivos\\paths.json")
 
 fondo_menu = cargar_imagen(diccionario_paths["path_fondo_menu"], DIMENSIONES_VENTANA)
 logo = cargar_imagen(diccionario_paths["path_logo"], (450,350))
-presentador = cargar_imagen(diccionario_paths["path_presentador"], (450, 600))
+presentador = cargar_imagen(diccionario_paths["path_presentador"], (600, 600))
 flecha = cargar_imagen(diccionario_paths["path_flecha"], (100, 50))
 ventana_principal = pygame.display.set_mode(DIMENSIONES_VENTANA)
 
@@ -36,17 +36,17 @@ dict_niveles_premios = {
                       [2, "$200"],
                       [3, "$300"],
                       [4, "$500"],
-                      [5, "$1000"],
+                      [5, "$1000*"],
                       [6, "$2000"],
                       [7, "$4000"],
                       [8, "$8000"],
                       [9, "$16000"],
-                      [10, "$32000"],
+                      [10, "$32000*"],
                       [11, "$64000"],
                       [12, "$125000"],
                       [13, "$250000"],
                       [14, "$500000"],
-                      [15, "$1000000"],
+                      [15, "$1000000*"],
                       [16, ""]],
         "fuente" :[FUENTE_PIRAMIDE_PREMIOS,BLANCO,VIOLETA] 
 }
@@ -70,7 +70,7 @@ flags_variables = {
     "Llamada": True,
     "Publico": True,
     "50_50": True,
-    "scores_mostrados" : False
+    "scores_mostrados" : False,    
 }
 
 dict_elementos_pantalla_principal = {

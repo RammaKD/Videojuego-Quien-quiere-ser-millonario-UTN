@@ -28,6 +28,9 @@ def resetear_juego(estado_juego, elementos_pantalla):
     estado_juego["contador_nivel"] = 0
     estado_juego["dict_cronometro"]["contador"] = 30
     elementos_pantalla["dict_elementos_pantalla_juego"]["interactivos"].clear()
+    elementos_pantalla["dict_elementos_pantalla_categorias"]["interactivos"].clear()
+    
+    # Reseteo de banderas
     estado_juego["flags_variables"]["pantalla_juego"] = False
     estado_juego["flags_variables"]["pantalla_principal"] = True
     estado_juego["flags_variables"]["pregunta_mostrada"] = False
@@ -42,6 +45,14 @@ def resetear_juego(estado_juego, elementos_pantalla):
     estado_juego["flags_variables"]["pantalla_guardar_score"] = False
     estado_juego["flags_variables"]["botones_pantalla_guardar_score"] = False
     estado_juego["flags_variables"]["50_50"] = True
+    estado_juego["flags_variables"]["botones_categorias"] = False
+
+    # Reseteo de otras variables
+    estado_juego["categoria_elegida"] = None
+    estado_juego["respuesta_seleccionada"] = None
+    estado_juego["comodin_elegido"] = None
+    estado_juego["dict_pregunta_cargada"] = None
+    estado_juego["dict_niveles_premios"]["contador_nivel"] = 0  # Asegurarse de resetear el contador del nivel
 
     return estado_juego["contador_nivel"]
 
@@ -127,6 +138,8 @@ def manejar_boton_pantalla_principal(boton_seleccionado, flags_variables):
     if boton_seleccionado == "JUGAR":
         flags_variables["pantalla_principal"] = False
         flags_variables["pantalla_categorias"] = True
+             
+        
     elif boton_seleccionado == "SALIR":
         flags_variables["run"] = False
 
@@ -287,6 +300,7 @@ def habilitar_pantalla_juego(flags_variables):
     Este método configura las banderas necesarias para mostrar la pantalla de juego,
     desactivando la pantalla de categorías y activando el cronómetro."""
     flags_variables["pantalla_categorias"] = False
+    
     flags_variables["pantalla_juego"] = True
     flags_variables["cronometro_activo"] = True
 

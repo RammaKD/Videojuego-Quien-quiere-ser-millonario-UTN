@@ -15,6 +15,7 @@ def manejar_colision_pantalla_categorias(mouse_pos, dict_elementos):
     Verifica si la posición del mouse colisiona con algún elemento interactivo en la pantalla de categorías.
     Si hay una colisión, devuelve el nombre de la categoría seleccionada.
     """
+    
     categoria_elegida = None
     for elemento in dict_elementos["interactivos"]:
         if elemento[1].collidepoint(mouse_pos):
